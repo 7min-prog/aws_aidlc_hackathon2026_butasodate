@@ -22,7 +22,7 @@
 | **フロントエンド** | Flutter（iOS / Android クロスプラットフォーム） |
 | **バックエンド** | AWS サーバーレス（Lambda + API Gateway + DynamoDB） |
 | **リアルタイム通信** | API Gateway WebSocket API |
-| **認証** | Amazon Cognito（メール + ソーシャルログイン: Google, Apple, LINE） |
+| **認証** | Amazon Cognito（メール + ソーシャルログイン: Google, X） |
 | **アバター生成** | AI生成画像 + AI生成短動画クリップ |
 | **ヘルスデータ連携** | Apple HealthKit / Google Health Connect |
 | **管理画面** | React（Web） |
@@ -33,7 +33,7 @@
 
 ### FR-1: ユーザー認証
 - メールアドレス + パスワードによるサインアップ/ログイン
-- ソーシャルログイン（Google, Apple, LINE）
+- ソーシャルログイン（Google, X）
 - プロフィール管理（ニックネーム、アバター表示名）
 
 ### FR-2: 不健康な行動の記録
