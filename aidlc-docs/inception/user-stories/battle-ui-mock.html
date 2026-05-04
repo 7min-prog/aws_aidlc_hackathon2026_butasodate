@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FR-5 バトルUIモック</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:#1a1a2e;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.phone{width:375px;height:812px;background:#16213e;border-radius:40px;overflow:hidden;position:relative;border:3px solid #333}
+.screen{height:100%;overflow:hidden;position:relative}
+.view{display:none;height:100%;flex-direction:column;position:absolute;inset:0}
+.view.active{display:flex}
+.nav{display:flex;gap:8px;padding:12px;background:#0f3460;flex-wrap:wrap;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:375px;z-index:100;border-top:1px solid #333}
+.nav button{flex:1;min-width:70px;padding:6px 4px;border:none;border-radius:8px;background:#e94560;color:#fff;font-size:10px;cursor:pointer;font-weight:bold}
+.nav button:hover{background:#c73650}
+.nav button.current{background:#533483;outline:2px solid #fff}
+.header{background:#0f3460;padding:16px;text-align:center;font-size:16px;font-weight:bold}
+.sub{font-size:11px;color:#aaa;margin-top:4px}
+/* Battle screen */
+.battle-area{flex:1;display:flex;flex-direction:column;padding:12px;gap:8px;overflow-y:auto;padding-bottom:60px}
+.battle-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#aaa}
+.fighter{background:#1a1a3e;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center}
+.fighter.enemy{border:2px solid #e94560}
+.fighter.me{border:2px solid #4ecca3}
+.avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px}
+.avatar.enemy-av{background:#e94560}
+.avatar.me-av{background:#4ecca3}
+.fighter-info{flex:1}
+.fighter-info .name{font-weight:bold;font-size:14px}
+.hp-bar{height:8px;background:#333;border-radius:4px;margin-top:4px;overflow:hidden}
+.hp-fill{height:100%;border-radius:4px;transition:width .3s}
+.hp-fill.enemy-hp{background:#e94560;width:45%}
+.hp-fill.me-hp{background:#4ecca3;width:72%}
+.stats{display:flex;gap:8px;margin-top:4px;font-size:10px;color:#aaa}
+.stats span{background:#1a1a2e;padding:2px 6px;border-radius:4px}
+.buffs{display:flex;gap:4px;margin-top:4px}
+.buff{font-size:9px;padding:2px 6px;border-radius:4px;background:#533483;color:#fff}
+.debuff{background:#e94560}
+.vs-divider{text-align:center;font-size:20px;font-weight:bold;color:#e94560;padding:4px}
+/* Action panel */
+.action-panel{background:#0f3460;border-radius:16px 16px 0 0;padding:12px}
+.action-label{font-size:12px;color:#aaa;margin-bottom:8px;display:flex;justify-content:space-between}
+.action-timer{color:#e94560;font-weight:bold}
+.skills{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.skill-btn{padding:10px 8px;border:2px solid #4ecca3;background:transparent;color:#fff;border-radius:12px;cursor:pointer;text-align:left;font-size:12px}
+.skill-btn:hover{background:#4ecca322}
+.skill-btn.disabled{border-color:#555;color:#555;cursor:not-allowed}
+.skill-btn .skill-name{font-weight:bold;display:block}
+.skill-btn .skill-desc{font-size:10px;color:#aaa;margin-top:2px}
+.skill-btn .cooldown{font-size:10px;color:#e94560}
+.action-row{display:flex;gap:8px;margin-top:8px}
+.action-row button{flex:1;padding:10px;border:none;border-radius:12px;font-size:13px;font-weight:bold;cursor:pointer;color:#fff}
+.defend-btn{background:#533483}
+.item-btn{background:#e94560}
+/* Matching screen */
+.match-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px;padding-bottom:80px}
+.spinner{width:80px;height:80px;border:4px solid #333;border-top:4px solid #e94560;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.match-text{font-size:18px;font-weight:bold}
+.match-sub{font-size:13px;color:#aaa;text-align:center}
+.match-timer{font-size:32px;font-weight:bold;color:#e94560}
+.cancel-btn{padding:12px 32px;background:#333;border:none;color:#fff;border-radius:12px;font-size:14px;cursor:pointer}
+/* Prep screen */
+.prep-content{flex:1;padding:16px;overflow-y:auto;padding-bottom:80px}
+.prep-section{margin-bottom:16px}
+.prep-section h3{font-size:14px;margin-bottom:8px;color:#4ecca3}
+.skill-slot{display:flex;gap:8px;flex-wrap:wrap}
+.slot{width:72px;height:72px;border:2px dashed #555;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:#aaa;cursor:pointer}
+.slot.filled{border-color:#4ecca3;border-style:solid;background:#4ecca322}
+.slot .slot-icon{font-size:24px}
+.skill-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.skill-pick{display:flex;align-items:center;gap:8px;padding:8px;background:#1a1a3e;border-radius:8px;cursor:pointer;font-size:12px}
+.skill-pick:hover{background:#1a1a5e}
+.skill-pick .sp-icon{font-size:20px}
+.item-slots{display:flex;gap:8px}
+.ready-btn{width:100%;padding:14px;background:#4ecca3;border:none;color:#1a1a2e;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:12px}
+/* Result screen */
+.result-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;padding-bottom:80px}
+.result-big{font-size:48px;font-weight:bold}
+.result-big.win{color:#4ecca3}
+.result-big.lose{color:#e94560}
+.result-detail{background:#1a1a3e;border-radius:12px;padding:16px;width:100%;text-align:center}
+.result-detail .pts{font-size:24px;font-weight:bold;margin:8px 0}
+.pts.plus{color:#4ecca3}
+.pts.minus{color:#e94560}
+.result-fighters{display:flex;justify-content:center;gap:24px;align-items:center}
+.result-fighters .avatar{width:56px;height:56px;font-size:28px}
+.result-vs{font-size:20px;color:#e94560;font-weight:bold}
+.home-btn{padding:14px 48px;background:#533483;border:none;color:#fff;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer}
+/* History screen */
+.history-content{flex:1;padding:16px;overflow-y:auto;padding-bottom:80px}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px;background:#1a1a3e;border-radius:12px;margin-bottom:8px;cursor:pointer}
+.history-item .h-result{font-weight:bold;font-size:14px;width:48px;text-align:center}
+.history-item .h-result.w{color:#4ecca3}
+.history-item .h-result.l{color:#e94560}
+.history-item .h-info{flex:1;font-size:12px}
+.history-item .h-info .h-name{font-weight:bold}
+.history-item .h-pts{font-size:12px;font-weight:bold}
+/* Ranking screen */
+.rank-content{flex:1;padding:16px;overflow-y:auto;padding-bottom:80px}
+.rank-item{display:flex;align-items:center;gap:12px;padding:10px;background:#1a1a3e;border-radius:12px;margin-bottom:6px}
+.rank-item.me-rank{border:2px solid #4ecca3}
+.rank-num{font-size:18px;font-weight:bold;width:32px;text-align:center}
+.rank-num.gold{color:#ffd700}
+.rank-num.silver{color:#c0c0c0}
+.rank-num.bronze{color:#cd7f32}
+.rank-info{flex:1}
+.rank-info .r-name{font-weight:bold;font-size:13px}
+.rank-info .r-pts{font-size:11px;color:#aaa}
+.rank-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:#533483}
+/* Friend invite */
+.friend-content{flex:1;padding:16px;overflow-y:auto;padding-bottom:80px}
+.friend-item{display:flex;align-items:center;gap:12px;padding:12px;background:#1a1a3e;border-radius:12px;margin-bottom:8px}
+.friend-item .f-avatar{width:40px;height:40px;border-radius:50%;background:#533483;display:flex;align-items:center;justify-content:center;font-size:20px}
+.friend-item .f-info{flex:1}
+.friend-item .f-name{font-weight:bold;font-size:13px}
+.friend-item .f-status{font-size:11px}
+.f-status.online{color:#4ecca3}
+.f-status.offline{color:#555}
+.invite-btn{padding:8px 16px;background:#e94560;border:none;color:#fff;border-radius:8px;font-size:12px;cursor:pointer}
+.invite-btn:disabled{background:#555;cursor:not-allowed}
+/* Battle log */
+.battle-log{background:#0a0a1e;border-radius:8px;padding:8px;margin:8px 0;max-height:80px;overflow-y:auto;font-size:11px;line-height:1.6}
+.battle-log .log-entry{padding:2px 0;border-bottom:1px solid #1a1a3e}
+.log-entry.dmg{color:#e94560}
+.log-entry.heal{color:#4ecca3}
+.log-entry.buff{color:#533483}
+.log-entry.info{color:#aaa}
+/* Shake animation */
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .3s ease-in-out}
+/* Flash on damage */
+@keyframes flash{0%,100%{opacity:1}50%{opacity:.3}}
+.flash{animation:flash .4s ease-in-out}
+/* Skill selected highlight */
+.skill-btn.selected{border-color:#ffd700;background:#ffd70022;box-shadow:0 0 8px #ffd70044}
+/* Item sub-panel */
+.item-panel{display:none;background:#1a1a3e;border-radius:12px;padding:10px;margin-top:8px;gap:8px}
+.item-panel.open{display:flex;flex-wrap:wrap}
+.item-card{padding:8px 12px;background:#0f3460;border-radius:8px;cursor:pointer;font-size:11px;border:1px solid #333;text-align:center}
+.item-card:hover{border-color:#e94560}
+.item-card.used{opacity:.3;pointer-events:none}
+/* Turn result overlay */
+.turn-result{position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:50;gap:8px;font-size:14px}
+.turn-result .tr-action{font-size:16px;font-weight:bold;padding:6px 16px;background:#1a1a3e;border-radius:8px}
+.turn-result .tr-dmg{font-size:28px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="screen">
+<!-- 1. ランダムマッチ待機 -->
+<div class="view" id="v-match">
+<div class="header">ランダムマッチ<div class="sub">US-5.1: 対戦相手を検索中...</div></div>
+<div class="match-content">
+<div class="spinner"></div>
+<div class="match-text">対戦相手を探しています...</div>
+<div class="match-timer" id="match-timer">30</div>
+<div class="match-sub">マッチング待ち時間: 最大30秒</div>
+<button class="cancel-btn" onclick="show('v-menu')">キャンセル</button>
+</div>
+</div>
+
+<!-- 2. フレンド対戦 -->
+<div class="view" id="v-friend">
+<div class="header">フレンド対戦<div class="sub">US-5.2: フレンドを選んでバトル招待</div></div>
+<div class="friend-content">
+<div class="friend-item"><div class="f-avatar">🐷</div><div class="f-info"><div class="f-name">ミカ</div><div class="f-status online">● オンライン</div></div><button class="invite-btn" onclick="show('v-friend-wait')">バトル申込</button></div>
+<div class="friend-item"><div class="f-avatar">🐽</div><div class="f-info"><div class="f-name">ケンタ</div><div class="f-status online">● オンライン</div></div><button class="invite-btn" onclick="show('v-friend-wait')">バトル申込</button></div>
+<div class="friend-item"><div class="f-avatar">🐖</div><div class="f-info"><div class="f-name">ユウコ</div><div class="f-status offline">○ オフライン</div></div><button class="invite-btn" disabled>オフライン</button></div>
+</div>
+</div>
+
+<!-- 2b. フレンド招待待ち -->
+<div class="view" id="v-friend-wait">
+<div class="header">招待送信済み<div class="sub">US-5.2: タイムアウトなし・手動キャンセルのみ</div></div>
+<div class="match-content">
+<div class="spinner"></div>
+<div class="match-text">ミカの応答を待っています...</div>
+<div class="match-sub">タイムアウトはありません<br>相手が応答するまで待機します</div>
+<button class="cancel-btn" onclick="show('v-friend')">キャンセル</button>
+</div>
+</div>
+
+<!-- 3. バトル準備 -->
+<div class="view" id="v-prep">
+<div class="header">バトル準備<div class="sub">US-5.3: スキル&アイテムをセット（30秒）</div></div>
+<div class="prep-content">
+<div class="prep-section"><h3>🎯 スキルセット（最大4つ）</h3>
+<div class="skill-slot"><div class="slot filled"><div class="slot-icon">🍜</div>深夜ラーメン</div><div class="slot filled"><div class="slot-icon">💤</div>爆睡プレス</div><div class="slot filled"><div class="slot-icon">🛋️</div>ゴロゴロ</div><div class="slot"><div class="slot-icon">+</div>空きスロット</div></div>
+<div class="skill-list"><div class="skill-pick"><span class="sp-icon">🍔</span><div><b>ジャンクフードボム</b><br><span style="color:#aaa;font-size:10px">中ダメージ+小回復 CT:2</span></div></div><div class="skill-pick"><span class="sp-icon">🛡️</span><div><b>脂肪の鎧</b><br><span style="color:#aaa;font-size:10px">2T防御UP CT:3</span></div></div><div class="skill-pick"><span class="sp-icon">😴</span><div><b>二度寝バリア</b><br><span style="color:#aaa;font-size:10px">1Tダメージ半減 CT:2</span></div></div></div></div>
+<div class="prep-section"><h3>🧪 アイテム</h3>
+<div class="item-slots"><div class="slot filled"><div class="slot-icon">💊</div>回復薬</div><div class="slot filled"><div class="slot-icon">⚡</div>攻撃UP</div><div class="slot"><div class="slot-icon">+</div>空き</div></div></div>
+<button class="ready-btn" onclick="show('v-battle')">準備完了！</button>
+</div>
+</div>
+
+<!-- 4. バトル画面 -->
+<div class="view" id="v-battle">
+<div class="header" style="padding:10px 16px">
+<div class="battle-top"><span id="b-turn">ターン 1</span><span id="b-timer" style="color:#e94560;font-size:16px;font-weight:bold">🕐 20秒</span><span>ランダムマッチ</span></div>
+</div>
+<div class="battle-area" style="position:relative">
+<div class="fighter enemy" id="enemy-fighter"><div class="avatar enemy-av">🐷</div><div class="fighter-info"><div class="name" id="e-name">ミカのぶた Lv.12</div><div class="hp-bar"><div class="hp-fill enemy-hp" id="e-hp-bar"></div></div><div class="stats"><span id="e-hp-text">HP 1000/1000</span><span>ATK 85</span><span>SPD 62</span></div><div class="buffs" id="e-buffs"></div></div></div>
+<div class="vs-divider">⚔️ VS</div>
+<div class="fighter me" id="my-fighter"><div class="avatar me-av">🐽</div><div class="fighter-info"><div class="name" id="m-name">タケシのぶた Lv.10</div><div class="hp-bar"><div class="hp-fill me-hp" id="m-hp-bar"></div></div><div class="stats"><span id="m-hp-text">HP 1000/1000</span><span>ATK 78</span><span>SPD 70</span></div><div class="buffs" id="m-buffs"></div></div></div>
+<div class="battle-log" id="b-log"><div class="log-entry info">⚔️ バトル開始！行動を選択してください</div></div>
+<div class="action-panel" id="action-panel"><div class="action-label"><span>行動を選択</span><span class="action-timer" id="turn-timer">🕐 20秒</span></div>
+<div class="skills" id="skill-grid"></div>
+<div class="action-row"><button class="defend-btn" id="btn-defend" onclick="selectAction('defend')">🛡️ 防御</button><button class="item-btn" id="btn-item" onclick="toggleItems()">🧪 アイテム</button></div>
+<div class="item-panel" id="item-panel"></div>
+</div>
+<div class="turn-result" id="turn-overlay" style="display:none"></div>
+</div>
+</div>
+
+<!-- 5. 結果画面（勝利） -->
+<div class="view" id="v-result-win">
+<div class="header">バトル終了<div class="sub">US-5.7: バトル結果</div></div>
+<div class="result-content">
+<div class="result-big win">🎉 WIN!</div>
+<div class="result-fighters"><div class="avatar me-av">🐽</div><div class="result-vs">VS</div><div class="avatar enemy-av">🐷</div></div>
+<div class="result-detail"><div style="font-size:13px">タケシのぶた vs ミカのぶた</div><div style="font-size:11px;color:#aaa;margin:4px 0">12ターン / 4:23経過</div><div class="pts plus">+15 RP</div><div style="font-size:11px;color:#aaa">ランキングポイント: 1,250 → 1,265</div></div>
+<button class="home-btn" onclick="show('v-result-lose')">敗北画面を見る →</button>
+</div>
+</div>
+
+<!-- 5b. 結果画面（敗北） -->
+<div class="view" id="v-result-lose">
+<div class="header">バトル終了<div class="sub">US-5.7: バトル結果</div></div>
+<div class="result-content">
+<div class="result-big lose">💀 LOSE...</div>
+<div class="result-fighters"><div class="avatar me-av">🐽</div><div class="result-vs">VS</div><div class="avatar enemy-av">🐷</div></div>
+<div class="result-detail"><div style="font-size:13px">タケシのぶた vs ミカのぶた</div><div style="font-size:11px;color:#aaa;margin:4px 0">8ターン / HP 0</div><div class="pts minus">-10 RP</div><div style="font-size:11px;color:#aaa">ランキングポイント: 1,265 → 1,255</div></div>
+<button class="home-btn" onclick="show('v-result-dc')">切断画面を見る →</button>
+</div>
+</div>
+
+<!-- 5c. 切断結果 -->
+<div class="view" id="v-result-dc">
+<div class="header">バトル終了<div class="sub">US-5.8: 相手の接続が切断されました</div></div>
+<div class="result-content">
+<div class="result-big win">📡 WIN</div>
+<div style="text-align:center;color:#aaa;font-size:13px">相手の接続が切断されました</div>
+<div class="result-detail"><div style="font-size:13px">タケシのぶた vs ミカのぶた</div><div style="font-size:11px;color:#aaa;margin:4px 0">ターン5で切断検出</div><div class="pts" style="color:#aaa;font-size:24px;font-weight:bold">±0 RP</div><div style="font-size:11px;color:#aaa">切断勝利のためポイント変動なし</div></div>
+<button class="home-btn" onclick="show('v-menu')">ホームに戻る</button>
+</div>
+</div>
+
+<!-- 6. バトル履歴 -->
+<div class="view" id="v-history">
+<div class="header">バトル履歴<div class="sub">US-5.9: 過去の対戦記録</div></div>
+<div class="history-content">
+<div class="history-item"><div class="h-result w">WIN</div><div class="avatar enemy-av" style="width:36px;height:36px;font-size:18px">🐷</div><div class="h-info"><div class="h-name">vs ミカのぶた</div>12ターン / 4:23<br>2026-05-04 20:30</div><div class="h-pts" style="color:#4ecca3">+15</div></div>
+<div class="history-item"><div class="h-result l">LOSE</div><div class="avatar enemy-av" style="width:36px;height:36px;font-size:18px">🐖</div><div class="h-info"><div class="h-name">vs ケンタのぶた</div>8ターン / HP 0<br>2026-05-04 19:15</div><div class="h-pts" style="color:#e94560">-10</div></div>
+<div class="history-item"><div class="h-result w">WIN</div><div class="avatar enemy-av" style="width:36px;height:36px;font-size:18px">🐽</div><div class="h-info"><div class="h-name">vs ユウコのぶた</div>切断勝利<br>2026-05-04 18:00</div><div class="h-pts" style="color:#aaa">±0</div></div>
+<div class="history-item"><div class="h-result w">WIN</div><div class="avatar enemy-av" style="width:36px;height:36px;font-size:18px">🐷</div><div class="h-info"><div class="h-name">vs サトシのぶた</div>15ターン / 時間切れ<br>2026-05-03 21:00</div><div class="h-pts" style="color:#4ecca3">+12</div></div>
+</div>
+</div>
+
+<!-- 7. ランキング -->
+<div class="view" id="v-ranking">
+<div class="header">ランキング<div class="sub">US-5.10: ランキングポイント順位</div></div>
+<div class="rank-content">
+<div class="rank-item"><div class="rank-num gold">1</div><div class="rank-avatar">🐷</div><div class="rank-info"><div class="r-name">マスターぶた</div><div class="r-pts">2,450 RP</div></div></div>
+<div class="rank-item"><div class="rank-num silver">2</div><div class="rank-avatar">🐽</div><div class="rank-info"><div class="r-name">ケンタ</div><div class="r-pts">2,100 RP</div></div></div>
+<div class="rank-item"><div class="rank-num bronze">3</div><div class="rank-avatar">🐖</div><div class="rank-info"><div class="r-name">ミカ</div><div class="r-pts">1,890 RP</div></div></div>
+<div class="rank-item"><div class="rank-num">4</div><div class="rank-avatar">🐷</div><div class="rank-info"><div class="r-name">サトシ</div><div class="r-pts">1,500 RP</div></div></div>
+<div class="rank-item me-rank"><div class="rank-num">5</div><div class="rank-avatar" style="background:#4ecca3">🐽</div><div class="rank-info"><div class="r-name">タケシ（あなた）</div><div class="r-pts">1,265 RP</div></div></div>
+<div class="rank-item"><div class="rank-num">6</div><div class="rank-avatar">🐖</div><div class="rank-info"><div class="r-name">ユウコ</div><div class="r-pts">1,100 RP</div></div></div>
+</div>
+</div>
+
+<!-- Menu -->
+<div class="view active" id="v-menu">
+<div class="header">🐷 バトルメニュー<div class="sub">FR-5 リアルタイムバトルシステム モック</div></div>
+<div class="match-content" style="gap:12px">
+<div style="font-size:13px;color:#aaa;text-align:center">画面を選択してください<br>下部ナビでも切替可能</div>
+<button class="ready-btn" style="width:280px" onclick="show('v-match')">🎲 ランダムマッチ (US-5.1)</button>
+<button class="ready-btn" style="width:280px;background:#e94560" onclick="show('v-friend')">👥 フレンド対戦 (US-5.2)</button>
+<button class="ready-btn" style="width:280px;background:#533483" onclick="show('v-prep')">⚔️ バトル準備 (US-5.3)</button>
+<button class="ready-btn" style="width:280px;background:#0f3460;border:2px solid #4ecca3" onclick="show('v-battle')">🎮 バトル画面 (US-5.4-5.6)</button>
+<button class="ready-btn" style="width:280px;background:#0f3460;border:2px solid #e94560" onclick="show('v-result-win')">🏆 結果画面 (US-5.7-5.8)</button>
+<button class="ready-btn" style="width:280px;background:#1a1a3e" onclick="show('v-history')">📋 バトル履歴 (US-5.9)</button>
+<button class="ready-btn" style="width:280px;background:#1a1a3e" onclick="show('v-ranking')">🏅 ランキング (US-5.10)</button>
+</div>
+</div>
+</div>
+</div>
+<nav class="nav" id="nav"></nav>
+<script>
+const views=[
+{id:'v-menu',label:'🏠 メニュー'},
+{id:'v-match',label:'🎲 マッチ'},
+{id:'v-friend',label:'👥 フレンド'},
+{id:'v-prep',label:'⚔️ 準備'},
+{id:'v-battle',label:'🎮 バトル'},
+{id:'v-result-win',label:'🏆 結果'},
+{id:'v-history',label:'📋 履歴'},
+{id:'v-ranking',label:'🏅 ランク'}
+];
+const nav=document.getElementById('nav');
+views.forEach(v=>{const b=document.createElement('button');b.textContent=v.label;b.onclick=()=>{if(v.id==='v-battle')initBattle();show(v.id)};b.dataset.view=v.id;nav.appendChild(b)});
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');nav.querySelectorAll('button').forEach(b=>{b.classList.toggle('current',b.dataset.view===id)})}
+show('v-menu');
+
+// === Battle System ===
+const SKILLS=[
+{id:'ramen',name:'🍜 深夜ラーメン',desc:'中ダメージ',dmg:120,acc:95,ct:0,maxCt:0,type:'atk'},
+{id:'sleep',name:'💤 爆睡プレス',desc:'大ダメージ（命中↓）',dmg:200,acc:60,ct:0,maxCt:2,type:'atk'},
+{id:'gorogoro',name:'🛋️ ゴロゴロ',desc:'小ダメ+SPD↓',dmg:70,acc:90,ct:0,maxCt:1,type:'atk',effect:'spdDown'},
+{id:'junk',name:'🍔 ジャンクフード',desc:'中ダメ+小回復',dmg:100,acc:85,ct:0,maxCt:2,type:'atk',effect:'heal'}
+];
+const ITEMS=[
+{id:'potion',name:'💊 回復薬',desc:'HP+200回復',used:false},
+{id:'atkup',name:'⚡ 攻撃UP',desc:'2T攻撃力UP',used:false},
+{id:'spdup',name:'💨 素早さUP',desc:'2T素早さUP',used:false}
+];
+let B={turn:0,timer:20,timerID:null,myHp:1000,eHp:1000,maxHp:1000,mAtk:78,eAtk:85,mSpd:70,eSpd:62,mBuf:[],eBuf:[],skills:[],items:[],acting:false};
+
+function initBattle(){
+  clearInterval(B.timerID);
+  B={turn:1,timer:20,timerID:null,myHp:1000,eHp:1000,maxHp:1000,mAtk:78,eAtk:85,mSpd:70,eSpd:62,mBuf:[],eBuf:[],skills:SKILLS.map(s=>({...s,ct:0})),items:ITEMS.map(i=>({...i,used:false})),acting:false};
+  document.getElementById('b-log').innerHTML='<div class="log-entry info">⚔️ バトル開始！行動を選択してください</div>';
+  document.getElementById('turn-overlay').style.display='none';
+  document.getElementById('action-panel').style.display='';
+  updateUI();renderSkills();renderItems();startTimer();
+}
+
+function updateUI(){
+  const ep=Math.max(0,B.eHp/B.maxHp*100),mp=Math.max(0,B.myHp/B.maxHp*100);
+  document.getElementById('e-hp-bar').style.width=ep+'%';
+  document.getElementById('m-hp-bar').style.width=mp+'%';
+  document.getElementById('e-hp-text').textContent='HP '+Math.max(0,B.eHp)+'/'+B.maxHp;
+  document.getElementById('m-hp-text').textContent='HP '+Math.max(0,B.myHp)+'/'+B.maxHp;
+  document.getElementById('b-turn').textContent='ターン '+B.turn;
+  // buffs
+  const mb=document.getElementById('m-buffs'),eb=document.getElementById('e-buffs');
+  mb.innerHTML=B.mBuf.map(b=>'<span class="buff">'+b.icon+b.name+' '+b.t+'T</span>').join('');
+  eb.innerHTML=B.eBuf.map(b=>'<span class="buff'+(b.bad?' debuff':'')+'">'+b.icon+b.name+' '+b.t+'T</span>').join('');
+}
+
+function renderSkills(){
+  const g=document.getElementById('skill-grid');
+  g.innerHTML=B.skills.map((s,i)=>{
+    const dis=s.ct>0;
+    return '<button class="skill-btn'+(dis?' disabled':'')+'" '+(dis?'':'onclick="selectAction(\'skill\','+i+')"')+'><span class="skill-name">'+s.name+'</span>'+(dis?'<span class="cooldown">CT: あと'+s.ct+'ターン</span>':'<span class="skill-desc">'+s.desc+'</span>')+'</button>';
+  }).join('');
+}
+
+function renderItems(){
+  const p=document.getElementById('item-panel');
+  p.innerHTML=B.items.map((it,i)=>'<div class="item-card'+(it.used?' used':'')+'" onclick="selectAction(\'item\','+i+')"><div>'+it.name+'</div><div style="font-size:10px;color:#aaa">'+it.desc+'</div></div>').join('');
+}
+
+function toggleItems(){document.getElementById('item-panel').classList.toggle('open')}
+
+function startTimer(){
+  B.timer=20;
+  clearInterval(B.timerID);
+  document.getElementById('turn-timer').textContent='🕐 20秒';
+  B.timerID=setInterval(()=>{
+    B.timer--;
+    document.getElementById('turn-timer').textContent='🕐 '+B.timer+'秒';
+    if(B.timer<=5)document.getElementById('turn-timer').style.color='#e94560';
+    else document.getElementById('turn-timer').style.color='#fff';
+    if(B.timer<=0){clearInterval(B.timerID);addLog('⏰ 時間切れ！自動で防御を選択','info');selectAction('defend')}
+  },1000);
+}
+
+function selectAction(type,idx){
+  if(B.acting)return;
+  B.acting=true;
+  clearInterval(B.timerID);
+  document.getElementById('item-panel').classList.remove('open');
+  // Determine player action
+  let pAct={type};
+  if(type==='skill'){pAct.skill=B.skills[idx];pAct.label=pAct.skill.name}
+  else if(type==='defend'){pAct.label='🛡️ 防御'}
+  else if(type==='item'){pAct.item=B.items[idx];pAct.label=B.items[idx].name;B.items[idx].used=true}
+  // Enemy AI picks random action
+  const eAvail=B.skills.filter(s=>s.ct===0);
+  const eSkill=eAvail[Math.floor(Math.random()*eAvail.length)]||B.skills[0];
+  const eAct={type:'skill',skill:eSkill,label:eSkill.name};
+  if(Math.random()<.15)eAct.type='defend',eAct.label='🛡️ 防御';
+  executeTurn(pAct,eAct);
+}
+
+function executeTurn(pAct,eAct){
+  const ov=document.getElementById('turn-overlay');
+  // Determine order by speed
+  const meFirst=B.mSpd>=B.eSpd;
+  const first=meFirst?{act:pAct,who:'me'}:{act:eAct,who:'enemy'};
+  const second=meFirst?{act:eAct,who:'enemy'}:{act:pAct,who:'me'};
+  addLog('--- ターン '+B.turn+' ---','info');
+  // Show overlay briefly
+  ov.style.display='flex';
+  ov.innerHTML='<div style="font-size:13px;color:#aaa">両者の行動が確定！</div><div class="tr-action">あなた: '+pAct.label+'</div><div class="tr-action">相手: '+eAct.label+'</div>';
+  setTimeout(()=>{
+    ov.style.display='none';
+    resolveAction(first,()=>{
+      if(checkEnd())return;
+      setTimeout(()=>{resolveAction(second,()=>{
+        if(checkEnd())return;
+        endTurn();
+      })},400);
+    });
+  },1200);
+}
+
+function resolveAction(entry,cb){
+  const isMe=entry.who==='me';
+  const act=entry.act;
+  const who=isMe?'タケシ':'ミカ';
+  const targetEl=isMe?'enemy-fighter':'my-fighter';
+  if(act.type==='defend'){
+    addLog(who+'は防御した！','info');
+    if(isMe)B.mBuf.push({name:'防御',icon:'🛡️',t:1,defUp:true});
+    else B.eBuf.push({name:'防御',icon:'🛡️',t:1,defUp:true});
+    updateUI();cb();
+  } else if(act.type==='item'){
+    const it=act.item;
+    if(it.id==='potion'){
+      if(isMe)B.myHp=Math.min(B.maxHp,B.myHp+200);else B.eHp=Math.min(B.maxHp,B.eHp+200);
+      addLog(who+'は'+it.name+'を使った！HP+200回復','heal');
+    } else if(it.id==='atkup'){
+      if(isMe)B.mBuf.push({name:'攻撃UP',icon:'⚡',t:2,atkUp:true});else B.eBuf.push({name:'攻撃UP',icon:'⚡',t:2,atkUp:true});
+      addLog(who+'は'+it.name+'を使った！攻撃力UP','buff');
+    } else if(it.id==='spdup'){
+      if(isMe)B.mBuf.push({name:'素早さUP',icon:'💨',t:2,spdUp:true});else B.eBuf.push({name:'素早さUP',icon:'💨',t:2,spdUp:true});
+      addLog(who+'は'+it.name+'を使った！素早さUP','buff');
+    }
+    renderItems();updateUI();cb();
+  } else {
+    const sk=act.skill;
+    const hit=Math.random()*100<sk.acc;
+    if(!hit){addLog(who+'の'+sk.name+'… ミス！','info');if(sk.maxCt>0)sk.ct=sk.maxCt;updateUI();cb();return}
+    let atk=isMe?B.mAtk:B.eAtk;
+    const bufs=isMe?B.mBuf:B.eBuf;
+    if(bufs.some(b=>b.atkUp))atk=Math.floor(atk*1.3);
+    let dmg=Math.floor(sk.dmg*(atk/80)*(0.9+Math.random()*0.2));
+    const tBufs=isMe?B.eBuf:B.mBuf;
+    if(tBufs.some(b=>b.defUp))dmg=Math.floor(dmg*0.5);
+    if(isMe)B.eHp-=dmg;else B.myHp-=dmg;
+    addLog(who+'の'+sk.name+'！ '+dmg+'ダメージ！','dmg');
+    document.getElementById(targetEl).classList.add('shake');
+    setTimeout(()=>document.getElementById(targetEl).classList.remove('shake'),300);
+    if(sk.effect==='heal'){const h=50;if(isMe)B.myHp=Math.min(B.maxHp,B.myHp+h);else B.eHp=Math.min(B.maxHp,B.eHp+h);addLog(who+'はHP+'+h+'回復！','heal')}
+    if(sk.effect==='spdDown'){if(isMe)B.eBuf.push({name:'SPD↓',icon:'🐌',t:2,bad:true});else B.mBuf.push({name:'SPD↓',icon:'🐌',t:2,bad:true});addLog((isMe?'ミカ':'タケシ')+'の素早さが下がった！','buff')}
+    if(sk.maxCt>0)sk.ct=sk.maxCt;
+    updateUI();cb();
+  }
+}
+
+function checkEnd(){
+  if(B.eHp<=0){endBattle(true);return true}
+  if(B.myHp<=0){endBattle(false);return true}
+  return false;
+}
+
+function endBattle(win){
+  clearInterval(B.timerID);
+  B.acting=false;
+  document.getElementById('action-panel').style.display='none';
+  const ov=document.getElementById('turn-overlay');
+  ov.style.display='flex';
+  if(win){
+    ov.innerHTML='<div class="result-big win">🎉 WIN!</div><div style="color:#aaa">'+B.turn+'ターンで勝利！</div><button class="home-btn" onclick="show(\'v-result-win\')" style="margin-top:12px">結果画面へ</button>';
+    addLog('🎉 タケシの勝利！','heal');
+  } else {
+    ov.innerHTML='<div class="result-big lose">💀 LOSE...</div><div style="color:#aaa">'+B.turn+'ターンで敗北...</div><button class="home-btn" onclick="show(\'v-result-lose\')" style="margin-top:12px">結果画面へ</button>';
+    addLog('💀 タケシの敗北...','dmg');
+  }
+}
+
+function endTurn(){
+  // Decrement cooldowns
+  B.skills.forEach(s=>{if(s.ct>0)s.ct--});
+  // Decrement buffs
+  B.mBuf.forEach(b=>b.t--);B.mBuf=B.mBuf.filter(b=>b.t>0);
+  B.eBuf.forEach(b=>b.t--);B.eBuf=B.eBuf.filter(b=>b.t>0);
+  B.turn++;
+  B.acting=false;
+  updateUI();renderSkills();renderItems();startTimer();
+}
+
+function addLog(msg,cls){
+  const log=document.getElementById('b-log');
+  log.innerHTML+='<div class="log-entry '+cls+'">'+msg+'</div>';
+  log.scrollTop=log.scrollHeight;
+}
+
+// Init battle on prep ready button
+document.querySelector('.ready-btn[onclick="show(\'v-battle\')"]').onclick=function(){initBattle();show('v-battle')};
+// Menu battle button
+const menuBtns=document.querySelectorAll('#v-menu .ready-btn');
+menuBtns.forEach(b=>{if(b.textContent.includes('バトル画面')){b.onclick=function(){initBattle();show('v-battle')}}});
+</script>
+</body>
+</html>

@@ -178,3 +178,51 @@
 **Context**: INCEPTION - User Stories, FR-3 sleep duration change request
 
 ---
+
+## User Stories - FR-5 リアルタイムバトルシステム
+**Timestamp**: 2026-05-04T21:03:52+09:00
+**User Input**: "FR-5のユーザーストーリー作成したい"
+**AI Response**: FR-5の要件を分析し、バトルの流れ・マッチメイキング・バトル結果について確認事項を提示。
+**Context**: INCEPTION - User Stories, FR-5 story creation initiated
+
+---
+
+## User Stories - FR-5 確認事項への回答
+**Timestamp**: 2026-05-04T21:03:52+09:00
+**User Input**: "A 1．ターン制 2．5分くらい 3．オススメ教えて B 4．ランダム 5．30秒 6．両方で C 7．ランキングポイント 8．ランキングポイント 9．自動敗北"
+**AI Response**: 回答を受領。A-3のバトル操作について、不健康行動モチーフのスキル案（攻撃系4種+防御補助系3種）を提案。ターン制の流れ（同時選択→素早さ順行動）を提示。追加確認3点（アイテム使用、ターン制限時間、時間切れ判定）を質問。
+**Context**: INCEPTION - User Stories, FR-5 battle specification clarification
+
+---
+
+## User Stories - FR-5 スキル詳細確認
+**Timestamp**: 2026-05-04T21:04:53+09:00
+**User Input**: "スキルは具体的にどんなものをイメージしてますか？"
+**AI Response**: 不健康行動モチーフのスキル案を詳細提示。攻撃系（深夜ラーメンアタック、爆睡プレス、ゴロゴロローリング、ジャンクフードボム）、防御補助系（脂肪の鎧、二度寝バリア、夜更かしブースト）。進化段階でスキル習得、バトルに4つまでセット、クールタイム制を提案。
+**Context**: INCEPTION - User Stories, FR-5 skill design discussion
+
+---
+
+## User Stories - FR-5 最終確認回答
+**Timestamp**: 2026-05-04T21:06:05+09:00
+**User Input**: "A含めるB20秒CそれでOK"
+**AI Response**: アイテム使用含む、ターン制限20秒、時間切れ時HP割合判定で確定。FR-5ユーザーストーリー（US-5.1〜US-5.10、10ストーリー）を生成。stories-fr5.md作成、personas.md更新、aidlc-state.md更新。
+**Context**: INCEPTION - User Stories, FR-5 stories generated
+
+---
+
+## User Stories - FR-5 修正 + UIモック作成
+**Timestamp**: 2026-05-04T21:20:31+09:00
+**User Input**: "フレンド対戦の場合は30秒のタイムアウトをなくしてほしい。相手が切断したときはポイント増加はせず、変更無しにしたい。全体的にイメージしづらいのでmockを作成してほしい"
+**AI Response**: US-5.2修正（フレンド対戦タイムアウト削除→手動キャンセルのみ）、US-5.8修正（切断勝利時ポイント変動なし）、バトルUIモック（battle-ui-mock.html）作成。全画面（メニュー/マッチング/フレンド対戦/準備/バトル/結果3種/履歴/ランキング）を含む。
+**Context**: INCEPTION - User Stories, FR-5 story revision and UI mock creation
+
+---
+
+## User Stories - FR-5 バトルモック強化
+**Timestamp**: 2026-05-04T21:28:34+09:00
+**User Input**: "バトル部分はもう少し作ってほしい"
+**AI Response**: バトル画面をインタラクティブに強化。ターン制バトルのフルシミュレーション（スキル選択→行動実行→ダメージ計算→HP反映→クールタイム管理→バフ/デバフ→勝敗判定）を実装。20秒タイマー、敵AI、バトルログ、シェイクアニメーション、アイテム使用を追加。
+**Context**: INCEPTION - User Stories, FR-5 battle UI mock enhancement
+
+---
