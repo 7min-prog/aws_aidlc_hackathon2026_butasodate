@@ -57,7 +57,7 @@
 - **テーブル**: Users, Avatars, Records, Battles, Friends, MasterData
 
 ### INFRA-S3: S3
-- **責務**: AI生成画像/動画の事前生成アセット保存
+- **責務**: ドット絵スプライトシート（アバターアニメーション素材）の保存・配信
 
 ### INFRA-APIGW: API Gateway
 - **責務**: REST API + WebSocket API のエンドポイント管理。パスプレフィックスで player/admin 分離
