@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "penpot": {
+      "command": "node",
+      "args": ["penpot-mcp-server/index.mjs"],
+      "env": {
+        "PENPOT_ACCESS_TOKEN": "${PENPOT_ACCESS_TOKEN}"
+      }
+    }
+  }
+}
