@@ -34,7 +34,7 @@
 
 ### CONSTRUCTION PHASE
 - [x] Functional Design - Unit 1 Complete, approved
-- [ ] NFR Requirements - EXECUTE (Unit 1: 認証基盤)
+- [x] NFR Requirements - Complete (Unit 1: 認証基盤)
 - [ ] NFR Design - EXECUTE
 - [ ] Infrastructure Design - EXECUTE
 - [ ] Code Generation - EXECUTE
@@ -45,7 +45,7 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: NFR Requirements (Unit 1: 認証基盤)
+- **Current Stage**: NFR Design (Unit 1: 認証基盤)
 - **Current Unit**: Unit 1 - 認証基盤 (FR-1)
-- **Next Stage**: NFR Design
-- **Status**: Functional Design approved, proceeding to NFR Requirements
+- **Next Stage**: Infrastructure Design
+- **Status**: NFR Requirements approved, proceeding to NFR Design
