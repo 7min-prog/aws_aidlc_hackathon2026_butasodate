@@ -5,10 +5,9 @@ import { getEvolutionPaths, getSkills } from './master-data-cache';
 import {
   calculateLevel, checkEvolution, checkDevolution,
   checkSkillAcquisition, getSkillsToLose, recalculateStats,
+  INITIAL_STATS, DEFAULT_SPRITE_KEY, DEFAULT_AVATAR_NAME,
 } from './evolution-engine';
 import { Avatar, AddPointsResult, DeductPointsResult, CategoryType, EvolutionHistory } from '../types';
-
-const INITIAL_STATS = { hp: 50, attack: 10, defense: 10, speed: 10 };
 
 export async function createAvatar(userId: string, name?: string): Promise<Avatar> {
   const existing = await getAvatar(userId);
@@ -17,7 +16,7 @@ export async function createAvatar(userId: string, name?: string): Promise<Avata
   const avatar: Avatar = {
     avatarId: randomUUID(),
     userId,
-    name: name || 'ぶたさん',
+    name: name || DEFAULT_AVATAR_NAME,
     totalPoints: 0,
     level: 1,
     evolutionStage: 1,
@@ -26,7 +25,7 @@ export async function createAvatar(userId: string, name?: string): Promise<Avata
     subCategoryPoints: {},
     stats: INITIAL_STATS,
     skillIds: [],
-    spriteSheetKey: 'sprites/stage1/default',
+    spriteSheetKey: DEFAULT_SPRITE_KEY,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.810.0",
-    "@aws-sdk/lib-dynamodb": "3.810.0"
+    "@aws-sdk/lib-dynamodb": "3.810.0",
+    "@hono/zod-openapi": "^0.19.6",
+    "hono": "^4.7.10",
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.145",
@@ -22,7 +25,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.ts"],
+    "testMatch": [
+      "**/tests/**/*.test.ts"
+    ],
     "clearMocks": true
   }
 }

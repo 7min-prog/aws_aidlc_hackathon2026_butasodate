@@ -1,21 +1,27 @@
 import { Avatar, AvatarStats, CategoryType, EvolutionPath, Skill } from '../types';
 
-const INITIAL_STATS: AvatarStats = { hp: 50, attack: 10, defense: 10, speed: 10 };
-const MAX_LEVEL = 30;
-const STAGE2_LEVEL = 5;
-const STAGE3_LEVEL = 15;
-const CATEGORY_THRESHOLD = 0.6;
+// --- 定数定義 ---
+export const INITIAL_STATS: AvatarStats = { hp: 50, attack: 10, defense: 10, speed: 10 };
+export const DEFAULT_STATS_GROWTH: AvatarStats = { hp: 5, attack: 3, defense: 3, speed: 3 };
+export const MAX_LEVEL = 30;
+export const STAGE2_LEVEL = 5;
+export const STAGE3_LEVEL = 15;
+export const CATEGORY_THRESHOLD = 0.6;
+export const POINTS_PER_LEVEL_FACTOR = 50;
+export const DEFAULT_SPRITE_KEY = 'sprites/stage1/default';
+export const DEFAULT_AVATAR_NAME = 'ぶたさん';
 
-/** 累計ポイントからレベルを算出: N×(N+1)×50 <= totalPoints を満たす最大N */
+/** 累計ポイントからレベルを算出: N×(N+1)×POINTS_PER_LEVEL_FACTOR <= totalPoints を満たす最大N */
 export function calculateLevel(totalPoints: number): number {
   if (totalPoints <= 0) return 1;
-  const n = Math.floor((-50 + Math.sqrt(2500 + 200 * totalPoints)) / 100);
+  const f = POINTS_PER_LEVEL_FACTOR;
+  const n = Math.floor((-f + Math.sqrt(f * f + 4 * f * totalPoints)) / (2 * f));
   return Math.max(1, Math.min(MAX_LEVEL, n));
 }
 
 /** レベルNに必要な累計ポイント */
 export function pointsForLevel(level: number): number {
-  return level * (level + 1) * 50;
+  return level * (level + 1) * POINTS_PER_LEVEL_FACTOR;
 }
 
 /** 第2段階の進化パスを判定 */
@@ -87,11 +93,11 @@ export function checkDevolution(
     return {
       newStage: 2,
       newPathId: parentPath?.pathId || null,
-      newSpriteKey: parentPath?.spriteSheetKey || 'sprites/stage1/default',
+      newSpriteKey: parentPath?.spriteSheetKey || DEFAULT_SPRITE_KEY,
     };
   }
   if (avatar.evolutionStage === 2 && newLevel < STAGE2_LEVEL) {
-    return { newStage: 1, newPathId: null, newSpriteKey: 'sprites/stage1/default' };
+    return { newStage: 1, newPathId: null, newSpriteKey: DEFAULT_SPRITE_KEY };
   }
   return null;
 }
@@ -123,7 +129,7 @@ export function getSkillsToLose(
 
 /** ステータス再計算 */
 export function recalculateStats(level: number, path: EvolutionPath | null): AvatarStats {
-  const growth = path?.statsGrowth || { hp: 5, attack: 3, defense: 3, speed: 3 };
+  const growth = path?.statsGrowth || DEFAULT_STATS_GROWTH;
   return {
     hp: INITIAL_STATS.hp + (level - 1) * growth.hp,
     attack: INITIAL_STATS.attack + (level - 1) * growth.attack,

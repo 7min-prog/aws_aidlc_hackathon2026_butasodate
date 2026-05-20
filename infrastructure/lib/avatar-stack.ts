@@ -71,12 +71,12 @@ export class AvatarStack extends cdk.Stack {
       principals: [new cdk.aws_iam.AnyPrincipal()],
     }));
 
-    // Lambda Function
+    // Lambda Function (Hono app)
     this.avatarHandler = new lambda.Function(this, 'AvatarHandler', {
       functionName: 'buta-avatar-handler-dev',
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'handlers/avatar.handler',
+      handler: 'app.handler',
       code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/avatar-handler/dist')),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
@@ -95,10 +95,18 @@ export class AvatarStack extends cdk.Stack {
     evolutionPathTable.grantReadData(this.avatarHandler);
     skillTable.grantReadData(this.avatarHandler);
 
-    // API Gateway
+    // クライアント証明書 - mTLSによるAPI制限
+    const clientCert = new apigateway.CfnClientCertificate(this, 'ApiClientCert', {
+      description: 'Client certificate for buta-avatar-api mTLS',
+    });
+
+    // API Gateway with client certificate
     const api = new apigateway.RestApi(this, 'AvatarApi', {
       restApiName: 'buta-avatar-api-dev',
-      deployOptions: { stageName: 'dev' },
+      deployOptions: {
+        stageName: 'dev',
+        clientCertificateId: clientCert.attrClientCertificateId,
+      },
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
@@ -108,16 +116,23 @@ export class AvatarStack extends cdk.Stack {
 
     const lambdaIntegration = new apigateway.LambdaIntegration(this.avatarHandler);
 
-    // TODO: Import Cognito authorizer from auth-stack
-    // For now, routes without authorizer (add after integration)
+    // Routes
     const avatar = api.root.addResource('avatar');
     avatar.addMethod('POST', lambdaIntegration);
     avatar.addMethod('GET', lambdaIntegration);
     avatar.addResource('evolution-history').addMethod('GET', lambdaIntegration);
     avatar.addResource('score-detail').addMethod('GET', lambdaIntegration);
 
+    const points = avatar.addResource('points');
+    points.addMethod('POST', lambdaIntegration);
+    points.addResource('deduct').addMethod('POST', lambdaIntegration);
+
+    // OpenAPI doc endpoint
+    api.root.addResource('doc').addMethod('GET', lambdaIntegration);
+
     // Outputs
     new cdk.CfnOutput(this, 'AvatarApiUrl', { value: api.url });
     new cdk.CfnOutput(this, 'AssetsBucketName', { value: assetsBucket.bucketName });
+    new cdk.CfnOutput(this, 'ClientCertificateId', { value: clientCert.attrClientCertificateId });
   }
 }
