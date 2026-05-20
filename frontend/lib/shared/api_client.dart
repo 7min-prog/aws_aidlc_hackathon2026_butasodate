@@ -32,10 +32,8 @@ class ApiClient {
       },
       onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
-          // トークン期限切れ → リフレッシュ試行
           final refreshed = await _ref.read(authStateProvider.notifier).refreshToken();
           if (refreshed) {
-            // リトライ
             final retryResponse = await _dio.fetch(error.requestOptions);
             return handler.resolve(retryResponse);
           }

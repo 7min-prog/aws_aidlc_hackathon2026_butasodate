@@ -4,7 +4,13 @@ import 'package:buta_app/shared/router.dart';
 import 'package:buta_app/shared/theme.dart';
 
 void main() {
-  runApp(const ProviderScope(child: ButaApp()));
+  runApp(
+    ProviderScope(
+      // 認証エラー等で無限リトライしないよう無効化
+      retry: (retryCount, error) => null,
+      child: const ButaApp(),
+    ),
+  );
 }
 
 class ButaApp extends ConsumerWidget {
