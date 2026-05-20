@@ -9,3 +9,11 @@
 buildspec.yml
 codebuild_build.sh
 node_modules/
+
+# Flutter
+frontend/.dart_tool/
+frontend/build/
+frontend/.flutter-plugins-dependencies
+
+# Design assets (reference only, not for git)
+design/
