@@ -37,9 +37,10 @@
 #### Unit 1: 認証基盤 (FR-1)
 - [x] Functional Design - Complete
 - [x] NFR Requirements - Complete
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] NFR Design - Complete
+- [x] Infrastructure Design - Complete
+- [x] Code Generation - Complete
+- [x] Build and Test - Complete
 
 #### Unit 2: 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
 - [x] Functional Design - Complete
@@ -56,7 +57,7 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Infrastructure Design (Unit 2: 行動記録 + ヘルスデータ連携)
+- **Current Stage**: Code Generation (Unit 2: 行動記録 + ヘルスデータ連携)
 - **Current Unit**: Unit 2 - 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
-- **Next Stage**: Infrastructure Design
-- **Status**: NFR Design approved, proceeding to Infrastructure Design
+- **Next Stage**: Code Generation
+- **Status**: Infrastructure Design approved, proceeding to Code Generation
