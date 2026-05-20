@@ -33,11 +33,22 @@
 - [x] Units Generation - Complete
 
 ### CONSTRUCTION PHASE
-- [x] Functional Design - Unit 1 Complete, approved
-- [x] NFR Requirements - Complete (Unit 1: 認証基盤)
+
+#### Unit 1: 認証基盤 (FR-1)
+- [x] Functional Design - Complete
+- [x] NFR Requirements - Complete
 - [ ] NFR Design - EXECUTE
 - [ ] Infrastructure Design - EXECUTE
 - [ ] Code Generation - EXECUTE
+
+#### Unit 2: 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
+- [x] Functional Design - Complete
+- [ ] NFR Requirements - NEXT
+- [ ] NFR Design - EXECUTE
+- [ ] Infrastructure Design - EXECUTE
+- [ ] Code Generation - EXECUTE
+
+#### Build and Test
 - [ ] Build and Test - EXECUTE
 
 ### OPERATIONS PHASE
@@ -45,7 +56,7 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: NFR Design (Unit 1: 認証基盤)
-- **Current Unit**: Unit 1 - 認証基盤 (FR-1)
-- **Next Stage**: Infrastructure Design
-- **Status**: NFR Requirements approved, proceeding to NFR Design
+- **Current Stage**: NFR Requirements (Unit 2: 行動記録 + ヘルスデータ連携)
+- **Current Unit**: Unit 2 - 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
+- **Next Stage**: NFR Requirements
+- **Status**: Functional Design approved, proceeding to NFR Requirements
