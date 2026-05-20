@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-05-01T21:07:42+09:00
-- **Current Stage**: INCEPTION - Application Design
+- **Current Stage**: CONSTRUCTION - Functional Design (Unit 1: 認証基盤)
 - **Project Description**: 不健康な行動をポジティブに記録する逆転発想の"ぶた"育成ヘルスケアゲームアプリ
 
 ## Workspace State
@@ -29,12 +29,12 @@
 - [x] Requirements Analysis - Complete
 - [x] User Stories - Complete (FR-1~FR-7)
 - [x] Workflow Planning - Complete (All stages EXECUTE)
-- [ ] Application Design - EXECUTE
-- [ ] Units Generation - EXECUTE
+- [x] Application Design - Complete
+- [x] Units Generation - Complete
 
 ### CONSTRUCTION PHASE
-- [ ] Functional Design - EXECUTE
-- [ ] NFR Requirements - EXECUTE
+- [x] Functional Design - Unit 1 Complete, approved
+- [ ] NFR Requirements - EXECUTE (Unit 1: 認証基盤)
 - [ ] NFR Design - EXECUTE
 - [ ] Infrastructure Design - EXECUTE
 - [ ] Code Generation - EXECUTE
@@ -44,7 +44,8 @@
 - [ ] Operations - PLACEHOLDER
 
 ## Current Status
-- **Lifecycle Phase**: INCEPTION
-- **Current Stage**: Application Design (Next)
-- **Next Stage**: Application Design
-- **Status**: Workflow Planning approved, ready to proceed
+- **Lifecycle Phase**: CONSTRUCTION
+- **Current Stage**: NFR Requirements (Unit 1: 認証基盤)
+- **Current Unit**: Unit 1 - 認証基盤 (FR-1)
+- **Next Stage**: NFR Design
+- **Status**: Functional Design approved, proceeding to NFR Requirements

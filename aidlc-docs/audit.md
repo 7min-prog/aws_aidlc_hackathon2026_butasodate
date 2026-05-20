@@ -257,3 +257,20 @@
 **Context**: INCEPTION - User Stories, FR-7 change request applied
 
 ---
+
+---
+
+## CONSTRUCTION - Functional Design (Unit 1: 認証基盤) Start
+**Timestamp**: 2026-05-20T19:55:00+09:00
+**User Input**: "コンストラクションフェーズに移りたいです。適切なタイミングでブランチを切ってほしいです"
+**AI Response**: Inception完了確認、ブランチ `construction/unit1-auth` 作成、Functional Design計画作成・質問提示
+**Context**: Construction Phase開始、Unit 1 Functional Design計画フェーズ
+
+
+## CONSTRUCTION - Functional Design (Unit 1) 承認
+**Timestamp**: 2026-05-20T20:40:49+09:00
+**User Input**: "承認します"
+**AI Response**: Functional Design承認完了。NFR Requirementsステージへ進む。
+**Context**: Construction Phase - Functional Design approved, proceeding to NFR Requirements
+
+---
