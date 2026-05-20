@@ -43,10 +43,10 @@
 
 #### Unit 2: 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
 - [x] Functional Design - Complete
-- [ ] NFR Requirements - NEXT
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] NFR Requirements - Complete
+- [x] NFR Design - Complete
+- [x] Infrastructure Design - Complete
+- [ ] Code Generation - NEXT
 
 #### Build and Test
 - [ ] Build and Test - EXECUTE
@@ -56,7 +56,7 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: NFR Requirements (Unit 2: 行動記録 + ヘルスデータ連携)
+- **Current Stage**: Infrastructure Design (Unit 2: 行動記録 + ヘルスデータ連携)
 - **Current Unit**: Unit 2 - 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
-- **Next Stage**: NFR Requirements
-- **Status**: Functional Design approved, proceeding to NFR Requirements
+- **Next Stage**: Infrastructure Design
+- **Status**: NFR Design approved, proceeding to Infrastructure Design
