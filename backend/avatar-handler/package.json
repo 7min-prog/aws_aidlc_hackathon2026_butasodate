@@ -5,7 +5,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "generate:openapi": "tsc && node -e \"const app=require('./dist/app').default;app.request('/doc').then(r=>r.json()).then(d=>{require('fs').writeFileSync('../../docs/openapi.json',JSON.stringify(d,null,2));console.log('Generated docs/openapi.json')})\""
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.810.0",
