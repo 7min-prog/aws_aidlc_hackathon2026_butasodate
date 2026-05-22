@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-05-01T21:07:42+09:00
-- **Current Stage**: CONSTRUCTION - Units 1-3 Complete, Unit 4 next
+- **Current Stage**: CONSTRUCTION - Unit 5 NFR Design next
 - **Project Description**: 不健康な行動をポジティブに記録する逆転発想の"ぶた"育成ヘルスケアゲームアプリ
 
 ## Workspace State
@@ -57,18 +57,18 @@
 - [x] Code Generation - Complete (backend/avatar-handler, infrastructure/lib/avatar-stack.ts, docs/openapi.json)
 
 #### Unit 4: バトル + ソーシャル (FR-5, FR-6)
-- [ ] Functional Design - EXECUTE
-- [ ] NFR Requirements - EXECUTE
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] Functional Design - Complete
+- [x] NFR Requirements - Complete
+- [x] NFR Design - Complete
+- [x] Infrastructure Design - Complete
+- [x] Code Generation - Complete (backend/battle-ws-handler, backend/social-handler, infrastructure/lib/battle-social-stack.ts)
 
 #### Unit 5: 管理画面 (FR-7)
-- [ ] Functional Design - EXECUTE
-- [ ] NFR Requirements - EXECUTE
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] Functional Design - Complete (承認済み)
+- [x] NFR Requirements - Complete (承認済み)
+- [x] NFR Design - Complete (承認済み)
+- [x] Infrastructure Design - Complete (承認済み)
+- [ ] Code Generation - NEXT
 
 #### Build and Test
 - [ ] Build and Test - EXECUTE
@@ -78,8 +78,8 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 4 Functional Design (next pending stage)
-- **Current Unit**: Unit 4 - バトル + ソーシャル (FR-5, FR-6)
-- **Completed Units**: Unit 1 (認証基盤), Unit 2 (行動記録), Unit 3 (アバター育成)
-- **Next Stage**: Unit 4 Functional Design → NFR → Infra → Code Generation
-- **Status**: Units 1-3 Code Generation complete. Unit 4/5 未着手。
+- **Current Stage**: Unit 5 NFR Requirements
+- **Current Unit**: Unit 5 - 管理画面 (FR-7)
+- **Completed Units**: Unit 1 (認証基盤), Unit 2 (行動記録), Unit 3 (アバター育成), Unit 4 (バトル+ソーシャル)
+- **Next Stage**: Unit 5 NFR Requirements → NFR Design → Infrastructure Design → Code Generation
+- **Status**: Unit 5 Functional Design 承認済み。NFR Requirements next。
