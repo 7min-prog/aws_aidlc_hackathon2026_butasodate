@@ -26,6 +26,7 @@
 | iconKey | String | ✅ | アイコン識別キー |
 | sortOrder | int | ✅ | 表示順 |
 | isActive | bool | ✅ | 有効フラグ |
+| version | int | ✅ | マスターデータバージョン（キャッシュ整合性用） |
 
 ### HealthSyncRecord（ヘルスデータ同期記録）
 
@@ -48,9 +49,9 @@
 | enabledCategories | Map\<HealthCategory, bool\> | ✅ | カテゴリ別有効設定 |
 | lastSyncDates | Map\<HealthCategory, Date\> | ✅ | カテゴリ別最終同期日 |
 | sleepBedtimeTarget | TimeOfDay | ✅ | 就寝基準値（デフォルト23:00） |
-| sleepWakeTarget | TimeOfDay | ✅ | 起床基準値（デフォルト7:00） |
 | sleepDurationTarget | Duration | ✅ | 睡眠時間基準値（デフォルト7h） |
 | stepsTarget | int | ✅ | 歩数目標（デフォルト8000） |
+| previousWeight | double? | ❌ | 前回体重値（初回はnull） |
 
 ## 列挙型
 
