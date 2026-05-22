@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Greenfield
 - **Start Date**: 2026-05-01T21:07:42+09:00
-- **Current Stage**: CONSTRUCTION - Code Generation Complete (Unit 3: アバター育成)
+- **Current Stage**: CONSTRUCTION - Units 1-3 Complete, Unit 4 next
 - **Project Description**: 不健康な行動をポジティブに記録する逆転発想の"ぶた"育成ヘルスケアゲームアプリ
 
 ## Workspace State
@@ -44,10 +44,10 @@
 
 #### Unit 2: 行動記録 + ヘルスデータ連携 (FR-2, FR-3)
 - [x] Functional Design - Complete
-- [ ] NFR Requirements - EXECUTE
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] NFR Requirements - Complete
+- [x] NFR Design - Complete
+- [x] Infrastructure Design - Complete
+- [x] Code Generation - Complete (backend/recording-handler, infrastructure/lib/recording-stack.ts)
 
 #### Unit 3: アバター育成 (FR-4)
 - [x] Functional Design - Complete
@@ -78,8 +78,8 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 1 NFR Design (next pending stage)
-- **Current Unit**: Unit 1 - 認証基盤 (FR-1)
-- **Completed Units**: Unit 3 - アバター育成 (Code Generation complete)
-- **Next Stage**: Unit 1 NFR Design → Infrastructure Design → Code Generation
-- **Status**: Unit 3 Code Generation complete (Hono Lambda + CDK + OpenAPI). Unit 1/2 design done, code pending.
+- **Current Stage**: Unit 4 Functional Design (next pending stage)
+- **Current Unit**: Unit 4 - バトル + ソーシャル (FR-5, FR-6)
+- **Completed Units**: Unit 1 (認証基盤), Unit 2 (行動記録), Unit 3 (アバター育成)
+- **Next Stage**: Unit 4 Functional Design → NFR → Infra → Code Generation
+- **Status**: Units 1-3 Code Generation complete. Unit 4/5 未着手。
