@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+<!-- Chef: Tall hat (PAPER), apron (PAPER), frying pan, steam -->
+<!-- Chef hat - tall -->
+<rect x="96" y="2" width="64" height="4" fill="#FFF8E6"/>
+<rect x="92" y="6" width="72" height="4" fill="#FFF8E6"/>
+<rect x="90" y="10" width="76" height="30" fill="#FFF8E6"/>
+<rect x="88" y="10" width="2" height="32" fill="#1A1228"/>
+<rect x="166" y="10" width="2" height="32" fill="#1A1228"/>
+<rect x="90" y="8" width="76" height="2" fill="#1A1228"/>
+<rect x="88" y="40" width="80" height="4" fill="#1A1228"/>
+<!-- Head outline -->
+<rect x="92" y="44" width="72" height="2" fill="#1A1228"/>
+<rect x="90" y="46" width="2" height="46" fill="#1A1228"/>
+<rect x="164" y="46" width="2" height="46" fill="#1A1228"/>
+<rect x="92" y="90" width="72" height="2" fill="#1A1228"/>
+<!-- Head fill -->
+<rect x="92" y="46" width="72" height="44" fill="#FF9BB3"/>
+<rect x="94" y="48" width="30" height="6" fill="#FFC8D8"/>
+<!-- Left eye - 温かい丸目 -->
+<rect x="98" y="54" width="28" height="28" fill="#FFF8E6"/>
+<rect x="104" y="60" width="16" height="18" fill="#1A1228"/>
+<rect x="106" y="62" width="6" height="6" fill="#FFFFFF"/>
+<rect x="114" y="70" width="4" height="4" fill="#5A8ED1"/>
+<!-- Left lower lashes -->
+<rect x="100" y="82" width="2" height="3" fill="#1A1228"/>
+<rect x="104" y="83" width="2" height="3" fill="#1A1228"/>
+<rect x="108" y="82" width="2" height="3" fill="#1A1228"/>
+<!-- Left smile wrinkle -->
+<rect x="98" y="86" width="12" height="2" fill="#C46A85"/>
+<!-- Right eye - 温かい丸目 -->
+<rect x="132" y="54" width="28" height="28" fill="#FFF8E6"/>
+<rect x="138" y="60" width="16" height="18" fill="#1A1228"/>
+<rect x="140" y="62" width="6" height="6" fill="#FFFFFF"/>
+<rect x="148" y="70" width="4" height="4" fill="#5A8ED1"/>
+<!-- Right lower lashes -->
+<rect x="148" y="82" width="2" height="3" fill="#1A1228"/>
+<rect x="152" y="83" width="2" height="3" fill="#1A1228"/>
+<rect x="156" y="82" width="2" height="3" fill="#1A1228"/>
+<!-- Right smile wrinkle -->
+<rect x="148" y="86" width="12" height="2" fill="#C46A85"/>
+<!-- Cheeks -->
+<rect x="94" y="76" width="10" height="6" fill="#FFE2EB"/>
+<rect x="154" y="76" width="10" height="6" fill="#FFE2EB"/>
+<!-- Nose -->
+<rect x="124" y="72" width="8" height="6" fill="#E8485A"/>
+<!-- Happy smile -->
+<rect x="118" y="82" width="20" height="2" fill="#1A1228"/>
+<rect x="116" y="80" width="2" height="2" fill="#1A1228"/>
+<rect x="138" y="80" width="2" height="2" fill="#1A1228"/>
+<!-- Body outline -->
+<rect x="96" y="92" width="64" height="2" fill="#1A1228"/>
+<rect x="94" y="94" width="2" height="66" fill="#1A1228"/>
+<rect x="160" y="94" width="2" height="66" fill="#1A1228"/>
+<rect x="96" y="158" width="64" height="2" fill="#1A1228"/>
+<!-- Body fill -->
+<rect x="96" y="94" width="64" height="64" fill="#FF9BB3"/>
+<!-- Apron -->
+<rect x="104" y="98" width="48" height="56" fill="#FFF8E6"/>
+<rect x="102" y="98" width="2" height="56" fill="#1A1228"/>
+<rect x="152" y="98" width="2" height="56" fill="#1A1228"/>
+<rect x="120" y="98" width="16" height="4" fill="#1A1228"/>
+<rect x="118" y="120" width="20" height="14" fill="#FFF8E6"/>
+<rect x="118" y="120" width="20" height="2" fill="#1A1228"/>
+<!-- Arms -->
+<rect x="72" y="96" width="22" height="2" fill="#1A1228"/>
+<rect x="70" y="98" width="2" height="36" fill="#1A1228"/>
+<rect x="90" y="98" width="2" height="36" fill="#1A1228"/>
+<rect x="72" y="98" width="18" height="34" fill="#FF9BB3"/>
+<!-- Right arm holding pan -->
+<rect x="162" y="96" width="22" height="2" fill="#1A1228"/>
+<rect x="162" y="98" width="2" height="36" fill="#1A1228"/>
+<rect x="184" y="98" width="2" height="36" fill="#1A1228"/>
+<rect x="164" y="98" width="20" height="34" fill="#FF9BB3"/>
+<!-- Frying pan -->
+<rect x="186" y="110" width="24" height="4" fill="#8A5A2B"/>
+<rect x="210" y="100" width="30" height="4" fill="#B8A99A"/>
+<rect x="206" y="104" width="38" height="16" fill="#B8A99A"/>
+<rect x="210" y="120" width="30" height="4" fill="#B8A99A"/>
+<!-- Steam from pan -->
+<rect x="218" y="88" width="4" height="8" fill="#FFF8E6" opacity="0.6"/>
+<rect x="226" y="84" width="4" height="10" fill="#FFF8E6" opacity="0.5"/>
+<rect x="234" y="86" width="4" height="8" fill="#FFF8E6" opacity="0.4"/>
+<rect x="220" y="78" width="4" height="6" fill="#FFF8E6" opacity="0.3"/>
+<!-- Legs -->
+<rect x="102" y="160" width="20" height="44" fill="#C46A85"/>
+<rect x="100" y="160" width="2" height="46" fill="#1A1228"/>
+<rect x="122" y="160" width="2" height="46" fill="#1A1228"/>
+<rect x="134" y="160" width="20" height="44" fill="#C46A85"/>
+<rect x="132" y="160" width="2" height="46" fill="#1A1228"/>
+<rect x="154" y="160" width="2" height="46" fill="#1A1228"/>
+<!-- Feet -->
+<rect x="96" y="206" width="30" height="8" fill="#1A1228"/>
+<rect x="130" y="206" width="30" height="8" fill="#1A1228"/>
+</svg>

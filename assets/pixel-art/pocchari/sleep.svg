@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+<!-- Body lying down (wider, shorter) -->
+<rect x="30" y="100" width="196" height="2" fill="#1A1228"/>
+<rect x="26" y="102" width="4" height="2" fill="#1A1228"/>
+<rect x="226" y="102" width="4" height="2" fill="#1A1228"/>
+<rect x="24" y="104" width="2" height="4" fill="#1A1228"/>
+<rect x="230" y="104" width="2" height="4" fill="#1A1228"/>
+<rect x="22" y="108" width="2" height="70" fill="#1A1228"/>
+<rect x="232" y="108" width="2" height="70" fill="#1A1228"/>
+<rect x="24" y="178" width="2" height="4" fill="#1A1228"/>
+<rect x="230" y="178" width="2" height="4" fill="#1A1228"/>
+<rect x="26" y="182" width="4" height="2" fill="#1A1228"/>
+<rect x="226" y="182" width="4" height="2" fill="#1A1228"/>
+<rect x="30" y="184" width="196" height="2" fill="#1A1228"/>
+<!-- Body fill -->
+<rect x="30" y="102" width="196" height="82" fill="#FF9BB3"/>
+<rect x="26" y="104" width="204" height="74" fill="#FF9BB3"/>
+<rect x="24" y="108" width="208" height="70" fill="#FF9BB3"/>
+<!-- Big belly -->
+<rect x="70" y="108" width="116" height="64" fill="#FFC8D8"/>
+<rect x="76" y="104" width="104" height="4" fill="#FFC8D8"/>
+<!-- Belly button -->
+<rect x="124" y="138" width="8" height="8" fill="#C46A85"/>
+<!-- Closed sleeping eyes (downward arcs, width 24, height 6, 2px line) -->
+<rect x="72" y="118" width="24" height="2" fill="#1A1228"/>
+<rect x="74" y="120" width="20" height="2" fill="#1A1228"/>
+<rect x="78" y="122" width="12" height="2" fill="#1A1228"/>
+<rect x="160" y="118" width="24" height="2" fill="#1A1228"/>
+<rect x="162" y="120" width="20" height="2" fill="#1A1228"/>
+<rect x="166" y="122" width="12" height="2" fill="#1A1228"/>
+<!-- Cheeks -->
+<rect x="56" y="126" width="24" height="24" fill="#FFE2EB"/>
+<rect x="176" y="126" width="24" height="24" fill="#FFE2EB"/>
+<!-- Nose -->
+<rect x="114" y="124" width="28" height="16" fill="#E8485A"/>
+<rect x="112" y="126" width="32" height="12" fill="#E8485A"/>
+<rect x="120" y="130" width="6" height="6" fill="#1A1228"/>
+<rect x="132" y="130" width="6" height="6" fill="#1A1228"/>
+<!-- Peaceful smile -->
+<rect x="116" y="148" width="24" height="2" fill="#1A1228"/>
+<rect x="114" y="146" width="2" height="2" fill="#1A1228"/>
+<rect x="140" y="146" width="2" height="2" fill="#1A1228"/>
+<!-- ZZZ -->
+<rect x="190" y="76" width="20" height="2" fill="#1A1228"/>
+<rect x="196" y="78" width="4" height="2" fill="#1A1228"/>
+<rect x="192" y="80" width="4" height="2" fill="#1A1228"/>
+<rect x="190" y="82" width="20" height="2" fill="#1A1228"/>
+<rect x="214" y="62" width="14" height="2" fill="#1A1228"/>
+<rect x="220" y="64" width="4" height="2" fill="#1A1228"/>
+<rect x="216" y="66" width="4" height="2" fill="#1A1228"/>
+<rect x="214" y="68" width="14" height="2" fill="#1A1228"/>
+<rect x="232" y="50" width="10" height="2" fill="#1A1228"/>
+<rect x="236" y="52" width="2" height="2" fill="#1A1228"/>
+<rect x="234" y="54" width="2" height="2" fill="#1A1228"/>
+<rect x="232" y="56" width="10" height="2" fill="#1A1228"/>
+<!-- Feet sticking up -->
+<rect x="60" y="186" width="24" height="14" fill="#FF9BB3"/>
+<rect x="58" y="186" width="28" height="2" fill="#1A1228"/>
+<rect x="58" y="200" width="28" height="2" fill="#1A1228"/>
+<rect x="56" y="188" width="2" height="12" fill="#1A1228"/>
+<rect x="86" y="188" width="2" height="12" fill="#1A1228"/>
+<rect x="172" y="186" width="24" height="14" fill="#FF9BB3"/>
+<rect x="170" y="186" width="28" height="2" fill="#1A1228"/>
+<rect x="170" y="200" width="28" height="2" fill="#1A1228"/>
+<rect x="168" y="188" width="2" height="12" fill="#1A1228"/>
+<rect x="198" y="188" width="2" height="12" fill="#1A1228"/>
+</svg>

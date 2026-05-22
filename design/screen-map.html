@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<title>ぶたそだて — 画面一覧 & 遷移図</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4ecd8;--paper:#fff8e6;--ink:#1a1228;--ink2:#3d2b4d;--pink:#ff9bb3;--pinkDk:#c46a85;--yellow:#f6c453;--green:#6cb979;--blue:#5a8ed1;--red:#e8485a;--gray:#b8a99a;--brown:#8a5a2b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:"DotGothic16",monospace;font-size:14px;line-height:1.7;}
+.en{font-family:"Press Start 2P",monospace;}
+header{background:var(--ink);color:var(--paper);padding:48px 32px;margin-bottom:40px;}
+header .inner{max-width:1100px;margin:0 auto;}
+header .kicker{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--yellow);letter-spacing:4px;margin-bottom:8px;}
+header h1{font-size:32px;letter-spacing:3px;}
+header .sub{font-size:14px;opacity:0.8;margin-top:8px;}
+.doc{max-width:1100px;margin:0 auto;padding:0 32px 80px;}
+h2{font-size:22px;letter-spacing:2px;border-bottom:3px solid var(--ink);padding-bottom:6px;margin:48px 0 16px;}
+h2 .num{font-family:"Press Start 2P",monospace;font-size:11px;color:var(--pinkDk);margin-right:10px;background:var(--paper);padding:3px 7px;box-shadow:0 0 0 2px var(--ink);display:inline-block;transform:translateY(-2px);}
+h3{font-size:16px;margin:24px 0 8px;letter-spacing:1px;}
+.flow-section{margin:32px 0;}
+.screen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:16px 0;}
+.screen-card{background:var(--paper);box-shadow:0 0 0 2px var(--ink);padding:14px 16px;position:relative;}
+.screen-card .id{font-family:"Press Start 2P",monospace;font-size:8px;color:var(--pinkDk);letter-spacing:1px;margin-bottom:4px;}
+.screen-card .name{font-size:16px;font-weight:normal;letter-spacing:1px;margin-bottom:6px;}
+.screen-card .desc{font-size:12px;color:var(--ink2);line-height:1.5;}
+.screen-card .tag{display:inline-block;font-family:"Press Start 2P",monospace;font-size:8px;padding:2px 6px;margin-top:8px;margin-right:4px;box-shadow:0 0 0 2px var(--ink);}
+.tag-auth{background:var(--blue);color:var(--paper);}
+.tag-home{background:var(--green);color:var(--paper);}
+.tag-record{background:var(--yellow);color:var(--ink);}
+.tag-avatar{background:var(--pink);color:var(--ink);}
+.tag-battle{background:var(--red);color:var(--paper);}
+.tag-social{background:var(--brown);color:var(--paper);}
+.tag-settings{background:var(--gray);color:var(--ink);}
+.flow-diagram{background:var(--paper);box-shadow:0 0 0 3px var(--ink),0 0 0 6px var(--paper),0 0 0 9px var(--ink);padding:24px;margin:16px 0;overflow-x:auto;}
+.flow-diagram pre{font-family:"DotGothic16",monospace;font-size:12px;line-height:1.8;white-space:pre;color:var(--ink);}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0;}
+.legend .item{display:flex;align-items:center;gap:6px;font-size:12px;}
+.legend .dot{width:14px;height:14px;box-shadow:0 0 0 2px var(--ink);}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+th,td{border:2px solid var(--ink);padding:8px 10px;text-align:left;}
+th{background:var(--ink);color:var(--paper);font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:1px;}
+td{background:var(--paper);}
+.note{background:var(--paper);border-left:8px solid var(--yellow);padding:12px 16px;margin:16px 0;font-size:13px;}
+</style>
+</head>
+<body>
+<header>
+<div class="inner">
+<div class="kicker">BUTASODATE · SCREEN MAP · V1</div>
+<h1>画面一覧 & 遷移図</h1>
+<p class="sub">全画面の定義と画面間の遷移フローをまとめたドキュメント</p>
+</div>
+</header>
+<div class="doc">
+
+<div class="legend">
+<div class="item"><div class="dot tag-auth"></div>認証</div>
+<div class="item"><div class="dot tag-home"></div>ホーム</div>
+<div class="item"><div class="dot tag-record"></div>記録</div>
+<div class="item"><div class="dot tag-avatar"></div>アバター</div>
+<div class="item"><div class="dot tag-battle"></div>バトル</div>
+<div class="item"><div class="dot tag-social"></div>ソーシャル</div>
+<div class="item"><div class="dot tag-settings"></div>設定</div>
+</div>
+
+<!-- ===== 画面一覧 ===== -->
+<h2><span class="num">01</span>画面一覧</h2>
+
+<h3>認証フロー（AUTH）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">A-01</div><div class="name">ログイン画面</div><div class="desc">メール+パスワード入力、ソーシャルログインボタン（Google, X）、サインアップリンク</div><span class="tag tag-auth">AUTH</span></div>
+<div class="screen-card"><div class="id">A-02</div><div class="name">サインアップ画面</div><div class="desc">メール+パスワード入力、利用規約同意チェック、ソーシャルサインアップ</div><span class="tag tag-auth">AUTH</span></div>
+<div class="screen-card"><div class="id">A-03</div><div class="name">メール確認画面</div><div class="desc">確認コード入力、再送ボタン</div><span class="tag tag-auth">AUTH</span></div>
+<div class="screen-card"><div class="id">A-04</div><div class="name">ニックネーム設定画面</div><div class="desc">初回ログイン時のニックネーム入力、ぶたの名前入力</div><span class="tag tag-auth">AUTH</span></div>
+</div>
+
+<h3>メインタブ（MAIN）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">M-01</div><div class="name">ホーム画面</div><div class="desc">ぶたアバター表示（中央）、LV/EXPバー、スコア、行動記録ボタン、今日の記録サマリー</div><span class="tag tag-home">HOME</span></div>
+<div class="screen-card"><div class="id">M-02</div><div class="name">記録タブ画面</div><div class="desc">記録履歴一覧（日別）、カレンダー表示切替、統計サマリー</div><span class="tag tag-record">RECORD</span></div>
+<div class="screen-card"><div class="id">M-03</div><div class="name">バトルタブ画面</div><div class="desc">ランダムマッチボタン、フレンド対戦ボタン、バトル履歴、ランキング</div><span class="tag tag-battle">BATTLE</span></div>
+<div class="screen-card"><div class="id">M-04</div><div class="name">設定タブ画面</div><div class="desc">プロフィール、ヘルスデータ連携、通知設定、アカウント管理</div><span class="tag tag-settings">SETTINGS</span></div>
+</div>
+
+<h3>記録フロー（RECORD）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">R-01</div><div class="name">カテゴリ選択画面</div><div class="desc">不健康行動カテゴリ一覧（深夜ラーメン、夜更かし、運動サボり、暴飲暴食、間食等）</div><span class="tag tag-record">RECORD</span></div>
+<div class="screen-card"><div class="id">R-02</div><div class="name">記録確認画面</div><div class="desc">選択カテゴリ表示、日時選択、メモ入力（任意）、記録ボタン</div><span class="tag tag-record">RECORD</span></div>
+<div class="screen-card"><div class="id">R-03</div><div class="name">記録完了画面</div><div class="desc">ぶた喜びリアクション、獲得ポイント表示（+50pt!）、ホームへ戻るボタン</div><span class="tag tag-record">RECORD</span><span class="tag tag-avatar">AVATAR</span></div>
+<div class="screen-card"><div class="id">R-04</div><div class="name">記録詳細画面</div><div class="desc">個別記録の詳細表示、編集・削除</div><span class="tag tag-record">RECORD</span></div>
+</div>
+
+<h3>アバター（AVATAR）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">V-01</div><div class="name">アバター詳細画面</div><div class="desc">ぶた全身表示、ステータス一覧（HP/ATK/DEF/SPD）、スキル一覧、進化履歴</div><span class="tag tag-avatar">AVATAR</span></div>
+<div class="screen-card"><div class="id">V-02</div><div class="name">進化演出画面</div><div class="desc">レベルアップ/進化時のフルスクリーン演出、AI生成動画クリップ</div><span class="tag tag-avatar">AVATAR</span></div>
+<div class="screen-card"><div class="id">V-03</div><div class="name">進化図鑑画面</div><div class="desc">全進化パスの一覧、解放済み/未解放の表示</div><span class="tag tag-avatar">AVATAR</span></div>
+</div>
+
+<h3>バトル（BATTLE）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">B-01</div><div class="name">マッチング待機画面</div><div class="desc">検索アニメーション、30秒タイマー、キャンセルボタン</div><span class="tag tag-battle">BATTLE</span></div>
+<div class="screen-card"><div class="id">B-02</div><div class="name">バトル準備画面</div><div class="desc">自分 vs 相手のアバター・ステータス比較表示</div><span class="tag tag-battle">BATTLE</span></div>
+<div class="screen-card"><div class="id">B-03</div><div class="name">バトル画面</div><div class="desc">ターン制バトルUI：自分/相手HP、スキル選択（4つ）、防御、20秒タイマー</div><span class="tag tag-battle">BATTLE</span></div>
+<div class="screen-card"><div class="id">B-04</div><div class="name">バトル結果画面</div><div class="desc">勝敗表示、獲得/減少ランキングポイント、リプレイ/ホームボタン</div><span class="tag tag-battle">BATTLE</span></div>
+<div class="screen-card"><div class="id">B-05</div><div class="name">バトル招待受信ポップアップ</div><div class="desc">フレンドからの対戦招待通知、承諾/拒否ボタン</div><span class="tag tag-battle">BATTLE</span></div>
+</div>
+
+<h3>ソーシャル（SOCIAL）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">S-01</div><div class="name">フレンド一覧画面</div><div class="desc">フレンドリスト、オンライン状態表示、対戦申込ボタン</div><span class="tag tag-social">SOCIAL</span></div>
+<div class="screen-card"><div class="id">S-02</div><div class="name">フレンド検索画面</div><div class="desc">ニックネーム/IDで検索、フレンド申請ボタン</div><span class="tag tag-social">SOCIAL</span></div>
+<div class="screen-card"><div class="id">S-03</div><div class="name">バトル履歴画面</div><div class="desc">過去の対戦結果一覧、勝率表示</div><span class="tag tag-social">SOCIAL</span></div>
+</div>
+
+<h3>設定（SETTINGS）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">T-01</div><div class="name">プロフィール編集画面</div><div class="desc">ニックネーム変更、アバター表示名変更</div><span class="tag tag-settings">SETTINGS</span></div>
+<div class="screen-card"><div class="id">T-02</div><div class="name">ヘルスデータ連携画面</div><div class="desc">HealthKit/Health Connect連携状態、許可設定、同期履歴</div><span class="tag tag-settings">SETTINGS</span></div>
+<div class="screen-card"><div class="id">T-03</div><div class="name">通知設定画面</div><div class="desc">プッシュ通知ON/OFF、バトル招待通知、記録リマインダー</div><span class="tag tag-settings">SETTINGS</span></div>
+<div class="screen-card"><div class="id">T-04</div><div class="name">アカウント管理画面</div><div class="desc">パスワード変更、ログアウト、アカウント削除</div><span class="tag tag-settings">SETTINGS</span></div>
+</div>
+
+<h3>法務・規約（LEGAL）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">L-01</div><div class="name">利用規約画面</div><div class="desc">サービス利用規約の全文表示。サインアップ時に同意必須。設定からも閲覧可能</div><span class="tag tag-settings">LEGAL</span></div>
+<div class="screen-card"><div class="id">L-02</div><div class="name">プライバシーポリシー画面</div><div class="desc">個人情報・ヘルスデータの取扱方針。サインアップ時に同意必須</div><span class="tag tag-settings">LEGAL</span></div>
+<div class="screen-card"><div class="id">L-03</div><div class="name">ヘルスデータ同意画面</div><div class="desc">HealthKit/Health Connect連携時の専用同意画面。取得データ項目と利用目的を明示</div><span class="tag tag-settings">LEGAL</span></div>
+<div class="screen-card"><div class="id">L-04</div><div class="name">ライセンス表示画面</div><div class="desc">使用OSSライブラリのライセンス一覧（Flutter標準のLicensePage）</div><span class="tag tag-settings">LEGAL</span></div>
+<div class="screen-card"><div class="id">L-05</div><div class="name">特定商取引法表示画面</div><div class="desc">将来の課金機能に備えた特商法表示（事業者情報）</div><span class="tag tag-settings">LEGAL</span></div>
+</div>
+
+<!-- ===== 画面遷移図 ===== -->
+<h2><span class="num">02</span>画面遷移図</h2>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({theme:'base',themeVariables:{primaryColor:'#fff8e6',primaryBorderColor:'#1a1228',lineColor:'#1a1228',primaryTextColor:'#1a1228',fontSize:'13px'}});</script>
+
+<h3>全体フロー</h3>
+<div class="mermaid">
+flowchart TD
+  START([アプリ起動]) --> CHECK{ログイン済み?}
+  CHECK -->|YES| M01[M-01 ホーム]
+  CHECK -->|NO| A01[A-01 ログイン]
+  A01 -->|アカウント作成| A02[A-02 サインアップ]
+  A01 -->|ソーシャルログイン| A04
+  A01 -->|ログイン成功| M01
+  A02 --> A03[A-03 メール確認]
+  A03 --> A04[A-04 ニックネーム設定]
+  A04 --> M01
+</div>
+
+<h3>メインタブ遷移</h3>
+<div class="mermaid">
+flowchart TD
+  TAB[タブバー] --> M01[M-01 ホーム]
+  TAB --> M02[M-02 記録タブ]
+  TAB --> M03[M-03 バトルタブ]
+  TAB --> M04[M-04 設定タブ]
+
+  M01 --> V01[V-01 アバター詳細]
+  M01 --> V03[V-03 進化図鑑]
+  M01 --> R01[R-01 カテゴリ選択]
+
+  M03 --> B01[B-01 マッチング待機]
+  M03 --> S01[S-01 フレンド一覧]
+  M03 --> S03[S-03 バトル履歴]
+  S01 --> S02[S-02 フレンド検索]
+
+  M04 --> T01[T-01 プロフィール編集]
+  M04 --> T02[T-02 ヘルスデータ連携]
+  M04 --> T03[T-03 通知設定]
+  M04 --> T04[T-04 アカウント管理]
+</div>
+
+<h3>記録フロー（3タップ以内）</h3>
+<div class="mermaid">
+flowchart TD
+  M01[M-01 ホーム] -->|1. きろくボタン| R01[R-01 カテゴリ選択]
+  R01 -->|2. カテゴリ選択| R02[R-02 記録確認]
+  R02 -->|3. きろくする| R03[R-03 記録完了<br/>ぶた喜び +50pt!]
+  R03 -->|レベルアップ| V02[V-02 進化演出]
+  R03 -->|通常| M01
+  V02 --> M01
+</div>
+
+<h3>バトルフロー</h3>
+<div class="mermaid">
+flowchart TD
+  M03[M-03 バトルタブ] -->|ランダムマッチ| B01[B-01 マッチング待機<br/>30秒タイマー]
+  M03 -->|フレンド対戦| S01[S-01 フレンド一覧]
+  S01 -->|対戦申込| WAIT[応答待ち]
+  WAIT -->|承諾| B02
+
+  B01 -->|マッチ成功| B02[B-02 バトル準備]
+  B01 -->|タイムアウト| M03
+  B01 -->|キャンセル| M03
+
+  B02 --> B03[B-03 バトル画面<br/>ターン制 / 20秒制限]
+  B03 -->|HP0 or 5分経過| B04[B-04 バトル結果]
+  B04 -->|もう1回| B01
+  B04 -->|ホームへ| M01[M-01 ホーム]
+
+  B05[B-05 バトル招待ポップアップ] -->|承諾| B02
+  B05 -->|拒否| BACK[元の画面]
+</div>
+
+<h3>アバター関連フロー</h3>
+<div class="mermaid">
+flowchart TD
+  M01[M-01 ホーム] -->|アバタータップ| V01[V-01 アバター詳細<br/>ステータス/スキル/進化履歴]
+  V01 --> V03[V-03 進化図鑑<br/>全進化パス表示]
+
+  TRIGGER[記録完了 or ヘルスデータ同期] -->|閾値到達| V02[V-02 進化演出<br/>AI生成動画クリップ]
+  V02 -->|新しい姿| M01
+</div>
+
+<!-- ===== 画面遷移マトリクス ===== -->
+<h2><span class="num">03</span>画面遷移マトリクス</h2>
+
+<table>
+<tr><th>FROM</th><th>TO</th><th>トリガー</th></tr>
+<tr><td>A-01 ログイン</td><td>A-02 サインアップ</td><td>「アカウント作成」リンク</td></tr>
+<tr><td>A-01 ログイン</td><td>M-01 ホーム</td><td>ログイン成功</td></tr>
+<tr><td>A-02 サインアップ</td><td>A-03 メール確認</td><td>サインアップ成功</td></tr>
+<tr><td>A-03 メール確認</td><td>A-04 ニックネーム</td><td>確認コード認証成功</td></tr>
+<tr><td>A-04 ニックネーム</td><td>M-01 ホーム</td><td>ニックネーム設定完了</td></tr>
+<tr><td>M-01 ホーム</td><td>R-01 カテゴリ選択</td><td>「きろく」ボタン</td></tr>
+<tr><td>M-01 ホーム</td><td>V-01 アバター詳細</td><td>アバタータップ</td></tr>
+<tr><td>R-01 カテゴリ選択</td><td>R-02 記録確認</td><td>カテゴリ選択</td></tr>
+<tr><td>R-02 記録確認</td><td>R-03 記録完了</td><td>「きろくする」ボタン</td></tr>
+<tr><td>R-03 記録完了</td><td>M-01 ホーム</td><td>自動遷移 / ボタン</td></tr>
+<tr><td>R-03 記録完了</td><td>V-02 進化演出</td><td>レベルアップ閾値到達</td></tr>
+<tr><td>M-03 バトルタブ</td><td>B-01 マッチング待機</td><td>「ランダムマッチ」ボタン</td></tr>
+<tr><td>B-01 マッチング待機</td><td>B-02 バトル準備</td><td>マッチング成功</td></tr>
+<tr><td>B-02 バトル準備</td><td>B-03 バトル画面</td><td>準備完了 / タイマー</td></tr>
+<tr><td>B-03 バトル画面</td><td>B-04 バトル結果</td><td>HP0 / 5分経過</td></tr>
+<tr><td>B-04 バトル結果</td><td>B-01 マッチング待機</td><td>「もう1回」ボタン</td></tr>
+<tr><td>B-04 バトル結果</td><td>M-01 ホーム</td><td>「ホームへ」ボタン</td></tr>
+<tr><td>M-03 バトルタブ</td><td>S-01 フレンド一覧</td><td>「フレンド対戦」ボタン</td></tr>
+<tr><td>S-01 フレンド一覧</td><td>S-02 フレンド検索</td><td>「フレンド追加」ボタン</td></tr>
+<tr><td>M-04 設定タブ</td><td>T-01 プロフィール編集</td><td>プロフィール行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>T-02 ヘルスデータ連携</td><td>ヘルスデータ行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>T-03 通知設定</td><td>通知行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>T-04 アカウント管理</td><td>アカウント行タップ</td></tr>
+<tr><td>A-02 サインアップ</td><td>L-01 利用規約</td><td>「利用規約」リンクタップ</td></tr>
+<tr><td>A-02 サインアップ</td><td>L-02 プライバシーポリシー</td><td>「プライバシーポリシー」リンクタップ</td></tr>
+<tr><td>T-02 ヘルスデータ連携</td><td>L-03 ヘルスデータ同意</td><td>連携有効化時</td></tr>
+<tr><td>M-04 設定タブ</td><td>L-01 利用規約</td><td>「利用規約」行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>L-02 プライバシーポリシー</td><td>「プライバシーポリシー」行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>L-04 ライセンス表示</td><td>「ライセンス」行タップ</td></tr>
+<tr><td>M-04 設定タブ</td><td>L-05 特定商取引法表示</td><td>「特定商取引法」行タップ</td></tr>
+</table>
+
+<div class="note">
+<strong>📝 補足:</strong> ヘルスデータ同期は1日1回アプリ初回起動時に自動実行。同期結果はホーム画面にトースト通知で表示。未起動日がある場合はまとめて加算。
+</div>
+
+<!-- ===== 画面数サマリー ===== -->
+<h2><span class="num">04</span>画面数サマリー</h2>
+
+<table>
+<tr><th>カテゴリ</th><th>画面数</th><th>備考</th></tr>
+<tr><td>認証 (AUTH)</td><td>4</td><td>A-01〜A-04</td></tr>
+<tr><td>メインタブ (MAIN)</td><td>4</td><td>M-01〜M-04（タブバー常駐）</td></tr>
+<tr><td>記録 (RECORD)</td><td>4</td><td>R-01〜R-04</td></tr>
+<tr><td>アバター (AVATAR)</td><td>3</td><td>V-01〜V-03</td></tr>
+<tr><td>バトル (BATTLE)</td><td>5</td><td>B-01〜B-05（B-05はポップアップ）</td></tr>
+<tr><td>ソーシャル (SOCIAL)</td><td>3</td><td>S-01〜S-03</td></tr>
+<tr><td>設定 (SETTINGS)</td><td>4</td><td>T-01〜T-04</td></tr>
+<tr><td>法務・規約 (LEGAL)</td><td>5</td><td>L-01〜L-05</td></tr>
+<tr><td><strong>合計</strong></td><td><strong>32画面</strong></td><td></td></tr>
+</table>
+
+</div>
+</body>
+</html>
