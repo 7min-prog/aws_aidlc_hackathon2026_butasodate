@@ -309,3 +309,11 @@
 **Context**: Unit 3 Infrastructure Design stage complete. infrastructure-design.md created. Evolution tree updated to 9 paths (3 stage2 + 6 stage3), 12 skills.
 
 ---
+
+## Unit 4 Functional Design - Questions & Answers
+**Timestamp**: 2026-05-22T20:19:32+09:00
+**User Input**: "回答しました" (Q1:A+C, Q2:C, Q3:D, Q4:B, Q5:B, Q6:B, Q7:A, Q8:A)
+**AI Response**: Answers validated (no ambiguity). Generated functional design artifacts: domain-entities.md, business-rules.md, business-logic-model.md
+**Context**: CONSTRUCTION - Unit 4 Functional Design, Step 5-6
+
+---
