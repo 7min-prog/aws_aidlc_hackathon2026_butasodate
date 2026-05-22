@@ -1,27 +1,23 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:buta_app/shared/auth_state.dart';
 import 'package:buta_app/features/auth/login_screen.dart';
 import 'package:buta_app/features/auth/signup_screen.dart';
 import 'package:buta_app/features/auth/confirm_screen.dart';
 import 'package:buta_app/features/auth/nickname_screen.dart';
+import 'package:buta_app/features/splash/splash_screen.dart';
+import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/features/recording/recording_screen.dart';
+import 'package:buta_app/features/battle/battle_screen.dart';
+import 'package:buta_app/features/settings/settings_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
-
   return GoRouter(
-    initialLocation: '/',
-    redirect: (context, state) {
-      final loggingIn = state.matchedLocation == '/login' ||
-          state.matchedLocation == '/signup' ||
-          state.matchedLocation == '/confirm';
-
-      if (!isLoggedIn && !loggingIn) return '/login';
-      if (isLoggedIn && loggingIn) return '/';
-      return null;
-    },
+    initialLocation: '/splash',
     routes: [
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
@@ -44,19 +40,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/nickname',
         builder: (context, state) => const NicknameScreen(),
       ),
+      GoRoute(
+        path: '/recording',
+        builder: (context, state) => const RecordingScreen(),
+      ),
+      GoRoute(
+        path: '/battle',
+        builder: (context, state) => const BattleScreen(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
     ],
   );
 });
-
-// 仮のホーム画面（後のユニットで差し替え）
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('ぶたそだて')),
-      body: const Center(child: Text('ホーム画面（後で実装）')),
-    );
-  }
-}

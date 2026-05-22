@@ -317,3 +317,55 @@
 **Context**: CONSTRUCTION - Unit 4 Functional Design, Step 5-6
 
 ---
+
+## Unit 6: 起動時処理 — ワークフロー開始
+**Timestamp**: 2026-05-22T23:53:35+09:00
+**User Input**: "では上記の手順で進めたいです。A,B,Cどれがおすすめ？"
+**AI Response**: A（Unit 6 として Functional Design から進める）を推奨。ユーザー承認。
+**Context**: 起動時処理をUnit 6として新規追加。Functional Design → Code Generation → Build and Test の流れで進行。NFR/Infrastructure Designは不要（フロントエンドのみ、既存API利用）。
+
+---
+
+
+## Unit 6: 起動時処理 — Functional Design 開始
+**Timestamp**: 2026-05-23T00:08:53+09:00
+**User Input**: "ではそうします。ブランチを切ってほしいです"
+**AI Response**: feat/unit6-app-boot ブランチをmainから作成。Unit 6 として Functional Design を開始。
+**Context**: 起動時処理（スプラッシュ画面、トークン検証、初期データ取得、遷移判定、ホーム画面骨格）をUnit 6として追加。NFR/Infrastructure Designは不要（フロントエンドのみ、既存API利用）。
+
+---
+
+
+## Unit 6: 起動時処理 — Functional Design 質問回答
+**Timestamp**: 2026-05-23T00:29:16+09:00
+**User Input**: "Q1:A, Q2:A, Q3:C（ニックネーム設定時+起動時自己修復）, Q4:B, Q5:B, Q6:A"
+**AI Response**: 回答確認完了。曖昧な点なし。Functional Designアーティファクト生成。
+**Context**: Unit 6 Functional Design Step 5-6. business-logic-model.md, business-rules.md, frontend-components.md 作成。
+
+---
+
+
+## Unit 6: 起動時処理 — Functional Design 承認
+**Timestamp**: 2026-05-23T00:49:52+09:00
+**User Input**: "OK"
+**AI Response**: Functional Design approved. Proceeding to Code Generation for Unit 6.
+**Context**: Unit 6 Functional Design stage complete. 3 artifacts: business-logic-model.md, business-rules.md (BR-6.1〜BR-6.12), frontend-components.md. 画像取得・キャッシュ処理も含む。
+
+---
+
+
+## Unit 6: 起動時処理 — Code Generation Plan 承認
+**Timestamp**: 2026-05-23T00:55:00+09:00
+**User Input**: "ではこのまま進めても問題ないですね？"
+**AI Response**: 問題なし。Code Generation Part 2（実装）開始。APIパスの差異は実装時に正しいパスに合わせる。
+**Context**: Unit 6 Code Generation Plan approved. 10ステップ構成。
+
+---
+
+
+## Unit 6: 起動時処理 — Code Generation 完了
+**Timestamp**: 2026-05-23T00:55:00+09:00
+**AI Response**: Code Generation 全10ステップ完了。
+**Context**: 新規ファイル14個、更新ファイル4個。frontend/lib/配下に起動時処理、ホーム画面骨格、スタブ画面を実装。
+
+---
