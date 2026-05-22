@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+<!-- Ghost: Semi-transparent, bottom fades, floating, glowing eyes -->
+<!-- Main body outline -->
+<rect x="88" y="30" width="80" height="2" fill="#1A1228" opacity="0.6"/>
+<rect x="86" y="32" width="2" height="130" fill="#1A1228" opacity="0.5"/>
+<rect x="168" y="32" width="2" height="130" fill="#1A1228" opacity="0.5"/>
+<!-- Body fill - semi-transparent -->
+<rect x="88" y="32" width="80" height="128" fill="#FFC8D8" opacity="0.5"/>
+<rect x="90" y="34" width="30" height="12" fill="#FFE2EB" opacity="0.6"/>
+<!-- Left eye - 光る目 (glowing) -->
+<rect x="94" y="58" width="34" height="34" fill="#F6C453" opacity="0.3"/>
+<rect x="134" y="58" width="34" height="34" fill="#F6C453" opacity="0.3"/>
+<rect x="101" y="65" width="20" height="20" fill="#F6C453"/>
+<rect x="108" y="72" width="6" height="6" fill="#1A1228"/>
+<!-- Right eye - 光る目 (glowing) -->
+<rect x="141" y="65" width="20" height="20" fill="#F6C453"/>
+<rect x="148" y="72" width="6" height="6" fill="#1A1228"/>
+<!-- Cheeks -->
+<rect x="96" y="86" width="10" height="6" fill="#FFE2EB" opacity="0.7"/>
+<rect x="156" y="86" width="10" height="6" fill="#FFE2EB" opacity="0.7"/>
+<!-- Nose -->
+<rect x="126" y="82" width="8" height="6" fill="#E8485A" opacity="0.7"/>
+<!-- Mouth O shape -->
+<rect x="122" y="98" width="12" height="10" fill="#1A1228" opacity="0.6"/>
+<!-- Wispy arms -->
+<rect x="66" y="78" width="20" height="8" fill="#FFC8D8" opacity="0.4"/>
+<rect x="58" y="82" width="12" height="6" fill="#FFC8D8" opacity="0.3"/>
+<rect x="170" y="78" width="20" height="8" fill="#FFC8D8" opacity="0.4"/>
+<rect x="184" y="82" width="12" height="6" fill="#FFC8D8" opacity="0.3"/>
+<!-- Fading bottom smoke -->
+<rect x="88" y="160" width="80" height="10" fill="#FFC8D8" opacity="0.4"/>
+<rect x="92" y="170" width="72" height="10" fill="#FFC8D8" opacity="0.3"/>
+<rect x="98" y="180" width="60" height="10" fill="#FFE2EB" opacity="0.25"/>
+<rect x="106" y="190" width="44" height="8" fill="#FFE2EB" opacity="0.2"/>
+<rect x="114" y="198" width="28" height="6" fill="#FFE2EB" opacity="0.15"/>
+<rect x="120" y="204" width="16" height="4" fill="#FFE2EB" opacity="0.1"/>
+<!-- Wavy tendrils -->
+<rect x="84" y="162" width="8" height="14" fill="#FFC8D8" opacity="0.3"/>
+<rect x="164" y="160" width="8" height="12" fill="#FFC8D8" opacity="0.3"/>
+<!-- Floating particles -->
+<rect x="76" y="218" width="6" height="4" fill="#FFC8D8" opacity="0.3"/>
+<rect x="128" y="228" width="8" height="4" fill="#FFC8D8" opacity="0.2"/>
+<rect x="168" y="222" width="6" height="4" fill="#FFC8D8" opacity="0.25"/>
+</svg>
