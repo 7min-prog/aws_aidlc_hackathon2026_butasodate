@@ -1,0 +1,1154 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ぶたそだて Avatar API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {},
+    "parameters": {}
+  },
+  "paths": {
+    "/avatar": {
+      "post": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "アバターを作成",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "作成成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "object",
+                      "properties": {
+                        "avatarId": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "totalPoints": {
+                          "type": "number"
+                        },
+                        "level": {
+                          "type": "number"
+                        },
+                        "evolutionStage": {
+                          "type": "number"
+                        },
+                        "evolutionPathId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "categoryPoints": {
+                          "type": "object",
+                          "properties": {
+                            "FOOD": {
+                              "type": "number"
+                            },
+                            "LIFESTYLE": {
+                              "type": "number"
+                            },
+                            "MIXED": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "subCategoryPoints": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "number"
+                          }
+                        },
+                        "stats": {
+                          "type": "object",
+                          "properties": {
+                            "hp": {
+                              "type": "number"
+                            },
+                            "attack": {
+                              "type": "number"
+                            },
+                            "defense": {
+                              "type": "number"
+                            },
+                            "speed": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "hp",
+                            "attack",
+                            "defense",
+                            "speed"
+                          ]
+                        },
+                        "skillIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "spriteSheetKey": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "avatarId",
+                        "userId",
+                        "name",
+                        "totalPoints",
+                        "level",
+                        "evolutionStage",
+                        "evolutionPathId",
+                        "categoryPoints",
+                        "subCategoryPoints",
+                        "stats",
+                        "skillIds",
+                        "spriteSheetKey",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "avatar"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "既に存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "アバター情報を取得",
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "object",
+                      "properties": {
+                        "avatarId": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "totalPoints": {
+                          "type": "number"
+                        },
+                        "level": {
+                          "type": "number"
+                        },
+                        "evolutionStage": {
+                          "type": "number"
+                        },
+                        "evolutionPathId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "categoryPoints": {
+                          "type": "object",
+                          "properties": {
+                            "FOOD": {
+                              "type": "number"
+                            },
+                            "LIFESTYLE": {
+                              "type": "number"
+                            },
+                            "MIXED": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "subCategoryPoints": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "number"
+                          }
+                        },
+                        "stats": {
+                          "type": "object",
+                          "properties": {
+                            "hp": {
+                              "type": "number"
+                            },
+                            "attack": {
+                              "type": "number"
+                            },
+                            "defense": {
+                              "type": "number"
+                            },
+                            "speed": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "hp",
+                            "attack",
+                            "defense",
+                            "speed"
+                          ]
+                        },
+                        "skillIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "spriteSheetKey": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "avatarId",
+                        "userId",
+                        "name",
+                        "totalPoints",
+                        "level",
+                        "evolutionStage",
+                        "evolutionPathId",
+                        "categoryPoints",
+                        "subCategoryPoints",
+                        "stats",
+                        "skillIds",
+                        "spriteSheetKey",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    },
+                    "skills": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "skillId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "ATTACK",
+                              "DEFENSE",
+                              "DEBUFF",
+                              "HEAL"
+                            ]
+                          },
+                          "power": {
+                            "type": "number"
+                          },
+                          "cooldown": {
+                            "type": "number"
+                          },
+                          "evolutionPathId": {
+                            "type": "string"
+                          },
+                          "requiredLevel": {
+                            "type": "number"
+                          },
+                          "spriteAnimationKey": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "skillId",
+                          "name",
+                          "type",
+                          "power",
+                          "cooldown",
+                          "evolutionPathId",
+                          "requiredLevel",
+                          "spriteAnimationKey"
+                        ]
+                      }
+                    },
+                    "evolutionPath": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "description"
+                      ]
+                    },
+                    "progress": {
+                      "type": "object",
+                      "properties": {
+                        "nextLevelPoints": {
+                          "type": "number"
+                        },
+                        "nextEvolutionLevel": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "categoryRatio": {
+                          "type": "object",
+                          "properties": {
+                            "food": {
+                              "type": "number"
+                            },
+                            "lifestyle": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "food",
+                            "lifestyle"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "nextLevelPoints",
+                        "nextEvolutionLevel",
+                        "categoryRatio"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "avatar",
+                    "skills",
+                    "evolutionPath",
+                    "progress"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未発見",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/avatar/evolution-history": {
+      "get": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "進化履歴を取得",
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "history": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "historyId": {
+                            "type": "string"
+                          },
+                          "userId": {
+                            "type": "string"
+                          },
+                          "avatarId": {
+                            "type": "string"
+                          },
+                          "fromStage": {
+                            "type": "number"
+                          },
+                          "toStage": {
+                            "type": "number"
+                          },
+                          "fromPathId": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "toPathId": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "EVOLUTION",
+                              "DEVOLUTION"
+                            ]
+                          },
+                          "triggerPoints": {
+                            "type": "number"
+                          },
+                          "occurredAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "historyId",
+                          "userId",
+                          "avatarId",
+                          "fromStage",
+                          "toStage",
+                          "fromPathId",
+                          "toPathId",
+                          "type",
+                          "triggerPoints",
+                          "occurredAt"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "history"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/avatar/score-detail": {
+      "get": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "スコア詳細を取得",
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalPoints": {
+                      "type": "number"
+                    },
+                    "categoryBreakdown": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      }
+                    },
+                    "categoryRatio": {
+                      "type": "object",
+                      "properties": {
+                        "food": {
+                          "type": "number"
+                        },
+                        "lifestyle": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "food",
+                        "lifestyle"
+                      ]
+                    },
+                    "nextEvolution": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "requiredLevel": {
+                          "type": "number"
+                        },
+                        "currentLevel": {
+                          "type": "number"
+                        },
+                        "remainingPoints": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "requiredLevel",
+                        "currentLevel",
+                        "remainingPoints"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "totalPoints",
+                    "categoryBreakdown",
+                    "categoryRatio",
+                    "nextEvolution"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未発見",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/avatar/points": {
+      "post": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "ポイントを加算",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "points": {
+                    "type": "number",
+                    "minimum": 1
+                  },
+                  "categoryType": {
+                    "type": "string",
+                    "enum": [
+                      "FOOD",
+                      "LIFESTYLE",
+                      "MIXED"
+                    ]
+                  },
+                  "subCategoryId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "points",
+                  "categoryType"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "加算成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "object",
+                      "properties": {
+                        "avatarId": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "totalPoints": {
+                          "type": "number"
+                        },
+                        "level": {
+                          "type": "number"
+                        },
+                        "evolutionStage": {
+                          "type": "number"
+                        },
+                        "evolutionPathId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "categoryPoints": {
+                          "type": "object",
+                          "properties": {
+                            "FOOD": {
+                              "type": "number"
+                            },
+                            "LIFESTYLE": {
+                              "type": "number"
+                            },
+                            "MIXED": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "subCategoryPoints": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "number"
+                          }
+                        },
+                        "stats": {
+                          "type": "object",
+                          "properties": {
+                            "hp": {
+                              "type": "number"
+                            },
+                            "attack": {
+                              "type": "number"
+                            },
+                            "defense": {
+                              "type": "number"
+                            },
+                            "speed": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "hp",
+                            "attack",
+                            "defense",
+                            "speed"
+                          ]
+                        },
+                        "skillIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "spriteSheetKey": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "avatarId",
+                        "userId",
+                        "name",
+                        "totalPoints",
+                        "level",
+                        "evolutionStage",
+                        "evolutionPathId",
+                        "categoryPoints",
+                        "subCategoryPoints",
+                        "stats",
+                        "skillIds",
+                        "spriteSheetKey",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    },
+                    "leveledUp": {
+                      "type": "boolean"
+                    },
+                    "evolved": {
+                      "type": "boolean"
+                    },
+                    "newSkills": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "skillId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "ATTACK",
+                              "DEFENSE",
+                              "DEBUFF",
+                              "HEAL"
+                            ]
+                          },
+                          "power": {
+                            "type": "number"
+                          },
+                          "cooldown": {
+                            "type": "number"
+                          },
+                          "evolutionPathId": {
+                            "type": "string"
+                          },
+                          "requiredLevel": {
+                            "type": "number"
+                          },
+                          "spriteAnimationKey": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "skillId",
+                          "name",
+                          "type",
+                          "power",
+                          "cooldown",
+                          "evolutionPathId",
+                          "requiredLevel",
+                          "spriteAnimationKey"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "avatar",
+                    "leveledUp",
+                    "evolved",
+                    "newSkills"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未発見",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/avatar/points/deduct": {
+      "post": {
+        "tags": [
+          "Avatar"
+        ],
+        "summary": "ポイントを減算",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "points": {
+                    "type": "number",
+                    "minimum": 1
+                  },
+                  "categoryType": {
+                    "type": "string",
+                    "enum": [
+                      "FOOD",
+                      "LIFESTYLE",
+                      "MIXED"
+                    ]
+                  },
+                  "subCategoryId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "points",
+                  "categoryType"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "減算成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "object",
+                      "properties": {
+                        "avatarId": {
+                          "type": "string"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "totalPoints": {
+                          "type": "number"
+                        },
+                        "level": {
+                          "type": "number"
+                        },
+                        "evolutionStage": {
+                          "type": "number"
+                        },
+                        "evolutionPathId": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "categoryPoints": {
+                          "type": "object",
+                          "properties": {
+                            "FOOD": {
+                              "type": "number"
+                            },
+                            "LIFESTYLE": {
+                              "type": "number"
+                            },
+                            "MIXED": {
+                              "type": "number"
+                            }
+                          }
+                        },
+                        "subCategoryPoints": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "number"
+                          }
+                        },
+                        "stats": {
+                          "type": "object",
+                          "properties": {
+                            "hp": {
+                              "type": "number"
+                            },
+                            "attack": {
+                              "type": "number"
+                            },
+                            "defense": {
+                              "type": "number"
+                            },
+                            "speed": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "hp",
+                            "attack",
+                            "defense",
+                            "speed"
+                          ]
+                        },
+                        "skillIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "spriteSheetKey": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        },
+                        "updatedAt": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "avatarId",
+                        "userId",
+                        "name",
+                        "totalPoints",
+                        "level",
+                        "evolutionStage",
+                        "evolutionPathId",
+                        "categoryPoints",
+                        "subCategoryPoints",
+                        "stats",
+                        "skillIds",
+                        "spriteSheetKey",
+                        "createdAt",
+                        "updatedAt"
+                      ]
+                    },
+                    "leveledDown": {
+                      "type": "boolean"
+                    },
+                    "devolved": {
+                      "type": "boolean"
+                    },
+                    "lostSkills": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "skillId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "ATTACK",
+                              "DEFENSE",
+                              "DEBUFF",
+                              "HEAL"
+                            ]
+                          },
+                          "power": {
+                            "type": "number"
+                          },
+                          "cooldown": {
+                            "type": "number"
+                          },
+                          "evolutionPathId": {
+                            "type": "string"
+                          },
+                          "requiredLevel": {
+                            "type": "number"
+                          },
+                          "spriteAnimationKey": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "skillId",
+                          "name",
+                          "type",
+                          "power",
+                          "cooldown",
+                          "evolutionPathId",
+                          "requiredLevel",
+                          "spriteAnimationKey"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "avatar",
+                    "leveledDown",
+                    "devolved",
+                    "lostSkills"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未発見",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
