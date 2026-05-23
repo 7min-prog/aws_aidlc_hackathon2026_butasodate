@@ -1,20 +1,335 @@
-{
+﻿{
   "openapi": "3.1.0",
   "info": {
-    "title": "ぶたそだて Avatar API",
-    "version": "1.0.0"
+    "title": "ぶたそだて API",
+    "version": "1.0.0",
+    "description": "ぶたそだて全ユニットAPI仕様 (Unit1: Auth, Unit2: Recording, Unit3: Avatar, Unit4: Battle/Social, Unit5: Admin)"
   },
   "components": {
     "schemas": {},
-    "parameters": {}
+    "parameters": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
   },
   "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "サインアップ",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "password": { "type": "string" } }, "required": ["email", "password"] } } } },
+        "responses": { "200": { "description": "成功" }, "400": { "description": "バリデーションエラー" } }
+      }
+    },
+    "/auth/confirm": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "サインアップ確認",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "code": { "type": "string" } }, "required": ["email", "code"] } } } },
+        "responses": { "200": { "description": "成功" }, "400": { "description": "コード不正" } }
+      }
+    },
+    "/auth/resend-code": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "確認コード再送",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" } }, "required": ["email"] } } } },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "ログイン",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "password": { "type": "string" } }, "required": ["email", "password"] } } } },
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "accessToken": { "type": "string" }, "refreshToken": { "type": "string" }, "idToken": { "type": "string" } } } } } }, "401": { "description": "認証失敗" } }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "ログアウト",
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "トークンリフレッシュ",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "refreshToken": { "type": "string" } }, "required": ["refreshToken"] } } } },
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "accessToken": { "type": "string" }, "idToken": { "type": "string" } } } } } } }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "プロフィール取得",
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "userId": { "type": "string" }, "nickname": { "type": "string" }, "email": { "type": "string" } } } } } }, "401": { "description": "未認証" } }
+      }
+    },
+    "/users/profile": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "プロフィール作成",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "nickname": { "type": "string" } }, "required": ["nickname"] } } } },
+        "responses": { "201": { "description": "作成成功" }, "401": { "description": "未認証" } }
+      },
+      "put": {
+        "tags": ["Auth"],
+        "summary": "プロフィール更新",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "nickname": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "更新成功" }, "401": { "description": "未認証" } }
+      }
+    },
+    "/activities": {
+      "post": {
+        "tags": ["Recording"],
+        "summary": "行動を記録",
+        "description": "1件以上の行動を記録する。配列に1件だけ入れれば単一記録、複数入れれば一括記録として動作する。recordIdを指定すると冪等性が担保される（同一IDの重複登録はスキップ）。",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "records": { "type": "array", "minItems": 1, "items": { "type": "object", "properties": { "recordId": { "type": "string", "description": "クライアント生成UUID。オフライン同期時の冪等性キー" }, "categoryId": { "type": "string" }, "memo": { "type": "string" }, "recordedAt": { "type": "string", "format": "date-time", "description": "行動の発生日時。省略時はサーバー受信時刻" } }, "required": ["categoryId"] } } }, "required": ["records"] } } } },
+        "responses": { "201": { "description": "記録成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "avatar": { "type": "object", "properties": { "totalPoints": { "type": "number" }, "level": { "type": "number" }, "evolutionStage": { "type": "number" }, "categoryPoints": { "type": "object" } } }, "leveledUp": { "type": "boolean" }, "evolved": { "type": "boolean" }, "newSkills": { "type": "array", "items": { "type": "object" } }, "skippedIds": { "type": "array", "items": { "type": "string" }, "description": "冪等性により重複スキップされたrecordId一覧" } }, "required": ["avatar", "leveledUp", "evolved", "newSkills"] } } } }, "401": { "description": "未認証" } }
+      },
+      "get": {
+        "tags": ["Recording"],
+        "summary": "記録一覧・サマリー取得",
+        "description": "記録一覧とサマリー情報を一緒に返す。",
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } },
+          { "name": "cursor", "in": "query", "schema": { "type": "string" } },
+          { "name": "categoryId", "in": "query", "schema": { "type": "string" } },
+          { "name": "from", "in": "query", "schema": { "type": "string" } },
+          { "name": "to", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "records": { "type": "array", "items": { "type": "object", "properties": { "recordId": { "type": "string" }, "categoryId": { "type": "string" }, "memo": { "type": "string" }, "points": { "type": "number" }, "recordedAt": { "type": "string", "format": "date-time" }, "source": { "type": "string", "enum": ["MANUAL", "AUTO_DETECTED"] } }, "required": ["recordId", "categoryId", "points", "recordedAt", "source"] } }, "nextCursor": { "type": "string", "nullable": true }, "summary": { "type": "object", "properties": { "todayCount": { "type": "integer" }, "todayPoints": { "type": "number" }, "weekByCategory": { "type": "array", "items": { "type": "object", "properties": { "categoryId": { "type": "string" }, "count": { "type": "integer" }, "points": { "type": "number" } } } } }, "required": ["todayCount", "todayPoints", "weekByCategory"] } }, "required": ["records", "summary"] } } } }, "401": { "description": "未認証" } }
+      }
+    },
+    "/activities/{recordId}": {
+      "delete": {
+        "tags": ["Recording"],
+        "summary": "記録の削除",
+        "parameters": [{ "name": "recordId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "削除成功" }, "401": { "description": "未認証" }, "404": { "description": "未発見" } }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["Recording"],
+        "summary": "カテゴリ一覧取得",
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+
+    "/social/friends": {
+      "get": {
+        "tags": ["Friend"],
+        "summary": "フレンド一覧取得",
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "friends": { "type": "array", "items": { "type": "object" } } } } } } }, "401": { "description": "未認証" } }
+      }
+    },
+    "/social/friends/search": {
+      "post": {
+        "tags": ["Friend"],
+        "summary": "ユーザー検索",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "query": { "type": "string" } }, "required": ["query"] } } } },
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "users": { "type": "array", "items": { "type": "object" } } } } } } } }
+      }
+    },
+    "/social/friends/request": {
+      "post": {
+        "tags": ["Friend"],
+        "summary": "フレンド申請",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "targetUserId": { "type": "string" } }, "required": ["targetUserId"] } } } },
+        "responses": { "201": { "description": "申請成功" }, "401": { "description": "未認証" } }
+      }
+    },
+    "/social/friends/respond": {
+      "post": {
+        "tags": ["Friend"],
+        "summary": "フレンド申請応答",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "requestId": { "type": "string" }, "accept": { "type": "boolean" } }, "required": ["requestId", "accept"] } } } },
+        "responses": { "200": { "description": "成功" }, "401": { "description": "未認証" } }
+      }
+    },
+    "/social/friends/requests": {
+      "get": {
+        "tags": ["Friend"],
+        "summary": "受信フレンド申請一覧",
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "requests": { "type": "array", "items": { "type": "object" } } } } } } }, "401": { "description": "未認証" } }
+      }
+    },
+    "/social/friends/{friendId}": {
+      "delete": {
+        "tags": ["Friend"],
+        "summary": "フレンド削除",
+        "parameters": [{ "name": "friendId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "削除成功" }, "401": { "description": "未認証" } }
+      }
+    },
+    "/rankings": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "ランキング取得",
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "rankings": { "type": "array", "items": { "type": "object", "properties": { "userId": { "type": "string" }, "points": { "type": "number" }, "wins": { "type": "integer" }, "losses": { "type": "integer" } } } } } } } } } }
+      }
+    },
+    "/rankings/me": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "自分のランキング取得",
+        "responses": { "200": { "description": "成功" }, "401": { "description": "未認証" } }
+      }
+    },
+    "/battles/history": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "バトル履歴取得",
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "history": { "type": "array", "items": { "type": "object" } } } } } } }, "401": { "description": "未認証" } }
+      }
+    },
+    "/battles/history/{matchId}": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "バトル詳細取得",
+        "parameters": [{ "name": "matchId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" }, "401": { "description": "未認証" }, "404": { "description": "未発見" } }
+      }
+    },
+    "/admin/login": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "管理画面ログイン",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "user": { "type": "string" }, "password": { "type": "string" } }, "required": ["user", "password"] } } } },
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "token": { "type": "string" } } } } } }, "401": { "description": "認証失敗" } }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "アバター一覧",
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }, { "name": "token", "in": "query", "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/admin/users/{username}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "アバター詳細",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" } }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "アバター削除",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/admin/users/{username}/profile": {
+      "put": {
+        "tags": ["Admin"],
+        "summary": "アバター情報更新",
+        "description": "ニックネーム・メールおよびアバターのゲームデータ（ポイント・レベル等）を管理者が修正する。",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "nickname": { "type": "string" }, "email": { "type": "string" }, "totalPoints": { "type": "number" }, "level": { "type": "number" }, "evolutionStage": { "type": "number" }, "evolutionPathId": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "更新成功" }, "404": { "description": "未発見" } }
+      }
+    },
+    "/admin/users/{username}/disable": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "アカウント停止",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/admin/users/{username}/enable": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "アカウント復活",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+
+    "/admin/users/{username}/health-data": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "ヘルスデータ手動入力",
+        "parameters": [{ "name": "username", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "weight": { "type": "number" }, "bmi": { "type": "number" }, "steps": { "type": "number" }, "sleepHours": { "type": "number" }, "date": { "type": "string" } }, "required": ["date"] } } } },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/admin/evolution-paths": {
+      "get": { "tags": ["Admin"], "summary": "進化パス一覧", "responses": { "200": { "description": "成功" } } },
+      "post": { "tags": ["Admin"], "summary": "進化パス作成", "requestBody": { "content": { "application/json": { "schema": { "type": "object" } } } }, "responses": { "201": { "description": "作成成功" } } }
+    },
+    "/admin/evolution-paths/{pathId}": {
+      "put": { "tags": ["Admin"], "summary": "進化パス更新", "parameters": [{ "name": "pathId", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "content": { "application/json": { "schema": { "type": "object" } } } }, "responses": { "200": { "description": "成功" } } },
+      "delete": { "tags": ["Admin"], "summary": "進化パス削除", "parameters": [{ "name": "pathId", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "成功" } } }
+    },
+    "/admin/evolution-paths/{pathId}/skills": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "進化パスのスキル割り当て取得",
+        "parameters": [{ "name": "pathId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "skillIds": { "type": "array", "items": { "type": "string" } } } } } } } }
+      },
+      "put": {
+        "tags": ["Admin"],
+        "summary": "進化パスのスキル割り当て更新",
+        "description": "進化パスに割り当てるスキルID一覧を一括設定する。",
+        "parameters": [{ "name": "pathId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "skillIds": { "type": "array", "items": { "type": "string" } } }, "required": ["skillIds"] } } } },
+        "responses": { "200": { "description": "更新成功" }, "404": { "description": "進化パス未発見" } }
+      }
+    },
+    "/admin/skills": {
+      "get": { "tags": ["Admin"], "summary": "スキル一覧", "responses": { "200": { "description": "成功" } } },
+      "post": { "tags": ["Admin"], "summary": "スキル作成", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "name": { "type": "string" }, "type": { "type": "string", "enum": ["ATTACK", "DEFENSE", "DEBUFF", "HEAL"] }, "targetStat": { "type": "string", "enum": ["hp", "attack", "defense", "speed"], "description": "作用するステータス" }, "multiplier": { "type": "number", "description": "倍率（ATTACKなら攻撃力の1.5倍、DEFENSE/BUFF系なら0.3=30%UP）" }, "duration": { "type": "number", "description": "効果ターン数（バフ/デバフ用、ATTACK/HEALは不要）" }, "cooldown": { "type": "number", "description": "再使用までのターン数" }, "spriteAnimationKey": { "type": "string" } }, "required": ["name", "type", "targetStat", "multiplier", "cooldown", "spriteAnimationKey"] } } } }, "responses": { "201": { "description": "作成成功" } } }
+    },
+    "/admin/skills/{skillId}": {
+      "put": { "tags": ["Admin"], "summary": "スキル更新", "parameters": [{ "name": "skillId", "in": "path", "required": true, "schema": { "type": "string" } }], "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "name": { "type": "string" }, "type": { "type": "string", "enum": ["ATTACK", "DEFENSE", "DEBUFF", "HEAL"] }, "targetStat": { "type": "string", "enum": ["hp", "attack", "defense", "speed"] }, "multiplier": { "type": "number" }, "duration": { "type": "number" }, "cooldown": { "type": "number" }, "spriteAnimationKey": { "type": "string" } } } } } }, "responses": { "200": { "description": "成功" } } },
+      "delete": { "tags": ["Admin"], "summary": "スキル削除", "parameters": [{ "name": "skillId", "in": "path", "required": true, "schema": { "type": "string" } }], "responses": { "200": { "description": "成功" } } }
+    },
+    "/admin/game-config": {
+      "get": { "tags": ["Admin"], "summary": "ゲーム設定取得", "responses": { "200": { "description": "成功" } } },
+      "put": { "tags": ["Admin"], "summary": "ゲーム設定更新", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "configKey": { "type": "string" }, "value": {} }, "required": ["configKey", "value"] } } } }, "responses": { "200": { "description": "成功" } } }
+    },
+    "/admin/audit-log": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "操作ログ一覧",
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/admin/upload-url": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "S3 Presigned URL発行",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "fileName": { "type": "string" }, "contentType": { "type": "string" } }, "required": ["fileName", "contentType"] } } } },
+        "responses": { "200": { "description": "成功", "content": { "application/json": { "schema": { "type": "object", "properties": { "uploadUrl": { "type": "string" }, "key": { "type": "string" } } } } } } }
+      }
+    },
+    "/account": {
+      "delete": {
+        "tags": ["Auth"],
+        "summary": "ユーザー退会",
+        "description": "ユーザーアカウントと関連データをすべて削除する。",
+        "responses": { "200": { "description": "退会成功" }, "401": { "description": "未認証" } }
+      }
+    },
     "/avatar": {
       "post": {
         "tags": [
           "Avatar"
         ],
-        "summary": "アバターを作成",
+        "summary": "アバターを作成・名前を更新",
+        "description": "アバターが未作成の場合は新規作成し、既に存在する場合はnameを更新する。",
         "requestBody": {
           "content": {
             "application/json": {
@@ -148,24 +463,6 @@
           },
           "401": {
             "description": "認証エラー",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "既に存在",
             "content": {
               "application/json": {
                 "schema": {
@@ -608,504 +905,6 @@
                     "categoryBreakdown",
                     "categoryRatio",
                     "nextEvolution"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "認証エラー",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "未発見",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/points": {
-      "post": {
-        "tags": [
-          "Avatar"
-        ],
-        "summary": "ポイントを加算",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "points": {
-                    "type": "number",
-                    "minimum": 1
-                  },
-                  "categoryType": {
-                    "type": "string",
-                    "enum": [
-                      "FOOD",
-                      "LIFESTYLE",
-                      "MIXED"
-                    ]
-                  },
-                  "subCategoryId": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "points",
-                  "categoryType"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "加算成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "avatar": {
-                      "type": "object",
-                      "properties": {
-                        "avatarId": {
-                          "type": "string"
-                        },
-                        "userId": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "totalPoints": {
-                          "type": "number"
-                        },
-                        "level": {
-                          "type": "number"
-                        },
-                        "evolutionStage": {
-                          "type": "number"
-                        },
-                        "evolutionPathId": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "categoryPoints": {
-                          "type": "object",
-                          "properties": {
-                            "FOOD": {
-                              "type": "number"
-                            },
-                            "LIFESTYLE": {
-                              "type": "number"
-                            },
-                            "MIXED": {
-                              "type": "number"
-                            }
-                          }
-                        },
-                        "subCategoryPoints": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "number"
-                          }
-                        },
-                        "stats": {
-                          "type": "object",
-                          "properties": {
-                            "hp": {
-                              "type": "number"
-                            },
-                            "attack": {
-                              "type": "number"
-                            },
-                            "defense": {
-                              "type": "number"
-                            },
-                            "speed": {
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "hp",
-                            "attack",
-                            "defense",
-                            "speed"
-                          ]
-                        },
-                        "skillIds": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "spriteSheetKey": {
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "avatarId",
-                        "userId",
-                        "name",
-                        "totalPoints",
-                        "level",
-                        "evolutionStage",
-                        "evolutionPathId",
-                        "categoryPoints",
-                        "subCategoryPoints",
-                        "stats",
-                        "skillIds",
-                        "spriteSheetKey",
-                        "createdAt",
-                        "updatedAt"
-                      ]
-                    },
-                    "leveledUp": {
-                      "type": "boolean"
-                    },
-                    "evolved": {
-                      "type": "boolean"
-                    },
-                    "newSkills": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "skillId": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "ATTACK",
-                              "DEFENSE",
-                              "DEBUFF",
-                              "HEAL"
-                            ]
-                          },
-                          "power": {
-                            "type": "number"
-                          },
-                          "cooldown": {
-                            "type": "number"
-                          },
-                          "evolutionPathId": {
-                            "type": "string"
-                          },
-                          "requiredLevel": {
-                            "type": "number"
-                          },
-                          "spriteAnimationKey": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "skillId",
-                          "name",
-                          "type",
-                          "power",
-                          "cooldown",
-                          "evolutionPathId",
-                          "requiredLevel",
-                          "spriteAnimationKey"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "avatar",
-                    "leveledUp",
-                    "evolved",
-                    "newSkills"
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "認証エラー",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "未発見",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/points/deduct": {
-      "post": {
-        "tags": [
-          "Avatar"
-        ],
-        "summary": "ポイントを減算",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "points": {
-                    "type": "number",
-                    "minimum": 1
-                  },
-                  "categoryType": {
-                    "type": "string",
-                    "enum": [
-                      "FOOD",
-                      "LIFESTYLE",
-                      "MIXED"
-                    ]
-                  },
-                  "subCategoryId": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "points",
-                  "categoryType"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "減算成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "avatar": {
-                      "type": "object",
-                      "properties": {
-                        "avatarId": {
-                          "type": "string"
-                        },
-                        "userId": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "totalPoints": {
-                          "type": "number"
-                        },
-                        "level": {
-                          "type": "number"
-                        },
-                        "evolutionStage": {
-                          "type": "number"
-                        },
-                        "evolutionPathId": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "categoryPoints": {
-                          "type": "object",
-                          "properties": {
-                            "FOOD": {
-                              "type": "number"
-                            },
-                            "LIFESTYLE": {
-                              "type": "number"
-                            },
-                            "MIXED": {
-                              "type": "number"
-                            }
-                          }
-                        },
-                        "subCategoryPoints": {
-                          "type": "object",
-                          "additionalProperties": {
-                            "type": "number"
-                          }
-                        },
-                        "stats": {
-                          "type": "object",
-                          "properties": {
-                            "hp": {
-                              "type": "number"
-                            },
-                            "attack": {
-                              "type": "number"
-                            },
-                            "defense": {
-                              "type": "number"
-                            },
-                            "speed": {
-                              "type": "number"
-                            }
-                          },
-                          "required": [
-                            "hp",
-                            "attack",
-                            "defense",
-                            "speed"
-                          ]
-                        },
-                        "skillIds": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "spriteSheetKey": {
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "avatarId",
-                        "userId",
-                        "name",
-                        "totalPoints",
-                        "level",
-                        "evolutionStage",
-                        "evolutionPathId",
-                        "categoryPoints",
-                        "subCategoryPoints",
-                        "stats",
-                        "skillIds",
-                        "spriteSheetKey",
-                        "createdAt",
-                        "updatedAt"
-                      ]
-                    },
-                    "leveledDown": {
-                      "type": "boolean"
-                    },
-                    "devolved": {
-                      "type": "boolean"
-                    },
-                    "lostSkills": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "skillId": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "ATTACK",
-                              "DEFENSE",
-                              "DEBUFF",
-                              "HEAL"
-                            ]
-                          },
-                          "power": {
-                            "type": "number"
-                          },
-                          "cooldown": {
-                            "type": "number"
-                          },
-                          "evolutionPathId": {
-                            "type": "string"
-                          },
-                          "requiredLevel": {
-                            "type": "number"
-                          },
-                          "spriteAnimationKey": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "skillId",
-                          "name",
-                          "type",
-                          "power",
-                          "cooldown",
-                          "evolutionPathId",
-                          "requiredLevel",
-                          "spriteAnimationKey"
-                        ]
-                      }
-                    }
-                  },
-                  "required": [
-                    "avatar",
-                    "leveledDown",
-                    "devolved",
-                    "lostSkills"
                   ]
                 }
               }
