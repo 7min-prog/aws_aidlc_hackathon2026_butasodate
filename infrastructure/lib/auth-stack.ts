@@ -7,6 +7,8 @@ import * as path from 'path';
 import { Construct } from 'constructs';
 
 export class AuthStack extends cdk.Stack {
+  public readonly userPoolId: string;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -27,6 +29,8 @@ export class AuthStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+    this.userPoolId = userPool.userPoolId;
+
     const userPoolClient = new cognito.UserPoolClient(this, 'ButaUserPoolClient', {
       userPool,
       userPoolClientName: 'buta-app-client-dev',
@@ -39,15 +43,15 @@ export class AuthStack extends cdk.Stack {
       refreshTokenValidity: cdk.Duration.days(30),
     });
 
-    // DynamoDB Users Table
-    const usersTable = new dynamodb.Table(this, 'ButaUsersTable', {
-      tableName: 'buta-users-dev',
+    // DynamoDB User Profiles Table (ER図準拠: butasodate-user-profiles)
+    const userProfilesTable = new dynamodb.Table(this, 'UserProfilesTable', {
+      tableName: 'butasodate-user-profiles',
       partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    usersTable.addGlobalSecondaryIndex({
+    userProfilesTable.addGlobalSecondaryIndex({
       indexName: 'nickname-index',
       partitionKey: { name: 'nickname', type: dynamodb.AttributeType.STRING },
     });
@@ -64,15 +68,16 @@ export class AuthStack extends cdk.Stack {
       environment: {
         COGNITO_USER_POOL_ID: userPool.userPoolId,
         COGNITO_CLIENT_ID: userPoolClient.userPoolClientId,
-        USERS_TABLE_NAME: usersTable.tableName,
+        USER_PROFILES_TABLE_NAME: userProfilesTable.tableName,
       },
     });
 
     // Grant permissions
-    usersTable.grantReadWriteData(authHandler);
+    userProfilesTable.grantReadWriteData(authHandler);
     userPool.grant(authHandler,
       'cognito-idp:AdminGetUser',
       'cognito-idp:AdminUpdateUserAttributes',
+      'cognito-idp:AdminDeleteUser',
     );
 
     // API Gateway
@@ -97,35 +102,30 @@ export class AuthStack extends cdk.Stack {
       cognitoUserPools: [userPool],
     });
 
+    const authMethodOptions: apigateway.MethodOptions = {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+    };
+
     // /auth routes (no auth required)
     const auth = api.root.addResource('auth');
     auth.addResource('signup').addMethod('POST', lambdaIntegration);
     auth.addResource('confirm').addMethod('POST', lambdaIntegration);
     auth.addResource('resend-code').addMethod('POST', lambdaIntegration);
     auth.addResource('login').addMethod('POST', lambdaIntegration);
-    auth.addResource('logout').addMethod('POST', lambdaIntegration, {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    });
+    auth.addResource('logout').addMethod('POST', lambdaIntegration, authMethodOptions);
     auth.addResource('refresh').addMethod('POST', lambdaIntegration);
 
     // /users routes (auth required)
     const users = api.root.addResource('users');
-    const me = users.addResource('me');
-    me.addMethod('GET', lambdaIntegration, {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    });
+    users.addResource('me').addMethod('GET', lambdaIntegration, authMethodOptions);
 
     const profile = users.addResource('profile');
-    profile.addMethod('POST', lambdaIntegration, {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    });
-    profile.addMethod('PUT', lambdaIntegration, {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    });
+    profile.addMethod('POST', lambdaIntegration, authMethodOptions);
+    profile.addMethod('PUT', lambdaIntegration, authMethodOptions);
+
+    // DELETE /account (auth required) - ユーザー退会
+    api.root.addResource('account').addMethod('DELETE', lambdaIntegration, authMethodOptions);
 
     // Outputs
     new cdk.CfnOutput(this, 'ApiUrl', { value: api.url });

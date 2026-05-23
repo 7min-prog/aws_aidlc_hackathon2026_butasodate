@@ -2,8 +2,8 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { handle } from 'hono/aws-lambda';
 import { cors } from 'hono/cors';
 import * as avatarService from './services/avatar-service';
-import { getEvolutionPaths, getSkills } from './services/master-data-cache';
-import { pointsForLevel, STAGE2_LEVEL, STAGE3_LEVEL } from './services/evolution-engine';
+import { getPigSpecies, getEvolutionRoutes, getSkills, getGameConfig } from './services/master-data-cache';
+import { pointsForLevel } from './services/evolution-engine';
 import {
   AvatarSchema, SkillSchema, EvolutionHistorySchema,
   CreateAvatarRequestSchema, AddPointsRequestSchema, DeductPointsRequestSchema,
@@ -85,19 +85,19 @@ app.openapi(getAvatarRoute, async (c) => {
   const avatar = await avatarService.getAvatar(userId);
   if (!avatar) return c.json({ error: 'Avatar not found' }, 404);
 
-  const [paths, skills] = await Promise.all([getEvolutionPaths(), getSkills()]);
+  const [species, skills, config] = await Promise.all([getPigSpecies(), getSkills(), getGameConfig()]);
   const ownedSkills = skills.filter(s => avatar.skillIds.includes(s.skillId));
-  const evolutionPath = paths.find(p => p.pathId === avatar.evolutionPathId) || null;
+  const currentSpecies = species.find(s => s.speciesId === avatar.currentSpeciesId) || null;
 
-  const nextLevelPoints = pointsForLevel(avatar.level + 1) - avatar.totalPoints;
+  const nextLevelPoints = pointsForLevel(avatar.level + 1, config) - avatar.totalPoints;
   let nextEvolutionLevel: number | null = null;
-  if (avatar.evolutionStage === 1) nextEvolutionLevel = STAGE2_LEVEL;
-  else if (avatar.evolutionStage === 2) nextEvolutionLevel = STAGE3_LEVEL;
+  if (avatar.evolutionStage === 1) nextEvolutionLevel = config.EVOLUTION_LEVEL_STAGE2;
+  else if (avatar.evolutionStage === 2) nextEvolutionLevel = config.EVOLUTION_LEVEL_STAGE3;
 
   return c.json({
     avatar,
     skills: ownedSkills,
-    evolutionPath: evolutionPath ? { name: evolutionPath.name, description: evolutionPath.description } : null,
+    evolutionPath: currentSpecies ? { name: currentSpecies.name, description: currentSpecies.description } : null,
     progress: {
       nextLevelPoints: Math.max(0, nextLevelPoints),
       nextEvolutionLevel,
@@ -160,12 +160,13 @@ app.openapi(getScoreDetailRoute, async (c) => {
   const avatar = await avatarService.getAvatar(userId);
   if (!avatar) return c.json({ error: 'Avatar not found' }, 404);
 
+  const config = await getGameConfig();
   let nextEvolutionRequiredLevel: number | null = null;
-  if (avatar.evolutionStage === 1) nextEvolutionRequiredLevel = STAGE2_LEVEL;
-  else if (avatar.evolutionStage === 2) nextEvolutionRequiredLevel = STAGE3_LEVEL;
+  if (avatar.evolutionStage === 1) nextEvolutionRequiredLevel = config.EVOLUTION_LEVEL_STAGE2;
+  else if (avatar.evolutionStage === 2) nextEvolutionRequiredLevel = config.EVOLUTION_LEVEL_STAGE3;
 
   const remainingPoints = nextEvolutionRequiredLevel
-    ? Math.max(0, pointsForLevel(nextEvolutionRequiredLevel) - avatar.totalPoints)
+    ? Math.max(0, pointsForLevel(nextEvolutionRequiredLevel, config) - avatar.totalPoints)
     : null;
 
   return c.json({

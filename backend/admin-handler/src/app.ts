@@ -12,7 +12,7 @@ import { ScanCommand, GetCommand, PutCommand, DeleteCommand, QueryCommand } from
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { cognitoClient, USER_POOL_ID } from './utils/cognito-client';
-import { docClient, AVATAR_TABLE, EVOLUTION_PATH_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, RECORDING_TABLE } from './utils/dynamo-client';
+import { docClient, AVATAR_TABLE, PIG_SPECIES_TABLE, EVOLUTION_ROUTE_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, ACTIVITY_RECORD_TABLE } from './utils/dynamo-client';
 import { authMiddleware, validateBasicAuth, generateToken } from './utils/auth';
 import { writeAuditLog } from './utils/audit-log';
 
@@ -143,7 +143,7 @@ app.openapi(healthDataRoute, async (c) => {
   const { username } = c.req.valid('param');
   const body = c.req.valid('json');
   await docClient.send(new PutCommand({
-    TableName: RECORDING_TABLE,
+    TableName: ACTIVITY_RECORD_TABLE,
     Item: { userId: username, recordedAt: body.date, type: 'HEALTH_MANUAL', data: body, source: 'admin' },
   }));
   await writeAuditLog(c.get('operator'), 'CREATE', `health-data:${username}`, body);
@@ -156,7 +156,7 @@ const listPathsRoute = createRoute({
   responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ paths: z.array(z.any()) }) } } } },
 });
 app.openapi(listPathsRoute, async (c) => {
-  const res = await docClient.send(new ScanCommand({ TableName: EVOLUTION_PATH_TABLE }));
+  const res = await docClient.send(new ScanCommand({ TableName: PIG_SPECIES_TABLE }));
   return c.json({ paths: res.Items || [] }, 200);
 });
 
@@ -167,9 +167,9 @@ const createPathRoute = createRoute({
 });
 app.openapi(createPathRoute, async (c) => {
   const body = await c.req.json();
-  await docClient.send(new PutCommand({ TableName: EVOLUTION_PATH_TABLE, Item: body }));
-  await writeAuditLog(c.get('operator'), 'CREATE', `evolution-path:${body.pathId}`, body);
-  return c.json({ message: 'Path created' }, 201);
+  await docClient.send(new PutCommand({ TableName: PIG_SPECIES_TABLE, Item: body }));
+  await writeAuditLog(c.get('operator'), 'CREATE', `pig-species:${body.speciesId}`, body);
+  return c.json({ message: 'Species created' }, 201);
 });
 
 const updatePathRoute = createRoute({
@@ -180,9 +180,9 @@ const updatePathRoute = createRoute({
 app.openapi(updatePathRoute, async (c) => {
   const { pathId } = c.req.valid('param');
   const body = await c.req.json();
-  await docClient.send(new PutCommand({ TableName: EVOLUTION_PATH_TABLE, Item: { ...body, pathId } }));
-  await writeAuditLog(c.get('operator'), 'UPDATE', `evolution-path:${pathId}`, body);
-  return c.json({ message: 'Path updated' }, 200);
+  await docClient.send(new PutCommand({ TableName: PIG_SPECIES_TABLE, Item: { ...body, speciesId: pathId } }));
+  await writeAuditLog(c.get('operator'), 'UPDATE', `pig-species:${pathId}`, body);
+  return c.json({ message: 'Species updated' }, 200);
 });
 
 const deletePathRoute = createRoute({
@@ -192,9 +192,9 @@ const deletePathRoute = createRoute({
 });
 app.openapi(deletePathRoute, async (c) => {
   const { pathId } = c.req.valid('param');
-  await docClient.send(new DeleteCommand({ TableName: EVOLUTION_PATH_TABLE, Key: { pathId } }));
-  await writeAuditLog(c.get('operator'), 'DELETE', `evolution-path:${pathId}`);
-  return c.json({ message: 'Path deleted' }, 200);
+  await docClient.send(new DeleteCommand({ TableName: PIG_SPECIES_TABLE, Key: { speciesId: pathId } }));
+  await writeAuditLog(c.get('operator'), 'DELETE', `pig-species:${pathId}`);
+  return c.json({ message: 'Species deleted' }, 200);
 });
 
 // --- マスターデータ: スキル ---

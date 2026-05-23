@@ -10,7 +10,7 @@ const FRIENDS_TABLE = process.env.FRIENDS_TABLE || 'buta-friends-dev';
 const FRIEND_REQUESTS_TABLE = process.env.FRIEND_REQUESTS_TABLE || 'buta-friend-requests-dev';
 const RANKINGS_TABLE = process.env.RANKINGS_TABLE || 'buta-rankings-dev';
 const BATTLE_HISTORY_TABLE = process.env.BATTLE_HISTORY_TABLE || 'buta-battle-history-dev';
-const USERS_TABLE = process.env.USERS_TABLE || 'buta-users-dev';
+const USER_PROFILES_TABLE = process.env.USER_PROFILES_TABLE || 'butasodate-user-profiles';
 
 function getUserId(event: APIGatewayProxyEvent): string | null {
   return event.requestContext.authorizer?.claims?.sub || null;
@@ -57,7 +57,7 @@ async function searchUsers(event: APIGatewayProxyEvent) {
   if (!query) return errorResponse(400, 'query is required');
 
   const result = await client.send(new QueryCommand({
-    TableName: USERS_TABLE,
+    TableName: USER_PROFILES_TABLE,
     IndexName: 'nickname-index',
     KeyConditionExpression: 'nickname = :n',
     ExpressionAttributeValues: { ':n': query },
@@ -106,11 +106,11 @@ async function respondFriendRequest(event: APIGatewayProxyEvent) {
     const now = new Date().toISOString();
     await client.send(new PutCommand({
       TableName: FRIENDS_TABLE,
-      Item: { odataId: `${userId}#${req.Item.fromUserId}`, userId, friendId: req.Item.fromUserId, createdAt: now },
+      Item: { compositeId: `${userId}#${req.Item.fromUserId}`, userId, friendId: req.Item.fromUserId, createdAt: now },
     }));
     await client.send(new PutCommand({
       TableName: FRIENDS_TABLE,
-      Item: { odataId: `${req.Item.fromUserId}#${userId}`, userId: req.Item.fromUserId, friendId: userId, createdAt: now },
+      Item: { compositeId: `${req.Item.fromUserId}#${userId}`, userId: req.Item.fromUserId, friendId: userId, createdAt: now },
     }));
   }
 
@@ -119,9 +119,9 @@ async function respondFriendRequest(event: APIGatewayProxyEvent) {
   await client.send(new UpdateCommand({
     TableName: FRIEND_REQUESTS_TABLE,
     Key: { requestId },
-    UpdateExpression: 'SET #s = :status',
+    UpdateExpression: 'SET #s = :status, updatedAt = :now',
     ExpressionAttributeNames: { '#s': 'status' },
-    ExpressionAttributeValues: { ':status': accept ? 'ACCEPTED' : 'REJECTED' },
+    ExpressionAttributeValues: { ':status': accept ? 'ACCEPTED' : 'DECLINED', ':now': new Date().toISOString() },
   }));
 
   return successResponse(200, { message: accept ? 'Friend added' : 'Request rejected' });
@@ -134,8 +134,8 @@ async function removeFriend(event: APIGatewayProxyEvent) {
   const friendId = event.pathParameters?.id;
   if (!friendId) return errorResponse(400, 'friendId is required');
 
-  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { odataId: `${userId}#${friendId}` } }));
-  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { odataId: `${friendId}#${userId}` } }));
+  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { compositeId: `${userId}#${friendId}` } }));
+  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { compositeId: `${friendId}#${userId}` } }));
 
   return successResponse(200, { message: 'Friend removed' });
 }
@@ -185,7 +185,7 @@ async function getBattleHistory(event: APIGatewayProxyEvent) {
   const result = await client.send(new QueryCommand({
     TableName: BATTLE_HISTORY_TABLE,
     IndexName: 'userId-index',
-    KeyConditionExpression: 'odataUserId = :uid',
+    KeyConditionExpression: 'userId = :uid',
     ScanIndexForward: false,
     Limit: 50,
     ExpressionAttributeValues: { ':uid': userId },
@@ -203,7 +203,7 @@ async function getBattleDetail(event: APIGatewayProxyEvent) {
 
   const result = await client.send(new GetCommand({
     TableName: BATTLE_HISTORY_TABLE,
-    Key: { odataId: `${userId}#${matchId}` },
+    Key: { compositeId: `${userId}#${matchId}` },
   }));
 
   if (!result.Item) return errorResponse(404, 'Battle not found');

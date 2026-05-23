@@ -50,11 +50,13 @@ export class AdminStack extends cdk.Stack {
         JWT_SECRET: process.env.JWT_SECRET || 'admin-jwt-secret',
         USER_POOL_ID: props.userPoolId,
         AVATAR_TABLE_NAME: 'butasodate-avatars',
-        EVOLUTION_PATH_TABLE_NAME: 'butasodate-evolution-paths',
+        PIG_SPECIES_TABLE_NAME: 'butasodate-pig-species',
+        EVOLUTION_ROUTE_TABLE_NAME: 'butasodate-evolution-routes',
         SKILL_TABLE_NAME: 'butasodate-skills',
         AUDIT_LOG_TABLE_NAME: auditLogTable.tableName,
         GAME_CONFIG_TABLE_NAME: gameConfigTable.tableName,
-        RECORDING_TABLE_NAME: 'butasodate-recordings',
+        USER_PROFILES_TABLE_NAME: 'butasodate-user-profiles',
+        ACTIVITY_RECORD_TABLE_NAME: 'butasodate-activity-records',
         ASSETS_BUCKET_NAME: props.assetsBucketName,
       },
     });
@@ -64,10 +66,13 @@ export class AdminStack extends cdk.Stack {
     gameConfigTable.grantReadWriteData(adminHandler);
 
     // 既存テーブルへの権限（テーブル名で参照）
-    const existingTables = ['butasodate-avatars', 'butasodate-evolution-paths', 'butasodate-skills', 'butasodate-recordings'];
+    const existingTables = ['butasodate-avatars', 'butasodate-pig-species', 'butasodate-evolution-routes', 'butasodate-skills', 'butasodate-activity-records', 'butasodate-user-profiles'];
     adminHandler.addToRolePolicy(new iam.PolicyStatement({
-      actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Scan', 'dynamodb:Query'],
-      resources: existingTables.map(t => `arn:aws:dynamodb:${this.region}:${this.account}:table/${t}`),
+      actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:DeleteItem', 'dynamodb:Scan', 'dynamodb:Query'],
+      resources: existingTables.flatMap(t => [
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/${t}`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/${t}/index/*`,
+      ]),
     }));
 
     // Cognito権限

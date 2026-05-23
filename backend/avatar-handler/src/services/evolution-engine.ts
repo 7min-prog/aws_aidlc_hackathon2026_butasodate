@@ -1,139 +1,135 @@
-import { Avatar, AvatarStats, CategoryType, EvolutionPath, Skill } from '../types';
+import { Avatar, AvatarStats, CategoryType, PigSpecies, EvolutionRoute, Skill, GameConfig } from '../types';
 
-// --- 定数定義 ---
-export const INITIAL_STATS: AvatarStats = { hp: 50, attack: 10, defense: 10, speed: 10 };
-export const DEFAULT_STATS_GROWTH: AvatarStats = { hp: 5, attack: 3, defense: 3, speed: 3 };
-export const MAX_LEVEL = 30;
-export const STAGE2_LEVEL = 5;
-export const STAGE3_LEVEL = 15;
-export const CATEGORY_THRESHOLD = 0.6;
-export const POINTS_PER_LEVEL_FACTOR = 50;
-export const DEFAULT_SPRITE_KEY = 'sprites/stage1/default';
-export const DEFAULT_AVATAR_NAME = 'ぶたさん';
+const DEFAULT_STATS_GROWTH: AvatarStats = { hp: 5, attack: 3, defense: 3, speed: 3 };
+const DEFAULT_SPRITE_KEY = 'sprites/stage1/default';
 
-/** 累計ポイントからレベルを算出: N×(N+1)×POINTS_PER_LEVEL_FACTOR <= totalPoints を満たす最大N */
-export function calculateLevel(totalPoints: number): number {
+export function calculateLevel(totalPoints: number, config: GameConfig): number {
   if (totalPoints <= 0) return 1;
-  const f = POINTS_PER_LEVEL_FACTOR;
+  const f = config.LEVEL_FORMULA_COEFFICIENT;
   const n = Math.floor((-f + Math.sqrt(f * f + 4 * f * totalPoints)) / (2 * f));
-  return Math.max(1, Math.min(MAX_LEVEL, n));
+  return Math.max(1, Math.min(config.MAX_LEVEL, n));
 }
 
-/** レベルNに必要な累計ポイント */
-export function pointsForLevel(level: number): number {
-  return level * (level + 1) * POINTS_PER_LEVEL_FACTOR;
+export function pointsForLevel(level: number, config: GameConfig): number {
+  return level * (level + 1) * config.LEVEL_FORMULA_COEFFICIENT;
 }
 
-/** 第2段階の進化パスを判定 */
-export function determineStage2Path(
-  categoryPoints: Record<CategoryType, number>,
-  totalPoints: number,
-  paths: EvolutionPath[],
-): EvolutionPath | null {
-  const stage2Paths = paths.filter(p => p.stage === 2);
-  const foodRatio = totalPoints > 0 ? (categoryPoints.FOOD || 0) / totalPoints : 0;
-  const lifestyleRatio = totalPoints > 0 ? (categoryPoints.LIFESTYLE || 0) / totalPoints : 0;
-
-  let dominant: CategoryType;
-  if (foodRatio >= CATEGORY_THRESHOLD) dominant = 'FOOD';
-  else if (lifestyleRatio >= CATEGORY_THRESHOLD) dominant = 'LIFESTYLE';
-  else dominant = 'MIXED';
-
-  return stage2Paths.find(p => p.dominantCategory === dominant) || null;
+/** 進化先のSpeciesを判定（EvolutionRouteベース） */
+export function determineEvolution(
+  avatar: Avatar,
+  newLevel: number,
+  species: PigSpecies[],
+  routes: EvolutionRoute[],
+  config: GameConfig,
+): PigSpecies | null {
+  if (avatar.evolutionStage === 1 && newLevel >= config.EVOLUTION_LEVEL_STAGE2) {
+    return findNextSpecies(avatar, null, species, routes, config);
+  }
+  if (avatar.evolutionStage === 2 && newLevel >= config.EVOLUTION_LEVEL_STAGE3 && avatar.currentSpeciesId) {
+    return findNextSpecies(avatar, avatar.currentSpeciesId, species, routes, config);
+  }
+  return null;
 }
 
-/** 第3段階の進化パスを判定 */
-export function determineStage3Path(
-  currentPathId: string,
-  subCategoryPoints: Record<string, number>,
-  paths: EvolutionPath[],
-): EvolutionPath | null {
-  const candidates = paths.filter(p => p.stage === 3 && p.parentPathId === currentPathId);
-  if (candidates.length === 0) return null;
+function findNextSpecies(
+  avatar: Avatar,
+  fromSpeciesId: string | null,
+  species: PigSpecies[],
+  routes: EvolutionRoute[],
+  config: GameConfig,
+): PigSpecies | null {
+  // ルートを探す: fromSpeciesId=null (stage1はspecies未設定) の場合はstage=1からのルートを検索
+  const candidates = fromSpeciesId
+    ? routes.filter(r => r.fromSpeciesId === fromSpeciesId)
+    : routes.filter(r => {
+        const fromSpecies = species.find(s => s.speciesId === r.fromSpeciesId);
+        return fromSpecies && fromSpecies.stage === 1;
+      });
 
-  for (const candidate of candidates) {
-    if (!candidate.subCategoryIds || !candidate.subCategoryThreshold) continue;
-    const relevantPoints = candidate.subCategoryIds.reduce(
-      (sum, id) => sum + (subCategoryPoints[id] || 0), 0,
-    );
-    const totalSubPoints = Object.values(subCategoryPoints).reduce((a, b) => a + b, 0);
-    if (totalSubPoints > 0 && relevantPoints / totalSubPoints >= candidate.subCategoryThreshold) {
-      return candidate;
+  // 条件に合うルートを優先度順にチェック
+  const sorted = [...candidates].sort((a, b) => a.priority - b.priority);
+
+  for (const route of sorted) {
+    if (meetsCondition(avatar, route, config)) {
+      return species.find(s => s.speciesId === route.toSpeciesId) || null;
     }
   }
 
-  // どちらも閾値未満 → ランダム
-  return candidates[Math.floor(Math.random() * candidates.length)];
-}
-
-/** 進化判定 */
-export function checkEvolution(
-  avatar: Avatar,
-  newLevel: number,
-  paths: EvolutionPath[],
-): EvolutionPath | null {
-  if (avatar.evolutionStage === 1 && newLevel >= STAGE2_LEVEL) {
-    return determineStage2Path(avatar.categoryPoints, avatar.totalPoints, paths);
-  }
-  if (avatar.evolutionStage === 2 && newLevel >= STAGE3_LEVEL && avatar.evolutionPathId) {
-    return determineStage3Path(avatar.evolutionPathId, avatar.subCategoryPoints, paths);
+  // どれも閾値未満 → 最初の候補にフォールバック
+  if (sorted.length > 0) {
+    return species.find(s => s.speciesId === sorted[0].toSpeciesId) || null;
   }
   return null;
+}
+
+function meetsCondition(avatar: Avatar, route: EvolutionRoute, config: GameConfig): boolean {
+  const total = avatar.totalPoints;
+  if (total === 0) return false;
+
+  // サブカテゴリ条件がある場合
+  if (route.subCategoryIds && route.subCategoryThreshold) {
+    const relevantPoints = route.subCategoryIds.reduce(
+      (sum, id) => sum + (avatar.subCategoryPoints[id] || 0), 0,
+    );
+    const categoryTotal = avatar.categoryPoints[route.conditionCategory] || 0;
+    return categoryTotal > 0 && relevantPoints / categoryTotal >= route.subCategoryThreshold;
+  }
+
+  // カテゴリ比率条件
+  const ratio = (avatar.categoryPoints[route.conditionCategory] || 0) / total;
+  return ratio >= route.categoryThreshold;
 }
 
 /** 退化判定 */
 export function checkDevolution(
   avatar: Avatar,
   newLevel: number,
-  paths: EvolutionPath[],
-): { newStage: number; newPathId: string | null; newSpriteKey: string } | null {
-  if (avatar.evolutionStage === 3 && newLevel < STAGE3_LEVEL) {
-    const currentPath = paths.find(p => p.pathId === avatar.evolutionPathId);
-    const parentPath = currentPath ? paths.find(p => p.pathId === currentPath.parentPathId) : null;
+  species: PigSpecies[],
+  routes: EvolutionRoute[],
+  config: GameConfig,
+): { newStage: number; newSpeciesId: string | null; newSpriteKey: string } | null {
+  if (avatar.evolutionStage === 3 && newLevel < config.EVOLUTION_LEVEL_STAGE3) {
+    // 逆引き: 現在のspeciesに到達するルートのfromSpeciesIdに戻る
+    const incomingRoute = routes.find(r => r.toSpeciesId === avatar.currentSpeciesId);
+    const parentSpecies = incomingRoute ? species.find(s => s.speciesId === incomingRoute.fromSpeciesId) : null;
     return {
       newStage: 2,
-      newPathId: parentPath?.pathId || null,
-      newSpriteKey: parentPath?.spriteSheetKey || DEFAULT_SPRITE_KEY,
+      newSpeciesId: parentSpecies?.speciesId || null,
+      newSpriteKey: parentSpecies?.spriteSheetKey || DEFAULT_SPRITE_KEY,
     };
   }
-  if (avatar.evolutionStage === 2 && newLevel < STAGE2_LEVEL) {
-    return { newStage: 1, newPathId: null, newSpriteKey: DEFAULT_SPRITE_KEY };
+  if (avatar.evolutionStage === 2 && newLevel < config.EVOLUTION_LEVEL_STAGE2) {
+    return { newStage: 1, newSpeciesId: null, newSpriteKey: DEFAULT_SPRITE_KEY };
   }
   return null;
 }
 
 /** スキル習得判定 */
-export function checkSkillAcquisition(
-  avatar: Avatar,
-  skills: Skill[],
-): Skill[] {
-  if (!avatar.evolutionPathId) return [];
+export function checkSkillAcquisition(avatar: Avatar, skills: Skill[]): Skill[] {
+  if (!avatar.currentSpeciesId) return [];
   return skills.filter(s =>
-    s.evolutionPathId === avatar.evolutionPathId &&
+    s.speciesId === avatar.currentSpeciesId &&
     s.requiredLevel <= avatar.level &&
     !avatar.skillIds.includes(s.skillId),
   );
 }
 
 /** 退化時に失うスキル */
-export function getSkillsToLose(
-  avatar: Avatar,
-  lostPathId: string,
-  skills: Skill[],
-): Skill[] {
+export function getSkillsToLose(avatar: Avatar, lostSpeciesId: string, skills: Skill[]): Skill[] {
   return skills.filter(s =>
-    s.evolutionPathId === lostPathId &&
+    s.speciesId === lostSpeciesId &&
     avatar.skillIds.includes(s.skillId),
   );
 }
 
 /** ステータス再計算 */
-export function recalculateStats(level: number, path: EvolutionPath | null): AvatarStats {
-  const growth = path?.statsGrowth || DEFAULT_STATS_GROWTH;
+export function recalculateStats(level: number, currentSpecies: PigSpecies | null, config: GameConfig): AvatarStats {
+  const growth = currentSpecies?.statsGrowth || DEFAULT_STATS_GROWTH;
+  const initial = config.INITIAL_STATS;
   return {
-    hp: INITIAL_STATS.hp + (level - 1) * growth.hp,
-    attack: INITIAL_STATS.attack + (level - 1) * growth.attack,
-    defense: INITIAL_STATS.defense + (level - 1) * growth.defense,
-    speed: INITIAL_STATS.speed + (level - 1) * growth.speed,
+    hp: initial.hp + (level - 1) * growth.hp,
+    attack: initial.attack + (level - 1) * growth.attack,
+    defense: initial.defense + (level - 1) * growth.defense,
+    speed: initial.speed + (level - 1) * growth.speed,
   };
 }
