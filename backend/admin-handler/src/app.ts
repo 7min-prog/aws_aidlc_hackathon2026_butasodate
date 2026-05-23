@@ -12,7 +12,7 @@ import { ScanCommand, GetCommand, PutCommand, DeleteCommand, QueryCommand } from
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { cognitoClient, USER_POOL_ID } from './utils/cognito-client';
-import { docClient, AVATAR_TABLE, PIG_SPECIES_TABLE, EVOLUTION_ROUTE_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, ACTIVITY_RECORD_TABLE } from './utils/dynamo-client';
+import { docClient, AVATAR_TABLE, PIG_SPECIES_TABLE, EVOLUTION_ROUTE_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, ACTIVITY_RECORD_TABLE, USER_PROFILES_TABLE } from './utils/dynamo-client';
 import { authMiddleware, validateBasicAuth, generateToken } from './utils/auth';
 import { writeAuditLog } from './utils/audit-log';
 
@@ -124,6 +124,54 @@ app.openapi(updateAvatarRoute, async (c) => {
   await docClient.send(new PutCommand({ TableName: AVATAR_TABLE, Item: { ...body, userId: username } }));
   await writeAuditLog(c.get('operator'), 'UPDATE', `avatar:${username}`, body);
   return c.json({ message: 'Avatar updated' }, 200);
+});
+
+// --- プロフィール+ゲームデータ修正 (OpenAPI準拠) ---
+const updateProfileRoute = createRoute({
+  method: 'put', path: '/admin/users/{username}/profile', tags: ['GameData'], summary: 'アバター情報更新',
+  request: { params: z.object({ username: z.string() }), body: { content: { 'application/json': { schema: z.object({
+    nickname: z.string().optional(), email: z.string().optional(),
+    totalPoints: z.number().optional(), level: z.number().optional(),
+    evolutionStage: z.number().optional(), evolutionPathId: z.string().optional(),
+  }) } } } },
+  responses: {
+    200: { description: '更新成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } },
+    404: { description: '未発見', content: { 'application/json': { schema: z.object({ error: z.string() }) } } },
+  },
+});
+app.openapi(updateProfileRoute, async (c) => {
+  const { username } = c.req.valid('param');
+  const body = c.req.valid('json');
+
+  // Update avatar game data if provided
+  const gameFields: Record<string, any> = {};
+  if (body.totalPoints !== undefined) gameFields.totalPoints = body.totalPoints;
+  if (body.level !== undefined) gameFields.level = body.level;
+  if (body.evolutionStage !== undefined) gameFields.evolutionStage = body.evolutionStage;
+  if (body.evolutionPathId !== undefined) gameFields.currentSpeciesId = body.evolutionPathId;
+
+  if (Object.keys(gameFields).length > 0) {
+    const existing = await docClient.send(new GetCommand({ TableName: AVATAR_TABLE, Key: { userId: username } }));
+    if (!existing.Item) return c.json({ error: 'Avatar not found' }, 404);
+    await docClient.send(new PutCommand({ TableName: AVATAR_TABLE, Item: { ...existing.Item, ...gameFields, updatedAt: new Date().toISOString() } }));
+  }
+
+  // Update profile (nickname/email) in user-profiles table
+  if (body.nickname || body.email) {
+    const { UpdateCommand } = await import('@aws-sdk/lib-dynamodb');
+    const exprs: string[] = [];
+    const values: Record<string, any> = {};
+    if (body.nickname) { exprs.push('nickname = :n'); values[':n'] = body.nickname; }
+    if (body.email) { exprs.push('email = :e'); values[':e'] = body.email; }
+    exprs.push('updatedAt = :now'); values[':now'] = new Date().toISOString();
+    await docClient.send(new UpdateCommand({
+      TableName: USER_PROFILES_TABLE, Key: { userId: username },
+      UpdateExpression: `SET ${exprs.join(', ')}`, ExpressionAttributeValues: values,
+    }));
+  }
+
+  await writeAuditLog(c.get('operator'), 'UPDATE', `profile:${username}`, body);
+  return c.json({ message: 'Profile updated' }, 200);
 });
 
 // --- ヘルスデータ手動入力 ---

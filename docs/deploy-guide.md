@@ -154,7 +154,19 @@ aws cloudformation describe-stacks --region ap-northeast-1 \
   --query "Stacks[].Outputs[].[OutputKey,OutputValue]" --output table
 ```
 
-## 6. 疎通テスト
+## 6. 管理画面SPAデプロイ
+
+```bash
+cd admin
+npm install
+npm run build
+aws s3 sync dist/ s3://butasodate-admin-spa-{accountId}-dev --delete --region ap-northeast-1
+```
+
+※ `{accountId}` は `aws sts get-caller-identity --query Account --output text` で取得。
+デプロイ後、`ButaAdminStack.AdminSpaUrl`（CloudFront URL）でアクセス可能。
+
+## 7. 疎通テスト
 
 ```bash
 # サインアップ
@@ -180,7 +192,7 @@ curl -X POST https://{RecordingApiUrl}/activities \
   -d '{"records":[{"categoryId":"food_late_ramen"}]}'
 ```
 
-## 7. 削除（クリーンアップ）
+## 8. 削除（クリーンアップ）
 
 ```bash
 cd infrastructure

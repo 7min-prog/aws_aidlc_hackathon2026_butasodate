@@ -33,14 +33,6 @@ export class RecordingStack extends cdk.Stack {
       sortKey: { name: 'gsi1sk', type: dynamodb.AttributeType.STRING },
     });
 
-    const healthSyncTable = new dynamodb.Table(this, 'HealthSyncTable', {
-      tableName: 'butasodate-health-sync-records',
-      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
     const categoryTable = new dynamodb.Table(this, 'ActivityCategoryTable', {
       tableName: 'butasodate-activity-categories',
       partitionKey: { name: 'categoryId', type: dynamodb.AttributeType.STRING },
@@ -51,7 +43,6 @@ export class RecordingStack extends cdk.Stack {
     // Lambda Functions
     const commonEnv = {
       ACTIVITY_RECORD_TABLE: activityRecordTable.tableName,
-      HEALTH_SYNC_TABLE: healthSyncTable.tableName,
       ACTIVITY_CATEGORY_TABLE: categoryTable.tableName,
       AVATAR_TABLE_NAME: 'butasodate-avatars',
       EVOLUTION_HISTORY_TABLE_NAME: 'butasodate-evolution-history',
@@ -83,7 +74,6 @@ export class RecordingStack extends cdk.Stack {
 
     // Grant DynamoDB permissions
     activityRecordTable.grantReadWriteData(recordingFn);
-    healthSyncTable.grantReadWriteData(recordingFn);
     categoryTable.grantReadData(recordingFn);
     categoryTable.grantReadData(categoriesFn);
 
