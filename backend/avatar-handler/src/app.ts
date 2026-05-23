@@ -18,9 +18,13 @@ app.use('*', cors({
 }));
 
 // ユーザーID取得ヘルパー
-function getUserId(c: { req: { header: (name: string) => string | undefined } }): string | null {
-  // API Gateway経由ではLambdaイベントのauthorizerから取得
-  // Honoアダプター経由ではヘッダーから取得
+function getUserId(c: { req: { header: (name: string) => string | undefined; raw: any } }): string | null {
+  // Hono aws-lambda adapter: raw event is accessible via c.env.event
+  const event = (c as any).env?.event;
+  if (event?.requestContext?.authorizer?.claims?.sub) {
+    return event.requestContext.authorizer.claims.sub;
+  }
+  // Fallback for direct header (testing)
   return c.req.header('x-user-id') || null;
 }
 

@@ -1,8 +1,5 @@
-import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
+import { addPoints as avatarAddPoints, deductPoints as avatarDeductPoints, AvatarPointsResult } from '../services/avatar-points-service';
 import { AvatarStatus } from '../types';
-
-const lambda = new LambdaClient({});
-const AVATAR_FUNCTION = process.env.AVATAR_FUNCTION_NAME || 'buta-avatar-handler-dev';
 
 export async function addPoints(
   userId: string,
@@ -10,22 +7,8 @@ export async function addPoints(
   categoryType: string,
   subCategoryId?: string,
 ): Promise<AvatarStatus> {
-  const payload = {
-    httpMethod: 'POST',
-    path: '/avatar/points',
-    headers: { 'x-user-id': userId, 'content-type': 'application/json' },
-    body: JSON.stringify({ points, categoryType, subCategoryId }),
-    requestContext: { authorizer: { claims: { sub: userId } } },
-  };
-
-  const res = await lambda.send(new InvokeCommand({
-    FunctionName: AVATAR_FUNCTION,
-    Payload: Buffer.from(JSON.stringify(payload)),
-  }));
-
-  const body = JSON.parse(Buffer.from(res.Payload!).toString());
-  const parsed = JSON.parse(body.body || '{}');
-  return parsed.avatar || { totalPoints: points, level: 1 };
+  const result = await avatarAddPoints(userId, points, categoryType, subCategoryId);
+  return { totalPoints: result.totalPoints, level: result.level };
 }
 
 export async function deductPoints(
@@ -33,23 +16,6 @@ export async function deductPoints(
   points: number,
   categoryId: string,
 ): Promise<{ avatarStatus: AvatarStatus; devolutionOccurred: boolean }> {
-  const payload = {
-    httpMethod: 'POST',
-    path: '/avatar/points/deduct',
-    headers: { 'x-user-id': userId, 'content-type': 'application/json' },
-    body: JSON.stringify({ points, categoryType: 'FOOD', subCategoryId: categoryId }),
-    requestContext: { authorizer: { claims: { sub: userId } } },
-  };
-
-  const res = await lambda.send(new InvokeCommand({
-    FunctionName: AVATAR_FUNCTION,
-    Payload: Buffer.from(JSON.stringify(payload)),
-  }));
-
-  const body = JSON.parse(Buffer.from(res.Payload!).toString());
-  const parsed = JSON.parse(body.body || '{}');
-  return {
-    avatarStatus: parsed.avatar || { totalPoints: 0, level: 1 },
-    devolutionOccurred: parsed.devolved || false,
-  };
+  const result = await avatarDeductPoints(userId, points, 'FOOD', categoryId);
+  return { avatarStatus: { totalPoints: result.totalPoints, level: result.level }, devolutionOccurred: result.devolved };
 }

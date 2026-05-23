@@ -53,7 +53,12 @@ export class RecordingStack extends cdk.Stack {
       ACTIVITY_RECORD_TABLE: activityRecordTable.tableName,
       HEALTH_SYNC_TABLE: healthSyncTable.tableName,
       ACTIVITY_CATEGORY_TABLE: categoryTable.tableName,
-      AVATAR_FUNCTION_NAME: 'buta-avatar-handler-dev',
+      AVATAR_TABLE_NAME: 'butasodate-avatars',
+      EVOLUTION_HISTORY_TABLE_NAME: 'butasodate-evolution-history',
+      PIG_SPECIES_TABLE_NAME: 'butasodate-pig-species',
+      EVOLUTION_ROUTE_TABLE_NAME: 'butasodate-evolution-routes',
+      SKILL_TABLE_NAME: 'butasodate-skills',
+      GAME_CONFIG_TABLE_NAME: 'butasodate-game-config',
     };
 
     const recordingFn = new lambda.Function(this, 'RecordingFunction', {
@@ -82,10 +87,17 @@ export class RecordingStack extends cdk.Stack {
     categoryTable.grantReadData(recordingFn);
     categoryTable.grantReadData(categoriesFn);
 
-    // Grant Lambda invoke permission for avatar-handler
+    // Grant access to avatar-related tables (addPoints/deductPoints runs in-process)
     recordingFn.addToRolePolicy(new cdk.aws_iam.PolicyStatement({
-      actions: ['lambda:InvokeFunction'],
-      resources: [`arn:aws:lambda:${this.region}:${this.account}:function:buta-avatar-handler-dev`],
+      actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:Query', 'dynamodb:Scan'],
+      resources: [
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-avatars`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-evolution-history`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-pig-species`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-evolution-routes`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-skills`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-game-config`,
+      ],
     }));
 
     // API Gateway
