@@ -65,16 +65,6 @@ export class RecordingStack extends cdk.Stack {
       environment: commonEnv,
     });
 
-    const healthSyncFn = new lambda.Function(this, 'HealthSyncFunction', {
-      functionName: 'buta-health-sync-handler',
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/health-sync.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
-      memorySize: 256,
-      timeout: cdk.Duration.seconds(15),
-      environment: commonEnv,
-    });
-
     const categoriesFn = new lambda.Function(this, 'CategoriesFunction', {
       functionName: 'buta-categories-handler',
       runtime: lambda.Runtime.NODEJS_20_X,
@@ -87,11 +77,9 @@ export class RecordingStack extends cdk.Stack {
 
     // Grant DynamoDB permissions
     activityRecordTable.grantReadWriteData(recordingFn);
-    activityRecordTable.grantReadWriteData(healthSyncFn);
-    healthSyncTable.grantReadWriteData(healthSyncFn);
+    healthSyncTable.grantReadWriteData(recordingFn);
     categoryTable.grantReadData(recordingFn);
     categoryTable.grantReadData(categoriesFn);
-    categoryTable.grantReadData(healthSyncFn);
 
     // API Gateway
     const api = new apigateway.RestApi(this, 'ButaRecordingApi', {
@@ -132,9 +120,6 @@ export class RecordingStack extends cdk.Stack {
 
     const categoriesVersion = categories.addResource('version');
     categoriesVersion.addMethod('GET', new apigateway.LambdaIntegration(categoriesFn), authMethodOptions);
-
-    const healthSync = api.root.addResource('health-sync');
-    healthSync.addMethod('POST', new apigateway.LambdaIntegration(healthSyncFn), authMethodOptions);
 
     // Output
     new cdk.CfnOutput(this, 'RecordingApiUrl', { value: api.url });
