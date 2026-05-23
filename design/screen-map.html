@@ -62,11 +62,24 @@ td{background:var(--paper);}
 <div class="item"><div class="dot tag-avatar"></div>アバター</div>
 <div class="item"><div class="dot tag-battle"></div>バトル</div>
 <div class="item"><div class="dot tag-social"></div>ソーシャル</div>
-<div class="item"><div class="dot tag-settings"></div>設定</div>
+<div class="item"><div class="dot tag-settings"></div>アカウント</div>
 </div>
 
 <!-- ===== 画面一覧 ===== -->
 <h2><span class="num">01</span>画面一覧</h2>
+
+<h3>起動（LAUNCH）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">X-00</div><div class="name">スタート画面</div><div class="desc">アプリタイトルロゴ、ぶたキャラクター表示、「タップしてスタート」。タップでスプラッシュへ遷移</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-01</div><div class="name">スプラッシュ画面</div><div class="desc">アプリロゴ表示、初期化処理中のローディングアニメーション</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-02</div><div class="name">ローディング画面</div><div class="desc">データ同期中のプログレス表示、ぶたアニメーション</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-03</div><div class="name">エラー画面</div><div class="desc">ネットワークエラー・サーバーエラー時の表示。リトライボタン付き</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-04</div><div class="name">メンテナンス画面</div><div class="desc">サーバーメンテナンス中の案内表示。予定終了時刻を表示</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-05</div><div class="name">強制アップデート画面</div><div class="desc">アプリバージョンが古い場合のストア誘導。更新ボタンでストアへ遷移</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-06a</div><div class="name">チュートリアル1</div><div class="desc">「ダメなじぶんを きろくしよう！」記録機能の説明。ピンクのぶたイラスト付き</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-06b</div><div class="name">チュートリアル2</div><div class="desc">「ぶたが どんどん そだっていく！」育成機能の説明。成長した赤いぶたイラスト付き</div><span class="tag tag-home">LAUNCH</span></div>
+<div class="screen-card"><div class="id">X-06c</div><div class="name">チュートリアル3</div><div class="desc">「そだてた ぶたで バトルだ！」バトル機能の説明。青いぶたイラスト付き。「はじめる！」ボタンでログインへ</div><span class="tag tag-home">LAUNCH</span></div>
+</div>
 
 <h3>認証フロー（AUTH）</h3>
 <div class="screen-grid">
@@ -81,7 +94,7 @@ td{background:var(--paper);}
 <div class="screen-card"><div class="id">M-01</div><div class="name">ホーム画面</div><div class="desc">ぶたアバター表示（中央）、LV/EXPバー、スコア、行動記録ボタン、今日の記録サマリー</div><span class="tag tag-home">HOME</span></div>
 <div class="screen-card"><div class="id">M-02</div><div class="name">記録タブ画面</div><div class="desc">記録履歴一覧（日別）、カレンダー表示切替、統計サマリー</div><span class="tag tag-record">RECORD</span></div>
 <div class="screen-card"><div class="id">M-03</div><div class="name">バトルタブ画面</div><div class="desc">ランダムマッチボタン、フレンド対戦ボタン、バトル履歴、ランキング</div><span class="tag tag-battle">BATTLE</span></div>
-<div class="screen-card"><div class="id">M-04</div><div class="name">設定タブ画面</div><div class="desc">プロフィール、ヘルスデータ連携、通知設定、アカウント管理</div><span class="tag tag-settings">SETTINGS</span></div>
+<div class="screen-card"><div class="id">M-04</div><div class="name">アカウントタブ画面</div><div class="desc">プロフィール、ヘルスデータ連携、通知設定、アカウント管理</div><span class="tag tag-settings">ACCOUNT</span></div>
 </div>
 
 <h3>記録フロー（RECORD）</h3>
@@ -90,6 +103,20 @@ td{background:var(--paper);}
 <div class="screen-card"><div class="id">R-02</div><div class="name">記録確認画面</div><div class="desc">選択カテゴリ表示、日時選択、メモ入力（任意）、記録ボタン</div><span class="tag tag-record">RECORD</span></div>
 <div class="screen-card"><div class="id">R-03</div><div class="name">記録完了画面</div><div class="desc">ぶた喜びリアクション、獲得ポイント表示（+50pt!）、ホームへ戻るボタン</div><span class="tag tag-record">RECORD</span><span class="tag tag-avatar">AVATAR</span></div>
 <div class="screen-card"><div class="id">R-04</div><div class="name">記録詳細画面</div><div class="desc">個別記録の詳細表示、編集・削除</div><span class="tag tag-record">RECORD</span></div>
+</div>
+
+<h3>ヘルスケア連携（HEALTH）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">H-01</div><div class="name">ヘルスデータ同期結果ダイアログ</div><div class="desc">アプリ起動時のヘルスデータ自動同期完了後に表示。体重増加・歩数減少・睡眠時間超過などの検出項目と獲得ポイントを一覧表示。「やったね！」ボタンで閉じる</div><span class="tag tag-record">HEALTH</span><span class="tag tag-avatar">AVATAR</span></div>
+</div>
+
+<h3>ダイアログ（DIALOG）</h3>
+<div class="screen-grid">
+<div class="screen-card"><div class="id">D-01</div><div class="name">ログアウト確認ダイアログ</div><div class="desc">「ほんとうに ログアウトしますか？」確認メッセージ。「はい」「いいえ」ボタン</div><span class="tag tag-settings">ACCOUNT</span></div>
+<div class="screen-card"><div class="id">D-02</div><div class="name">アカウント削除確認ダイアログ</div><div class="desc">「アカウントを さくじょすると もとにもどせません」警告メッセージ。「さくじょする」「やめる」ボタン</div><span class="tag tag-settings">ACCOUNT</span></div>
+<div class="screen-card"><div class="id">D-03</div><div class="name">記録削除確認ダイアログ</div><div class="desc">「このきろくを けしますか？」確認メッセージ。「けす」「やめる」ボタン</div><span class="tag tag-record">RECORD</span></div>
+<div class="screen-card"><div class="id">D-04</div><div class="name">フレンド申請完了ダイアログ</div><div class="desc">「フレンドしんせいを おくりました！」成功メッセージ。「OK」ボタン</div><span class="tag tag-social">SOCIAL</span></div>
+<div class="screen-card"><div class="id">D-05</div><div class="name">バトル招待送信中ダイアログ</div><div class="desc">「たいせんを もうしこみちゅう...」ローディング表示。「キャンセル」ボタン。相手が承諾でB-02へ遷移</div><span class="tag tag-battle">BATTLE</span></div>
 </div>
 
 <h3>アバター（AVATAR）</h3>
@@ -115,7 +142,7 @@ td{background:var(--paper);}
 <div class="screen-card"><div class="id">S-03</div><div class="name">バトル履歴画面</div><div class="desc">過去の対戦結果一覧、勝率表示</div><span class="tag tag-social">SOCIAL</span></div>
 </div>
 
-<h3>設定（SETTINGS）</h3>
+<h3>アカウント（ACCOUNT）</h3>
 <div class="screen-grid">
 <div class="screen-card"><div class="id">T-01</div><div class="name">プロフィール編集画面</div><div class="desc">ニックネーム変更、アバター表示名変更</div><span class="tag tag-settings">SETTINGS</span></div>
 <div class="screen-card"><div class="id">T-02</div><div class="name">ヘルスデータ連携画面</div><div class="desc">HealthKit/Health Connect連携状態、許可設定、同期履歴</div><span class="tag tag-settings">SETTINGS</span></div>
@@ -141,9 +168,22 @@ td{background:var(--paper);}
 <h3>全体フロー</h3>
 <div class="mermaid">
 flowchart TD
-  START([アプリ起動]) --> CHECK{ログイン済み?}
-  CHECK -->|YES| M01[M-01 ホーム]
-  CHECK -->|NO| A01[A-01 ログイン]
+  START([アプリ起動]) --> X00[X-00 スタート]
+  X00 -->|タップ| X01[X-01 スプラッシュ]
+  X01 --> HEALTH{サーバー状態}
+  HEALTH -->|メンテ中| X04[X-04 メンテナンス]
+  HEALTH -->|要アップデート| X05[X-05 強制アップデート]
+  HEALTH -->|通信エラー| X03[X-03 エラー]
+  X03 -->|リトライ| X01
+  HEALTH -->|正常| CHECK{ログイン済み?}
+  CHECK -->|YES| X02[X-02 ローディング]
+  X02 --> H01[H-01 ヘルスデータ同期結果]
+  H01 -->|やったね！| M01[M-01 ホーム]
+  CHECK -->|NO &amp; 初回| X06a[X-06a チュートリアル1]
+  X06a -->|つぎへ| X06b[X-06b チュートリアル2]
+  X06b -->|つぎへ| X06c[X-06c チュートリアル3]
+  X06c -->|はじめる！| A01
+  CHECK -->|NO| A01
   A01 -->|アカウント作成| A02[A-02 サインアップ]
   A01 -->|ソーシャルログイン| A04
   A01 -->|ログイン成功| M01
@@ -158,7 +198,7 @@ flowchart TD
   TAB[タブバー] --> M01[M-01 ホーム]
   TAB --> M02[M-02 記録タブ]
   TAB --> M03[M-03 バトルタブ]
-  TAB --> M04[M-04 設定タブ]
+  TAB --> M04[M-04 アカウントタブ]
 
   M01 --> V01[V-01 アバター詳細]
   M01 --> V03[V-03 進化図鑑]
@@ -222,6 +262,8 @@ flowchart TD
 
 <table>
 <tr><th>FROM</th><th>TO</th><th>トリガー</th></tr>
+<tr><td>X-02 ローディング</td><td>H-01 ヘルスデータ同期結果</td><td>ヘルスデータ同期完了時</td></tr>
+<tr><td>H-01 ヘルスデータ同期結果</td><td>M-01 ホーム</td><td>「やったね！」ボタン</td></tr>
 <tr><td>A-01 ログイン</td><td>A-02 サインアップ</td><td>「アカウント作成」リンク</td></tr>
 <tr><td>A-01 ログイン</td><td>M-01 ホーム</td><td>ログイン成功</td></tr>
 <tr><td>A-02 サインアップ</td><td>A-03 メール確認</td><td>サインアップ成功</td></tr>
@@ -241,21 +283,27 @@ flowchart TD
 <tr><td>B-04 バトル結果</td><td>M-01 ホーム</td><td>「ホームへ」ボタン</td></tr>
 <tr><td>M-03 バトルタブ</td><td>S-01 フレンド一覧</td><td>「フレンド対戦」ボタン</td></tr>
 <tr><td>S-01 フレンド一覧</td><td>S-02 フレンド検索</td><td>「フレンド追加」ボタン</td></tr>
-<tr><td>M-04 設定タブ</td><td>T-01 プロフィール編集</td><td>プロフィール行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>T-02 ヘルスデータ連携</td><td>ヘルスデータ行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>T-03 通知設定</td><td>通知行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>T-04 アカウント管理</td><td>アカウント行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>T-01 プロフィール編集</td><td>プロフィール行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>T-02 ヘルスデータ連携</td><td>ヘルスデータ行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>T-03 通知設定</td><td>通知行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>T-04 アカウント管理</td><td>アカウント行タップ</td></tr>
+<tr><td>T-04 アカウント管理</td><td>D-01 ログアウト確認</td><td>「ログアウト」ボタン</td></tr>
+<tr><td>T-04 アカウント管理</td><td>D-02 アカウント削除確認</td><td>「アカウントをさくじょ」ボタン</td></tr>
+<tr><td>R-04 記録詳細</td><td>D-03 記録削除確認</td><td>「きろくをけす」ボタン</td></tr>
+<tr><td>S-02 フレンド検索</td><td>D-04 フレンド申請完了</td><td>フレンド申請送信成功</td></tr>
+<tr><td>S-01 フレンド一覧</td><td>D-05 バトル招待送信中</td><td>「たいせんする」ボタン</td></tr>
+<tr><td>D-05 バトル招待送信中</td><td>B-02 バトル準備</td><td>相手が承諾</td></tr>
 <tr><td>A-02 サインアップ</td><td>L-01 利用規約</td><td>「利用規約」リンクタップ</td></tr>
 <tr><td>A-02 サインアップ</td><td>L-02 プライバシーポリシー</td><td>「プライバシーポリシー」リンクタップ</td></tr>
 <tr><td>T-02 ヘルスデータ連携</td><td>L-03 ヘルスデータ同意</td><td>連携有効化時</td></tr>
-<tr><td>M-04 設定タブ</td><td>L-01 利用規約</td><td>「利用規約」行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>L-02 プライバシーポリシー</td><td>「プライバシーポリシー」行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>L-04 ライセンス表示</td><td>「ライセンス」行タップ</td></tr>
-<tr><td>M-04 設定タブ</td><td>L-05 特定商取引法表示</td><td>「特定商取引法」行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>L-01 利用規約</td><td>「利用規約」行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>L-02 プライバシーポリシー</td><td>「プライバシーポリシー」行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>L-04 ライセンス表示</td><td>「ライセンス」行タップ</td></tr>
+<tr><td>M-04 アカウントタブ</td><td>L-05 特定商取引法表示</td><td>「特定商取引法」行タップ</td></tr>
 </table>
 
 <div class="note">
-<strong>📝 補足:</strong> ヘルスデータ同期は1日1回アプリ初回起動時に自動実行。同期結果はホーム画面にトースト通知で表示。未起動日がある場合はまとめて加算。
+<strong>📝 補足:</strong> ヘルスデータ同期は1日1回アプリ初回起動時に自動実行。同期完了後、検出された不健康行動（体重増加、歩数減少、睡眠時間超過等）と獲得ポイントをH-01ダイアログで表示。未起動日がある場合はまとめて加算。
 </div>
 
 <!-- ===== 画面数サマリー ===== -->
@@ -263,15 +311,18 @@ flowchart TD
 
 <table>
 <tr><th>カテゴリ</th><th>画面数</th><th>備考</th></tr>
+<tr><td>起動 (LAUNCH)</td><td>9</td><td>X-00〜X-05, X-06a〜X-06c</td></tr>
 <tr><td>認証 (AUTH)</td><td>4</td><td>A-01〜A-04</td></tr>
 <tr><td>メインタブ (MAIN)</td><td>4</td><td>M-01〜M-04（タブバー常駐）</td></tr>
 <tr><td>記録 (RECORD)</td><td>4</td><td>R-01〜R-04</td></tr>
+<tr><td>ヘルスケア連携 (HEALTH)</td><td>1</td><td>H-01（ダイアログ）</td></tr>
+<tr><td>ダイアログ (DIALOG)</td><td>5</td><td>D-01〜D-05（ポップアップ）</td></tr>
 <tr><td>アバター (AVATAR)</td><td>3</td><td>V-01〜V-03</td></tr>
 <tr><td>バトル (BATTLE)</td><td>5</td><td>B-01〜B-05（B-05はポップアップ）</td></tr>
 <tr><td>ソーシャル (SOCIAL)</td><td>3</td><td>S-01〜S-03</td></tr>
-<tr><td>設定 (SETTINGS)</td><td>4</td><td>T-01〜T-04</td></tr>
+<tr><td>アカウント (ACCOUNT)</td><td>4</td><td>T-01〜T-04</td></tr>
 <tr><td>法務・規約 (LEGAL)</td><td>5</td><td>L-01〜L-05</td></tr>
-<tr><td><strong>合計</strong></td><td><strong>32画面</strong></td><td></td></tr>
+<tr><td><strong>合計</strong></td><td><strong>47画面</strong></td><td></td></tr>
 </table>
 
 </div>
