@@ -1,0 +1,51 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-e840efc2": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    },
+    "24ebeb1fefdb62b2e04ebe4ea45b030d09f53eff9ce6e55a757a78d79cd2ad81": {
+      "displayName": "AvatarHandler/Code",
+      "source": {
+        "path": "asset.24ebeb1fefdb62b2e04ebe4ea45b030d09f53eff9ce6e55a757a78d79cd2ad81",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-1ad219a5": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "24ebeb1fefdb62b2e04ebe4ea45b030d09f53eff9ce6e55a757a78d79cd2ad81.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    },
+    "fa8d8a4aef277d910e706c21df2e41609bd8f7fa4607ba6682b41adcdef9089c": {
+      "displayName": "ButaAvatarStack Template",
+      "source": {
+        "path": "ButaAvatarStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-be040a72": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "fa8d8a4aef277d910e706c21df2e41609bd8f7fa4607ba6682b41adcdef9089c.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -98,8 +98,10 @@ export class BattleSocialStack extends cdk.Stack {
       functionName: 'buta-battle-ws-handler-dev',
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/battle-ws-handler/dist')),
+      handler: 'dist/index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/battle-ws-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {
@@ -148,8 +150,10 @@ export class BattleSocialStack extends cdk.Stack {
       functionName: 'buta-social-handler-dev',
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/social-handler/dist')),
+      handler: 'dist/index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/social-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {

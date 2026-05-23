@@ -1,0 +1,1669 @@
+{
+ "Resources": {
+  "AvatarTable1E8369A8": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-avatars"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarTable/Resource"
+   }
+  },
+  "EvolutionHistoryTable5C032E7E": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "occurredAt#historyId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "occurredAt#historyId",
+      "KeyType": "RANGE"
+     }
+    ],
+    "TableName": "butasodate-evolution-history"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/EvolutionHistoryTable/Resource"
+   }
+  },
+  "PigSpeciesTable81FFCC9C": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "speciesId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "stage",
+      "AttributeType": "N"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "stage-index",
+      "KeySchema": [
+       {
+        "AttributeName": "stage",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "speciesId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-pig-species"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/PigSpeciesTable/Resource"
+   }
+  },
+  "EvolutionRouteTable47C255D0": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "routeId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "fromSpeciesId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "fromSpecies-index",
+      "KeySchema": [
+       {
+        "AttributeName": "fromSpeciesId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "routeId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-evolution-routes"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/EvolutionRouteTable/Resource"
+   }
+  },
+  "SkillTable55C24DF8": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "skillId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "speciesId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "speciesId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "speciesId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "skillId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-skills"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/SkillTable/Resource"
+   }
+  },
+  "SpriteAssetsBucket88BB51DB": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "butasodate-assets-718100330221-dev",
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "BlockPublicPolicy": false,
+     "IgnorePublicAcls": false,
+     "RestrictPublicBuckets": false
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/SpriteAssetsBucket/Resource"
+   }
+  },
+  "SpriteAssetsBucketPolicy3210BA35": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "SpriteAssetsBucket88BB51DB"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "SpriteAssetsBucket88BB51DB",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "SpriteAssetsBucket88BB51DB",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "SpriteAssetsBucket88BB51DB",
+            "Arn"
+           ]
+          },
+          "/assets/sprites/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/SpriteAssetsBucket/Policy/Resource"
+   }
+  },
+  "SpriteAssetsBucketAutoDeleteObjectsCustomResource7F2A0925": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "SpriteAssetsBucket88BB51DB"
+    }
+   },
+   "DependsOn": [
+    "SpriteAssetsBucketPolicy3210BA35"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/SpriteAssetsBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "SpriteAssetsBucket88BB51DB"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "AvatarHandlerServiceRoleF7A560B8": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarHandler/ServiceRole/Resource"
+   }
+  },
+  "AvatarHandlerServiceRoleDefaultPolicy2CD6CF80": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AvatarTable1E8369A8",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AvatarTable1E8369A8",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "EvolutionHistoryTable5C032E7E",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "EvolutionHistoryTable5C032E7E",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PigSpeciesTable81FFCC9C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PigSpeciesTable81FFCC9C",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "PigSpeciesTable81FFCC9C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "PigSpeciesTable81FFCC9C",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "EvolutionRouteTable47C255D0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "EvolutionRouteTable47C255D0",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "EvolutionRouteTable47C255D0",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "EvolutionRouteTable47C255D0",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "SkillTable55C24DF8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "SkillTable55C24DF8",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "SkillTable55C24DF8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "SkillTable55C24DF8",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-game-config"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AvatarHandlerServiceRoleDefaultPolicy2CD6CF80",
+    "Roles": [
+     {
+      "Ref": "AvatarHandlerServiceRoleF7A560B8"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AvatarHandler713EDBD0": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "24ebeb1fefdb62b2e04ebe4ea45b030d09f53eff9ce6e55a757a78d79cd2ad81.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AVATAR_TABLE_NAME": {
+       "Ref": "AvatarTable1E8369A8"
+      },
+      "EVOLUTION_HISTORY_TABLE_NAME": {
+       "Ref": "EvolutionHistoryTable5C032E7E"
+      },
+      "PIG_SPECIES_TABLE_NAME": {
+       "Ref": "PigSpeciesTable81FFCC9C"
+      },
+      "EVOLUTION_ROUTE_TABLE_NAME": {
+       "Ref": "EvolutionRouteTable47C255D0"
+      },
+      "SKILL_TABLE_NAME": {
+       "Ref": "SkillTable55C24DF8"
+      },
+      "GAME_CONFIG_TABLE_NAME": "butasodate-game-config",
+      "ASSETS_BUCKET_NAME": {
+       "Ref": "SpriteAssetsBucket88BB51DB"
+      }
+     }
+    },
+    "FunctionName": "buta-avatar-handler-dev",
+    "Handler": "dist/app.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "AvatarHandlerServiceRoleF7A560B8",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "AvatarHandlerServiceRoleDefaultPolicy2CD6CF80",
+    "AvatarHandlerServiceRoleF7A560B8"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarHandler/Resource",
+    "aws:asset:path": "asset.24ebeb1fefdb62b2e04ebe4ea45b030d09f53eff9ce6e55a757a78d79cd2ad81",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AvatarApi0507DD0C": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "buta-avatar-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Resource"
+   }
+  },
+  "AvatarApiCloudWatchRole1D5C3CC5": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/CloudWatchRole/Resource"
+   }
+  },
+  "AvatarApiAccountAB4F598D": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "AvatarApiCloudWatchRole1D5C3CC5",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AvatarApi0507DD0C"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Account"
+   }
+  },
+  "AvatarApiDeployment8FA2D47F80af39c3922eb9e0663fc0b617685baa": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "DependsOn": [
+    "AvatarApiavatarevolutionhistoryGET8E5621FE",
+    "AvatarApiavatarevolutionhistoryOPTIONSF8CBF219",
+    "AvatarApiavatarevolutionhistory9541F897",
+    "AvatarApiavatarGET03D8BA57",
+    "AvatarApiavatarOPTIONS5972EDDF",
+    "AvatarApiavatarPOST48584FE3",
+    "AvatarApiavatar28E70F27",
+    "AvatarApiavatarscoredetailGET8B46BAAB",
+    "AvatarApiavatarscoredetailOPTIONS59DCF800",
+    "AvatarApiavatarscoredetail64B3DF6C",
+    "AvatarApiOPTIONS3DB0195C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "AvatarApiDeploymentStagedevEE14812F": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "AvatarApiDeployment8FA2D47F80af39c3922eb9e0663fc0b617685baa"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    },
+    "StageName": "dev"
+   },
+   "DependsOn": [
+    "AvatarApiAccountAB4F598D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "AvatarApiOPTIONS3DB0195C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "AvatarApi0507DD0C",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/OPTIONS/Resource"
+   }
+  },
+  "AvatarApiavatar28E70F27": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AvatarApi0507DD0C",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "avatar",
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/Resource"
+   }
+  },
+  "AvatarApiavatarOPTIONS5972EDDF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AvatarApiavatar28E70F27"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/OPTIONS/Resource"
+   }
+  },
+  "AvatarApiavatarPOSTApiPermissionButaAvatarStackAvatarApi3DD4FD2CPOSTavatar8D460950": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/",
+       {
+        "Ref": "AvatarApiDeploymentStagedevEE14812F"
+       },
+       "/POST/avatar"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/POST/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.POST..avatar"
+   }
+  },
+  "AvatarApiavatarPOSTApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CPOSTavatarEB0F1971": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/test-invoke-stage/POST/avatar"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/POST/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.POST..avatar"
+   }
+  },
+  "AvatarApiavatarPOST48584FE3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AvatarAuthorizerCCD1F7F5"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AvatarHandler713EDBD0",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AvatarApiavatar28E70F27"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/POST/Resource"
+   }
+  },
+  "AvatarApiavatarGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatar3F2CF6FA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/",
+       {
+        "Ref": "AvatarApiDeploymentStagedevEE14812F"
+       },
+       "/GET/avatar"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar"
+   }
+  },
+  "AvatarApiavatarGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatar22701481": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/test-invoke-stage/GET/avatar"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar"
+   }
+  },
+  "AvatarApiavatarGET03D8BA57": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AvatarAuthorizerCCD1F7F5"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AvatarHandler713EDBD0",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AvatarApiavatar28E70F27"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/GET/Resource"
+   }
+  },
+  "AvatarApiavatarevolutionhistory9541F897": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AvatarApiavatar28E70F27"
+    },
+    "PathPart": "evolution-history",
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/Resource"
+   }
+  },
+  "AvatarApiavatarevolutionhistoryOPTIONSF8CBF219": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AvatarApiavatarevolutionhistory9541F897"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/OPTIONS/Resource"
+   }
+  },
+  "AvatarApiavatarevolutionhistoryGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatarevolutionhistoryC7EF09F6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/",
+       {
+        "Ref": "AvatarApiDeploymentStagedevEE14812F"
+       },
+       "/GET/avatar/evolution-history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.evolution-history"
+   }
+  },
+  "AvatarApiavatarevolutionhistoryGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatarevolutionhistory3C2BB8CE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/test-invoke-stage/GET/avatar/evolution-history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.evolution-history"
+   }
+  },
+  "AvatarApiavatarevolutionhistoryGET8E5621FE": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AvatarAuthorizerCCD1F7F5"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AvatarHandler713EDBD0",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AvatarApiavatarevolutionhistory9541F897"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/Resource"
+   }
+  },
+  "AvatarApiavatarscoredetail64B3DF6C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "AvatarApiavatar28E70F27"
+    },
+    "PathPart": "score-detail",
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/score-detail/Resource"
+   }
+  },
+  "AvatarApiavatarscoredetailOPTIONS59DCF800": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AvatarApiavatarscoredetail64B3DF6C"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/score-detail/OPTIONS/Resource"
+   }
+  },
+  "AvatarApiavatarscoredetailGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatarscoredetail18328FEF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/",
+       {
+        "Ref": "AvatarApiDeploymentStagedevEE14812F"
+       },
+       "/GET/avatar/score-detail"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.score-detail"
+   }
+  },
+  "AvatarApiavatarscoredetailGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatarscoredetailF451A636": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AvatarHandler713EDBD0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AvatarApi0507DD0C"
+       },
+       "/test-invoke-stage/GET/avatar/score-detail"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.score-detail"
+   }
+  },
+  "AvatarApiavatarscoredetailGET8B46BAAB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "AvatarAuthorizerCCD1F7F5"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AvatarHandler713EDBD0",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AvatarApiavatarscoredetail64B3DF6C"
+    },
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/Resource"
+   }
+  },
+  "AvatarAuthorizerCCD1F7F5": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "ButaAvatarStackAvatarAuthorizer12C4AC49",
+    "ProviderARNs": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":cognito-idp:ap-northeast-1:718100330221:userpool/",
+        {
+         "Fn::ImportValue": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+        }
+       ]
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "AvatarApi0507DD0C"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/AvatarAuthorizer/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/5VRwW7CMAz9lnEOGSuaJu1WQLtNVLCdpgmlqQeGNq5qB8aq/vuUhgGTdtnJz37x83Oc6OT+QY9uzIGHttgNS8x1uxRjd2oBTL6xoMyBV21xdKaiItfti8lLUNMP14NO8Vi3E293IKEY0Vs7qPAT3eBxcK0clHise4p1fJp6oRmUIDDPt2CFB927ilRGJdrjRTXm/9CODUsxAhW4a+mJYehUaaq8MLp98s4KkgujrnEGTYXMSK5TaCrdLiiu3seLvYjCV6wMMwjrNARlalwbgYM56nYBLGmNffcFptaSd6JmUJd0DCZD9Spbiln3IyP4OUrwr55BNlQE8oTOJ4tDTpjWDoVeGZqMqOTUy4Ya/IKmN3DOuk5NPQtVf6v8orKG9lhA09vodw320K1Dz9xL7aVTjgrQW77dJ4lO7vToZsuIw8Y7wQr0IsZvAhj1WIECAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAvatarStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "AvatarApiEndpoint65FA3F00": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AvatarApi0507DD0C"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AvatarApiDeploymentStagedevEE14812F"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "AvatarApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AvatarApi0507DD0C"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AvatarApiDeploymentStagedevEE14812F"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "AssetsBucketName": {
+   "Value": {
+    "Ref": "SpriteAssetsBucket88BB51DB"
+   }
+  },
+  "ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43": {
+   "Value": {
+    "Ref": "SpriteAssetsBucket88BB51DB"
+   },
+   "Export": {
+    "Name": "ButaAvatarStack:ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

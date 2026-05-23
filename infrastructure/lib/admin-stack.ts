@@ -40,8 +40,10 @@ export class AdminStack extends cdk.Stack {
       functionName: 'buta-admin-handler-dev',
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'app.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/admin-handler/dist')),
+      handler: 'dist/app.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/admin-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {

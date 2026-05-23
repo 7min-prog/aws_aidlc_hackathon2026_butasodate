@@ -55,8 +55,10 @@ export class RecordingStack extends cdk.Stack {
     const recordingFn = new lambda.Function(this, 'RecordingFunction', {
       functionName: 'buta-recording-handler',
       runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/recording.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
+      handler: 'dist/handlers/recording.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: commonEnv,
@@ -65,8 +67,10 @@ export class RecordingStack extends cdk.Stack {
     const categoriesFn = new lambda.Function(this, 'CategoriesFunction', {
       functionName: 'buta-categories-handler',
       runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/categories.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
+      handler: 'dist/handlers/categories.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 128,
       timeout: cdk.Duration.seconds(5),
       environment: commonEnv,

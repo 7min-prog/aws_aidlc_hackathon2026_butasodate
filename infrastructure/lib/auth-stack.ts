@@ -61,8 +61,10 @@ export class AuthStack extends cdk.Stack {
       functionName: 'buta-auth-handler-dev',
       runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/auth-handler/dist')),
+      handler: 'dist/index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/auth-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {
