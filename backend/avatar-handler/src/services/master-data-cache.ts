@@ -42,7 +42,7 @@ export async function getGameConfig(): Promise<GameConfig> {
   };
   for (const item of items) {
     if (item.configKey in config) {
-      (config as Record<string, unknown>)[item.configKey] = item.value;
+      (config as unknown as Record<string, unknown>)[item.configKey] = item.value;
     }
   }
   cachedConfig = config;
