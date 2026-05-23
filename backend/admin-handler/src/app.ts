@@ -197,6 +197,53 @@ app.openapi(deletePathRoute, async (c) => {
   return c.json({ message: 'Species deleted' }, 200);
 });
 
+// --- マスターデータ: 進化ルート ---
+const listRoutesRoute = createRoute({
+  method: 'get', path: '/admin/evolution-routes', tags: ['MasterData'], summary: '進化ルート一覧',
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ routes: z.array(z.any()) }) } } } },
+});
+app.openapi(listRoutesRoute, async (c) => {
+  const res = await docClient.send(new ScanCommand({ TableName: EVOLUTION_ROUTE_TABLE }));
+  return c.json({ routes: res.Items || [] }, 200);
+});
+
+const createRouteRoute = createRoute({
+  method: 'post', path: '/admin/evolution-routes', tags: ['MasterData'], summary: '進化ルート作成',
+  request: { body: { content: { 'application/json': { schema: z.any() } } } },
+  responses: { 201: { description: '作成成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(createRouteRoute, async (c) => {
+  const body = await c.req.json();
+  await docClient.send(new PutCommand({ TableName: EVOLUTION_ROUTE_TABLE, Item: body }));
+  await writeAuditLog(c.get('operator'), 'CREATE', `evolution-route:${body.routeId}`, body);
+  return c.json({ message: 'Route created' }, 201);
+});
+
+const updateRouteRoute = createRoute({
+  method: 'put', path: '/admin/evolution-routes/{routeId}', tags: ['MasterData'], summary: '進化ルート更新',
+  request: { params: z.object({ routeId: z.string() }), body: { content: { 'application/json': { schema: z.any() } } } },
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(updateRouteRoute, async (c) => {
+  const { routeId } = c.req.valid('param');
+  const body = await c.req.json();
+  await docClient.send(new PutCommand({ TableName: EVOLUTION_ROUTE_TABLE, Item: { ...body, routeId } }));
+  await writeAuditLog(c.get('operator'), 'UPDATE', `evolution-route:${routeId}`, body);
+  return c.json({ message: 'Route updated' }, 200);
+});
+
+const deleteRouteRoute = createRoute({
+  method: 'delete', path: '/admin/evolution-routes/{routeId}', tags: ['MasterData'], summary: '進化ルート削除',
+  request: { params: z.object({ routeId: z.string() }) },
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(deleteRouteRoute, async (c) => {
+  const { routeId } = c.req.valid('param');
+  await docClient.send(new DeleteCommand({ TableName: EVOLUTION_ROUTE_TABLE, Key: { routeId } }));
+  await writeAuditLog(c.get('operator'), 'DELETE', `evolution-route:${routeId}`);
+  return c.json({ message: 'Route deleted' }, 200);
+});
+
 // --- マスターデータ: スキル ---
 const listSkillsRoute = createRoute({
   method: 'get', path: '/admin/skills', tags: ['MasterData'], summary: 'スキル一覧',
