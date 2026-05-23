@@ -118,14 +118,22 @@ aws dynamodb put-item --table-name butasodate-game-config --region ap-northeast-
 
 ## 5. Flutter接続設定
 
-`frontend/lib/shared/constants.dart` のエンドポイントをデプロイ出力値に更新:
+`frontend/lib/shared/constants.dart` のプレースホルダーをデプロイ出力値に差し替え:
 
 ```dart
-const authApiUrl = 'https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev';
-const recordingApiUrl = 'https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev';
-const avatarApiUrl = 'https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev';
-const socialApiUrl = 'https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev';
-const battleWsUrl = 'wss://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev';
+static const authApiBase = 'https://{ButaAuthStack.ApiUrl}';
+static const recordingApiBase = 'https://{ButaRecordingStack.RecordingApiUrl}';
+static const avatarApiBase = 'https://{ButaAvatarStack.AvatarApiUrl}';
+static const socialApiBase = 'https://{ButaBattleSocialStack.SocialApiUrl}';
+static const battleWsUrl = 'wss://{ButaBattleSocialStack.WebSocketUrl}';
+static const assetsBaseUrl = 'https://{ButaAvatarStack.AssetsBucketName}.s3.ap-northeast-1.amazonaws.com/assets/';
+```
+
+CDK Output値の確認コマンド:
+
+```bash
+aws cloudformation describe-stacks --region ap-northeast-1 \
+  --query "Stacks[].Outputs[].[OutputKey,OutputValue]" --output table
 ```
 
 ## 6. 疎通テスト

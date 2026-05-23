@@ -6,6 +6,7 @@ class AppConstants {
   static const recordingApiBase = 'https://YOUR_RECORDING_API.execute-api.ap-northeast-1.amazonaws.com/dev';
   static const avatarApiBase = 'https://YOUR_AVATAR_API.execute-api.ap-northeast-1.amazonaws.com/dev';
   static const socialApiBase = 'https://YOUR_SOCIAL_API.execute-api.ap-northeast-1.amazonaws.com/dev';
+  static const battleWsUrl = 'wss://YOUR_WS_API.execute-api.ap-northeast-1.amazonaws.com/dev';
 
   // S3 Assets
   static const assetsBaseUrl = 'https://YOUR_BUCKET.s3.ap-northeast-1.amazonaws.com/assets/';
