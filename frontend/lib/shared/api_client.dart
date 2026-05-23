@@ -24,7 +24,7 @@ class ApiClient {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final authState = _ref.read(authStateProvider);
-        final token = authState.valueOrNull?.accessToken;
+        final token = authState.value?.accessToken;
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }

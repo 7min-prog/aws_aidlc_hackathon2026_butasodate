@@ -68,7 +68,11 @@
 - [x] NFR Requirements - Complete (承認済み)
 - [x] NFR Design - Complete (承認済み)
 - [x] Infrastructure Design - Complete (承認済み)
-- [ ] Code Generation - NEXT
+- [x] Code Generation - Complete (backend/admin-handler, admin/, infrastructure/lib/admin-stack.ts)
+
+#### Unit 6: 起動時処理 (フロントエンド統合)
+- [x] Functional Design - Complete
+- [x] Code Generation - Complete
 
 #### Build and Test
 - [ ] Build and Test - EXECUTE
@@ -78,8 +82,8 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Unit 5 NFR Requirements
-- **Current Unit**: Unit 5 - 管理画面 (FR-7)
-- **Completed Units**: Unit 1 (認証基盤), Unit 2 (行動記録), Unit 3 (アバター育成), Unit 4 (バトル+ソーシャル)
-- **Next Stage**: Unit 5 NFR Requirements → NFR Design → Infrastructure Design → Code Generation
-- **Status**: Unit 5 Functional Design 承認済み。NFR Requirements next。
+- **Current Stage**: Unit 6 Code Generation
+- **Current Unit**: Unit 6 - 起動時処理 (フロントエンド統合)
+- **Completed Units**: Unit 1 (認証基盤), Unit 2 (行動記録), Unit 3 (アバター育成), Unit 4 (バトル+ソーシャル), Unit 5 (管理画面)
+- **Next Stage**: Unit 6 Code Generation → Build and Test
+- **Status**: Unit 6 Functional Design 承認済み。Code Generation next。

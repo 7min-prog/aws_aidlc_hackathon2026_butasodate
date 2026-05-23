@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:buta_app/shared/api_client.dart';
+import 'package:buta_app/shared/constants.dart';
+import 'package:buta_app/shared/cache_service.dart';
+import 'package:buta_app/shared/image_cache_service.dart';
 
 class AuthTokens {
   final String accessToken;
@@ -75,7 +78,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
   }
 
   Future<bool> refreshToken() async {
-    final currentTokens = state.valueOrNull;
+    final currentTokens = state.value;
     if (currentTokens?.refreshToken == null) return false;
 
     try {
@@ -103,7 +106,34 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_accessTokenKey);
     await prefs.remove(_refreshTokenKey);
+    // キャッシュも全削除
+    await ref.read(cacheServiceProvider).clearAll();
+    await ref.read(imageCacheServiceProvider).clearAll();
     state = const AsyncData(null);
+  }
+
+  /// ニックネーム設定後にアバターを作成（最大3回リトライ）
+  Future<bool> createInitialAvatar() async {
+    final tokens = state.value;
+    if (tokens == null) return false;
+
+    final dio = Dio(BaseOptions(
+      baseUrl: AppConstants.avatarApiBase,
+      headers: {'Authorization': 'Bearer ${tokens.accessToken}'},
+    ));
+
+    for (var i = 0; i < AppConstants.avatarCreateMaxRetries; i++) {
+      try {
+        await dio.post('/avatar', data: {'name': 'ぶたさん'});
+        return true;
+      } on DioException catch (e) {
+        if (e.response?.statusCode == 409) return true; // 既に存在
+        if (i < AppConstants.avatarCreateMaxRetries - 1) {
+          await Future.delayed(AppConstants.avatarCreateRetryDelay);
+        }
+      }
+    }
+    return false;
   }
 
   Future<void> _saveTokens(AuthTokens tokens) async {
@@ -121,5 +151,5 @@ final authStateProvider = AsyncNotifierProvider<AuthStateNotifier, AuthTokens?>(
 
 // 簡易的にログイン済みかどうかを判定
 final isLoggedInProvider = Provider<bool>((ref) {
-  return ref.watch(authStateProvider).valueOrNull != null;
+  return ref.watch(authStateProvider).value != null;
 });

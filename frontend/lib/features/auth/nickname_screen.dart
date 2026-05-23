@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/api_client.dart';
+import 'package:buta_app/shared/auth_state.dart';
 import 'package:buta_app/shared/theme.dart';
 
 class NicknameScreen extends ConsumerStatefulWidget {
@@ -34,6 +35,9 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
     try {
       final api = ref.read(apiClientProvider);
       await api.post('/users/profile', data: {'nickname': nickname});
+
+      // ニックネーム設定成功 → アバター作成
+      await ref.read(authStateProvider.notifier).createInitialAvatar();
 
       if (mounted) context.go('/');
     } catch (e) {
