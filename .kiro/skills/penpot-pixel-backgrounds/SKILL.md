@@ -97,6 +97,73 @@ When replacing placeholder ■ with actual sprites:
 2. Also hide background areas (e.g. `avatar-area`): they may cover the sprite
 3. Place sprite with `appendChild` (not `insertChild(0, ...)`) to ensure it's on top
 
+## Using Library Components
+
+### Finding and instantiating components
+
+Penpot's local library contains reusable components. Use `instance()` to create copies:
+
+```javascript
+const lib = penpot.library.local;
+const components = lib.components; // array of all components
+
+// Find a specific component by name
+const tabBarComp = lib.components.find(c => c.name === "PixelTabBar");
+
+// Create an instance and place it in a board
+const instance = tabBarComp.instance();
+board.appendChild(instance);
+instance.x = board.x;
+instance.y = board.y + 684; // position at bottom
+```
+
+### Key points about components
+
+- `penpot.library.local.components` lists all local components
+- Each component has: `id`, `name`, `path`, `instance()` method
+- `component.instance()` creates a new instance (like Figma's "create instance")
+- Instances are full shapes — position with `.x` and `.y` after appending to a board
+- Editing the main component updates all instances automatically
+- Component instances have type `"board"`
+
+### Creating components from existing shapes
+
+Use `penpot.library.local.createComponent(shapes)` to turn existing shapes into reusable components:
+
+```javascript
+const lib = penpot.library.local;
+const shape = board.children.find(c => c.name === "pig-sprite");
+
+// Create a component from the shape
+const comp = lib.createComponent([shape]);
+comp.name = "PigSprite"; // rename the component
+```
+
+### When to use components vs SVG
+
+- **Use components** when the same UI element appears on many screens (tab bars, headers, dialogs)
+- **Use SVG** for unique per-screen elements (backgrounds, illustrations, custom layouts)
+- Components CAN be created via API using `library.local.createComponent([shapes])`
+
+### Batch placement pattern
+
+```javascript
+const comp = penpot.library.local.components.find(c => c.name === "MyComponent");
+const boards = penpotUtils.findShapes(sh => sh.type === "board" && /* filter */);
+
+// Process in batches of 10-11 to avoid timeouts
+const batch = boards.slice(startIdx, endIdx);
+for (const board of batch) {
+  const old = board.children.find(c => c.name === "MyComponent");
+  if (old) old.remove(); // remove old instance first
+  
+  const instance = comp.instance();
+  board.appendChild(instance);
+  instance.x = board.x + offsetX;
+  instance.y = board.y + offsetY;
+}
+```
+
 ## File naming convention
 
 - `assets/pixel-art/backgrounds/bg-{name}.svg` for local files
