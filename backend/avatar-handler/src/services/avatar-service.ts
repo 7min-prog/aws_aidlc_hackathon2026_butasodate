@@ -1,17 +1,20 @@
-import { GetCommand, PutCommand, UpdateCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { randomUUID } from 'crypto';
 import { docClient, AVATAR_TABLE, EVOLUTION_HISTORY_TABLE } from '../utils/dynamo-client';
-import { getEvolutionPaths, getSkills } from './master-data-cache';
+import { getPigSpecies, getEvolutionRoutes, getSkills, getGameConfig } from './master-data-cache';
 import {
-  calculateLevel, checkEvolution, checkDevolution,
+  calculateLevel, determineEvolution, checkDevolution,
   checkSkillAcquisition, getSkillsToLose, recalculateStats,
-  INITIAL_STATS, DEFAULT_SPRITE_KEY, DEFAULT_AVATAR_NAME,
 } from './evolution-engine';
 import { Avatar, AddPointsResult, DeductPointsResult, CategoryType, EvolutionHistory } from '../types';
+
+const DEFAULT_AVATAR_NAME = 'ぶたさん';
 
 export async function createAvatar(userId: string, name?: string): Promise<Avatar> {
   const existing = await getAvatar(userId);
   if (existing) throw new Error('AVATAR_EXISTS');
+
+  const config = await getGameConfig();
 
   const avatar: Avatar = {
     avatarId: randomUUID(),
@@ -20,12 +23,11 @@ export async function createAvatar(userId: string, name?: string): Promise<Avata
     totalPoints: 0,
     level: 1,
     evolutionStage: 1,
-    evolutionPathId: null,
+    currentSpeciesId: null,
     categoryPoints: { FOOD: 0, LIFESTYLE: 0, MIXED: 0 },
     subCategoryPoints: {},
-    stats: INITIAL_STATS,
+    stats: config.INITIAL_STATS,
     skillIds: [],
-    spriteSheetKey: DEFAULT_SPRITE_KEY,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -47,7 +49,9 @@ export async function addPoints(
   const avatar = await getAvatar(userId);
   if (!avatar) throw new Error('AVATAR_NOT_FOUND');
 
-  const [paths, skills] = await Promise.all([getEvolutionPaths(), getSkills()]);
+  const [species, routes, skills, config] = await Promise.all([
+    getPigSpecies(), getEvolutionRoutes(), getSkills(), getGameConfig(),
+  ]);
 
   // Step 1: ポイント更新
   avatar.totalPoints += points;
@@ -58,19 +62,19 @@ export async function addPoints(
 
   // Step 2: レベル再計算
   const oldLevel = avatar.level;
-  avatar.level = calculateLevel(avatar.totalPoints);
+  avatar.level = calculateLevel(avatar.totalPoints, config);
   const leveledUp = avatar.level > oldLevel;
 
   // Step 3: 進化判定
   let evolved = false;
   if (leveledUp) {
-    const evolutionTarget = checkEvolution(avatar, avatar.level, paths);
-    if (evolutionTarget) {
-      avatar.evolutionStage = evolutionTarget.stage;
-      avatar.evolutionPathId = evolutionTarget.pathId;
-      avatar.spriteSheetKey = evolutionTarget.spriteSheetKey;
+    const target = determineEvolution(avatar, avatar.level, species, routes, config);
+    if (target) {
+      const oldSpeciesId = avatar.currentSpeciesId;
+      avatar.evolutionStage = target.stage;
+      avatar.currentSpeciesId = target.speciesId;
       evolved = true;
-      await saveEvolutionHistory(avatar, 'EVOLUTION', evolutionTarget.stage - 1, evolutionTarget.stage, null, evolutionTarget.pathId);
+      await saveEvolutionHistory(avatar, 'EVOLUTION', target.stage - 1, target.stage, oldSpeciesId, target.speciesId);
     }
   }
 
@@ -79,8 +83,8 @@ export async function addPoints(
   avatar.skillIds.push(...newSkills.map(s => s.skillId));
 
   // Step 5: ステータス再計算
-  const currentPath = paths.find(p => p.pathId === avatar.evolutionPathId) || null;
-  avatar.stats = recalculateStats(avatar.level, currentPath);
+  const currentSpecies = species.find(s => s.speciesId === avatar.currentSpeciesId) || null;
+  avatar.stats = recalculateStats(avatar.level, currentSpecies, config);
   avatar.updatedAt = new Date().toISOString();
 
   await saveAvatar(avatar);
@@ -93,7 +97,9 @@ export async function deductPoints(
   const avatar = await getAvatar(userId);
   if (!avatar) throw new Error('AVATAR_NOT_FOUND');
 
-  const [paths, skills] = await Promise.all([getEvolutionPaths(), getSkills()]);
+  const [species, routes, skills, config] = await Promise.all([
+    getPigSpecies(), getEvolutionRoutes(), getSkills(), getGameConfig(),
+  ]);
 
   // Step 1: ポイント更新
   avatar.totalPoints = Math.max(0, avatar.totalPoints - points);
@@ -104,27 +110,26 @@ export async function deductPoints(
 
   // Step 2: レベル再計算
   const oldLevel = avatar.level;
-  avatar.level = calculateLevel(avatar.totalPoints);
+  avatar.level = calculateLevel(avatar.totalPoints, config);
   const leveledDown = avatar.level < oldLevel;
 
   // Step 3: 退化判定
   let devolved = false;
   let lostSkills: typeof skills = [];
-  const devolution = checkDevolution(avatar, avatar.level, paths);
+  const devolution = checkDevolution(avatar, avatar.level, species, routes, config);
   if (devolution) {
-    const oldPathId = avatar.evolutionPathId;
-    lostSkills = oldPathId ? getSkillsToLose(avatar, oldPathId, skills) : [];
+    const oldSpeciesId = avatar.currentSpeciesId;
+    lostSkills = oldSpeciesId ? getSkillsToLose(avatar, oldSpeciesId, skills) : [];
     avatar.skillIds = avatar.skillIds.filter(id => !lostSkills.some(s => s.skillId === id));
     avatar.evolutionStage = devolution.newStage;
-    avatar.evolutionPathId = devolution.newPathId;
-    avatar.spriteSheetKey = devolution.newSpriteKey;
+    avatar.currentSpeciesId = devolution.newSpeciesId;
     devolved = true;
-    await saveEvolutionHistory(avatar, 'DEVOLUTION', devolution.newStage + 1, devolution.newStage, oldPathId, devolution.newPathId);
+    await saveEvolutionHistory(avatar, 'DEVOLUTION', devolution.newStage + 1, devolution.newStage, oldSpeciesId, devolution.newSpeciesId);
   }
 
   // Step 4: ステータス再計算
-  const currentPath = paths.find(p => p.pathId === avatar.evolutionPathId) || null;
-  avatar.stats = recalculateStats(avatar.level, currentPath);
+  const currentSpecies = species.find(s => s.speciesId === avatar.currentSpeciesId) || null;
+  avatar.stats = recalculateStats(avatar.level, currentSpecies, config);
   avatar.updatedAt = new Date().toISOString();
 
   await saveAvatar(avatar);
@@ -148,15 +153,19 @@ async function saveAvatar(avatar: Avatar): Promise<void> {
 async function saveEvolutionHistory(
   avatar: Avatar, type: 'EVOLUTION' | 'DEVOLUTION',
   fromStage: number, toStage: number,
-  fromPathId: string | null, toPathId: string | null,
+  fromSpeciesId: string | null, toSpeciesId: string | null,
 ): Promise<void> {
+  const now = new Date().toISOString();
   const history: EvolutionHistory = {
     historyId: randomUUID(),
     userId: avatar.userId,
     avatarId: avatar.avatarId,
-    fromStage, toStage, fromPathId, toPathId, type,
+    fromStage, toStage, fromSpeciesId, toSpeciesId, type,
     triggerPoints: avatar.totalPoints,
-    occurredAt: new Date().toISOString(),
+    occurredAt: now,
   };
-  await docClient.send(new PutCommand({ TableName: EVOLUTION_HISTORY_TABLE, Item: history }));
+  await docClient.send(new PutCommand({
+    TableName: EVOLUTION_HISTORY_TABLE,
+    Item: { ...history, 'occurredAt#historyId': `${now}#${history.historyId}` },
+  }));
 }
