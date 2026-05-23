@@ -53,6 +53,7 @@ export class RecordingStack extends cdk.Stack {
       ACTIVITY_RECORD_TABLE: activityRecordTable.tableName,
       HEALTH_SYNC_TABLE: healthSyncTable.tableName,
       ACTIVITY_CATEGORY_TABLE: categoryTable.tableName,
+      AVATAR_FUNCTION_NAME: 'buta-avatar-handler-dev',
     };
 
     const recordingFn = new lambda.Function(this, 'RecordingFunction', {
@@ -80,6 +81,12 @@ export class RecordingStack extends cdk.Stack {
     healthSyncTable.grantReadWriteData(recordingFn);
     categoryTable.grantReadData(recordingFn);
     categoryTable.grantReadData(categoriesFn);
+
+    // Grant Lambda invoke permission for avatar-handler
+    recordingFn.addToRolePolicy(new cdk.aws_iam.PolicyStatement({
+      actions: ['lambda:InvokeFunction'],
+      resources: [`arn:aws:lambda:${this.region}:${this.account}:function:buta-avatar-handler-dev`],
+    }));
 
     // API Gateway
     const api = new apigateway.RestApi(this, 'ButaRecordingApi', {
