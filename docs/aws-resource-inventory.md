@@ -77,7 +77,7 @@
 |---|---|---|---|
 | PigSpecies（ぶた図鑑） | 最低1件（初期ぶた）+ 進化先 | AWS CLI or 管理画面 | deploy-guide.md §4.2 |
 | EvolutionRoute（進化条件） | Speciesの関係数分 | AWS CLI or 管理画面 | deploy-guide.md §4.3 |
-| Skills（スキル定義） | 進化先ごとに2〜4件 | AWS CLI or 管理画面 | 管理画面から登録 |
-| GameConfig（ゲーム定数） | 11件 | AWS CLI | deploy-guide.md §4.4 |
+| Skills（スキル定義） | 進化先ごとに2〜4件 | AWS CLI or 管理画面 | deploy-guide.md §4.4 |
+| GameConfig（ゲーム定数） | 11件 | AWS CLI | deploy-guide.md §4.5 |
 | スプライト画像 | Species数分 | 管理画面(Presigned URL) or AWS CLI | S3に直接アップロード |
 | 管理画面SPAビルド | 1回 | `cd admin && npm run build && aws s3 sync dist/ s3://...` | — |

@@ -100,7 +100,25 @@ aws dynamodb put-item --table-name butasodate-evolution-routes --region ap-north
 }'
 ```
 
-### 4.4 GameConfig（ゲーム定数）
+### 4.4 Skills（スキル定義）
+
+```bash
+aws dynamodb put-item --table-name butasodate-skills --region ap-northeast-1 --item '{
+  "skillId": {"S": "skill-ramen-throw"},
+  "name": {"S": "ラーメン投げ"},
+  "type": {"S": "ATTACK"},
+  "targetStat": {"S": "hp"},
+  "multiplier": {"N": "1.5"},
+  "cooldown": {"N": "2"},
+  "speciesId": {"S": "species-gourmet"},
+  "requiredLevel": {"N": "5"},
+  "spriteAnimationKey": {"S": "anim-ramen-throw"}
+}'
+```
+
+※ 追加スキルも同様に投入。`speciesId` でどのぶたが覚えるか指定。
+
+### 4.5 GameConfig（ゲーム定数）
 
 ```bash
 aws dynamodb put-item --table-name butasodate-game-config --region ap-northeast-1 --item '{"configKey":{"S":"INITIAL_STATS"},"value":{"M":{"hp":{"N":"50"},"attack":{"N":"10"},"defense":{"N":"10"},"speed":{"N":"10"}}},"updatedAt":{"S":"2026-05-24T00:00:00Z"},"updatedBy":{"S":"deploy"}}'
