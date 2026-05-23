@@ -34,7 +34,7 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
 
     try {
       final api = ref.read(apiClientProvider);
-      await api.post('/users/profile', data: {'nickname': nickname});
+      await api.authPost('/users/profile', data: {'nickname': nickname});
 
       // ニックネーム設定成功 → アバター作成
       await ref.read(authStateProvider.notifier).createInitialAvatar();

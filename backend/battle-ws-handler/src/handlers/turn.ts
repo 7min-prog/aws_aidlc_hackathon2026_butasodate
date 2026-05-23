@@ -1,7 +1,7 @@
 import { APIGatewayProxyResult } from 'aws-lambda';
-import { UpdateCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
+import { UpdateCommand, GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { dynamoClient, MATCHES_TABLE } from '../utils/dynamo-client';
+import { dynamoClient, MATCHES_TABLE, RANKINGS_TABLE, BATTLE_HISTORY_TABLE } from '../utils/dynamo-client';
 import { sendToConnection } from '../utils/ws-client';
 import { getUserIdFromConnection } from '../utils/auth';
 import { getConnectionByUserId } from './connection';
@@ -96,6 +96,53 @@ async function tryExecuteTurn(match: any) {
 
   if (p1Conn) await sendToConnection(p1Conn.connectionId, msg);
   if (p2Conn) await sendToConnection(p2Conn.connectionId, msg);
+
+  // Battle end: update rankings and save history
+  if (turnResult.battleEnd) {
+    const now = new Date().toISOString();
+    const winnerId = turnResult.winnerId;
+    const loserId = winnerId === match.player1Id ? match.player2Id : match.player1Id;
+
+    // Upsert rankings (ADD creates item if not exists)
+    if (winnerId) {
+      await dynamoClient.send(new UpdateCommand({
+        TableName: RANKINGS_TABLE,
+        Key: { userId: winnerId },
+        UpdateExpression: 'ADD wins :one, points :winPts SET #p = if_not_exists(#p, :defaultPartition), lastBattleAt = :now',
+        ExpressionAttributeNames: { '#p': 'partition' },
+        ExpressionAttributeValues: { ':one': 1, ':winPts': 25, ':defaultPartition': 'GLOBAL', ':now': now },
+      }));
+      await dynamoClient.send(new UpdateCommand({
+        TableName: RANKINGS_TABLE,
+        Key: { userId: loserId },
+        UpdateExpression: 'ADD losses :one, points :losePts SET #p = if_not_exists(#p, :defaultPartition), lastBattleAt = :now',
+        ExpressionAttributeNames: { '#p': 'partition' },
+        ExpressionAttributeValues: { ':one': 1, ':losePts': -15, ':defaultPartition': 'GLOBAL', ':now': now },
+      }));
+    }
+
+    // Save battle history for both players
+    await dynamoClient.send(new PutCommand({
+      TableName: BATTLE_HISTORY_TABLE,
+      Item: {
+        compositeId: `${match.player1Id}#${match.matchId}`,
+        matchId: match.matchId, userId: match.player1Id, opponentId: match.player2Id,
+        result: winnerId === match.player1Id ? 'WIN' : winnerId ? 'LOSE' : 'DRAW',
+        pointChange: winnerId === match.player1Id ? 25 : winnerId ? -15 : 0,
+        totalTurns: match.currentTurn, finishReason: turnResult.finishReason, playedAt: now,
+      },
+    }));
+    await dynamoClient.send(new PutCommand({
+      TableName: BATTLE_HISTORY_TABLE,
+      Item: {
+        compositeId: `${match.player2Id}#${match.matchId}`,
+        matchId: match.matchId, userId: match.player2Id, opponentId: match.player1Id,
+        result: winnerId === match.player2Id ? 'WIN' : winnerId ? 'LOSE' : 'DRAW',
+        pointChange: winnerId === match.player2Id ? 25 : winnerId ? -15 : 0,
+        totalTurns: match.currentTurn, finishReason: turnResult.finishReason, playedAt: now,
+      },
+    }));
+  }
 }
 
 async function getMatch(matchId: string) {

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:buta_app/shared/api_client.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/cache_service.dart';
 import 'package:buta_app/shared/image_cache_service.dart';
@@ -30,7 +29,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
   Future<bool> login(String email, String password) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = Dio(BaseOptions(baseUrl: AppConstants.authApiBase));
       final response = await dio.post('/auth/login', data: {
         'email': email,
         'password': password,
@@ -53,7 +52,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
   Future<bool> signup(String email, String password) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = Dio(BaseOptions(baseUrl: AppConstants.authApiBase));
       await dio.post('/auth/signup', data: {
         'email': email,
         'password': password,
@@ -66,7 +65,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
   Future<bool> confirmSignup(String email, String code) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = Dio(BaseOptions(baseUrl: AppConstants.authApiBase));
       await dio.post('/auth/confirm', data: {
         'email': email,
         'code': code,
@@ -82,7 +81,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     if (currentTokens?.refreshToken == null) return false;
 
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = Dio(BaseOptions(baseUrl: AppConstants.authApiBase));
       final response = await dio.post('/auth/refresh', data: {
         'refreshToken': currentTokens!.refreshToken,
       });
@@ -119,7 +118,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
     final dio = Dio(BaseOptions(
       baseUrl: AppConstants.avatarApiBase,
-      headers: {'Authorization': 'Bearer ${tokens.accessToken}'},
+      headers: {'Authorization': 'Bearer ${tokens.idToken ?? tokens.accessToken}'},
     ));
 
     for (var i = 0; i < AppConstants.avatarCreateMaxRetries; i++) {

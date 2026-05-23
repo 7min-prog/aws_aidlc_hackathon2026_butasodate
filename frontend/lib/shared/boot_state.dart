@@ -18,7 +18,6 @@ class BootResult {
   final RecordSummary? summary;
   final int pendingRequestCount;
   final bool isOffline;
-  final String? avatarImagePath;
   final String? errorMessage;
 
   BootResult({
@@ -28,7 +27,6 @@ class BootResult {
     this.summary,
     this.pendingRequestCount = 0,
     this.isOffline = false,
-    this.avatarImagePath,
     this.errorMessage,
   });
 }
@@ -58,14 +56,14 @@ class BootNotifier extends AsyncNotifier<BootResult> {
 
     // トークン検証 + プロフィール取得
     try {
-      final profile = await _fetchProfile(tokens.accessToken);
+      final profile = await _fetchProfile(tokens.idToken ?? tokens.accessToken);
       if (profile == null || !profile.hasNickname) {
         await _waitMinDuration(startTime);
         return BootResult(destination: BootDestination.nickname, profile: profile);
       }
 
       // 初期データ並列取得
-      final results = await _fetchInitialData(tokens.accessToken, profile);
+      final results = await _fetchInitialData(tokens.idToken ?? tokens.accessToken, profile);
       await _waitMinDuration(startTime);
       return results;
     } on DioException catch (e) {
@@ -132,22 +130,12 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     if (avatar != null) await cache.saveAvatar(avatar);
     if (summary != null) await cache.saveSummary(summary);
 
-    // 画像プリロード（非ブロッキング）
-    String? imagePath;
-    if (avatar != null) {
-      imagePath = await imageCache.getOrDownload(avatar.spriteSheetKey);
-    }
-
-    // ヘルスデータ同期（fire-and-forget）
-    _syncHealthData(recordingDio);
-
     return BootResult(
       destination: BootDestination.home,
       profile: profile,
       avatar: avatar,
       summary: summary,
       pendingRequestCount: pendingCount,
-      avatarImagePath: imagePath,
     );
   }
 
@@ -188,11 +176,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     }
   }
 
-  void _syncHealthData(Dio dio) {
-    // fire-and-forget
-    dio.post('/health-sync', data: {'records': []}).ignore();
-  }
-
   Future<BootResult> _handleOffline(DateTime startTime) async {
     final cache = ref.read(cacheServiceProvider);
     final profile = await cache.loadProfile();
@@ -200,14 +183,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     final summary = await cache.loadSummary();
 
     if (profile != null) {
-      String? imagePath;
-      if (avatar != null) {
-        final imageCache = ref.read(imageCacheServiceProvider);
-        final cached = await imageCache.isCached(avatar.spriteSheetKey);
-        if (cached) {
-          imagePath = await imageCache.getOrDownload(avatar.spriteSheetKey);
-        }
-      }
       await _waitMinDuration(startTime);
       return BootResult(
         destination: BootDestination.home,
@@ -215,7 +190,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
         avatar: avatar,
         summary: summary,
         isOffline: true,
-        avatarImagePath: imagePath,
       );
     }
 
