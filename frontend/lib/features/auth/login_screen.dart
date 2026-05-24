@@ -1,109 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:buta_app/shared/auth_state.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/auth_state.dart';
 
+/// A-01 ログイン画面 (390x740, bg-barn)
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
-
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isLoading = false;
-  String? _errorMessage;
+  final _emailCtrl = TextEditingController();
+  final _pwCtrl = TextEditingController();
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _handleLogin() async {
-    setState(() { _isLoading = true; _errorMessage = null; });
-
-    final success = await ref.read(authStateProvider.notifier).login(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
-
-    setState(() { _isLoading = false; });
-
-    if (!success && mounted) {
-      setState(() { _errorMessage = 'メールアドレスまたはパスワードが正しくありません'; });
-    }
+  Future<void> _login() async {
+    final ok = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
+    if (ok && mounted) context.go('/');
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final sx = size.width / 390;
+    final sy = size.height / 740;
+
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('🐷', style: TextStyle(fontSize: 64)),
-              const SizedBox(height: 8),
-              Text('ぶたそだて',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: ButaColors.primary,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: ButaColors.surface,
-                  border: Border.all(color: ButaColors.border, width: 4),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Column(
-                  children: [
-                    TextField(
-                      key: const Key('login-email-input'),
-                      controller: _emailController,
-                      decoration: const InputDecoration(labelText: 'メールアドレス'),
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      key: const Key('login-password-input'),
-                      controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'パスワード'),
-                      obscureText: true,
-                      style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
-                    ),
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 12),
-                      Text(_errorMessage!, style: const TextStyle(color: ButaColors.error, fontSize: 12)),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                key: const Key('login-submit-button'),
-                onPressed: _isLoading ? null : _handleLogin,
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: ButaColors.textPrimary)
-                    : const Text('▶ ログイン'),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                key: const Key('login-to-signup-button'),
-                onPressed: () => context.go('/signup'),
-                child: const Text('▶ アカウントを作成する'),
-              ),
-            ],
-          ),
+      backgroundColor: ButaColors.blue, // bg-barn: #5a8ed1
+      body: SizedBox.expand(
+        child: Stack(
+          children: [
+            // bg-barn SVG背景
+            Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
+
+            // タイトル
+            Positioned(top: 140 * sy, left: 0, right: 0, child: const Text('ログイン', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 20, color: ButaColors.paper))),
+
+            // メールラベル
+            Positioned(top: 240 * sy, left: 0, right: 0, child: const Text('メールアドレス', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+            // メール入力
+            Positioned(top: 258 * sy, left: 55 * sx, child: _input(_emailCtrl, sx, sy)),
+
+            // パスワードラベル
+            Positioned(top: 310 * sy, left: 0, right: 0, child: const Text('パスワード', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+            // パスワード入力
+            Positioned(top: 328 * sy, left: 55 * sx, child: _input(_pwCtrl, sx, sy, obscure: true)),
+
+            // ログインボタン
+            Positioned(top: 390 * sy, left: 55 * sx, child: _btn(280 * sx, 44 * sy, ButaColors.yellow, '▶ ログイン', 16, ButaColors.ink, _login)),
+
+            // 区切り
+            Positioned(top: 455 * sy, left: 0, right: 0, child: const Text('── または ──', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+
+            // Googleボタン
+            Positioned(top: 490 * sy, left: 55 * sx, child: _btn(280 * sx, 40 * sy, ButaColors.paper, 'Google で ログイン', 14, ButaColors.ink, () {})),
+            // Xボタン
+            Positioned(top: 545 * sy, left: 55 * sx, child: _btn(280 * sx, 40 * sy, ButaColors.paper, 'X で ログイン', 14, ButaColors.ink, () {})),
+
+            // サインアップリンク
+            Positioned(top: 610 * sy, left: 0, right: 0, child: GestureDetector(onTap: () => context.push('/signup'), child: const Text('アカウントを つくる →', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: Color(0xFFE8E9EA))))),
+
+            // 法務リンク
+            Positioned(top: 660 * sy, left: 0, right: 0, child: const Text('利用規約 ｜ プライバシーポリシー', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: Color(0xFFE8E9EA)))),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _input(TextEditingController ctrl, double sx, double sy, {bool obscure = false}) {
+    return Container(
+      width: 280 * sx, height: 36 * sy,
+      decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),
+      padding: EdgeInsets.symmetric(horizontal: 8 * sx),
+      child: TextField(
+        controller: ctrl, obscureText: obscure,
+        style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink),
+        decoration: const InputDecoration(
+          border: InputBorder.none, isDense: true,
+          hintText: 'なまえを いれてね...',
+          hintStyle: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.gray),
+        ),
+      ),
+    );
+  }
+
+  Widget _btn(double w, double h, Color bg, String label, double fontSize, Color textColor, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: w, height: h,
+        decoration: BoxDecoration(color: bg, border: Border.all(color: ButaColors.ink, width: 2)),
+        child: Center(child: Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: fontSize, color: textColor))),
       ),
     );
   }

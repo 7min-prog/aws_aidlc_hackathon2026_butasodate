@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "penpot": {
-      "url": "https://design.penpot.app/mcp/stream?userToken=[APIキー]"
+      "url": "https://design.penpot.app/mcp/stream?userToken=eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2R0NNIn0.Tb-kKNc4sPCouekEUrL_mHzNCQ96UrLG4LuzNvGWP3MJe8ts_D40lQ.D9m_zII7lU87ZN1l.nJxuW4gGRo3vmDtvJRvTTbQbRUdB7fCjtnJpzUy3Qp1V3-lwk9bpd7ZwNFIwfgoOsDLHeC1f5Dw0l0ProJZNElG9TfYVEUHBiRDy7w-tppLFwiTDI9BP7lMrhGa1BQTTDYB31NMvssd4TdEC7sj3ftIs7kc3UzET5u4G2sNgcn6ZNbpnAWkinS1RRDYszemx4L0OPFPW7TAe.wGcW4zd9GuoA5Ac2xsjCEw"
     }
   }
 }

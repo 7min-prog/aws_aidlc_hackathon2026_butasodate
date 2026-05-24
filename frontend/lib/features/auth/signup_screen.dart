@@ -62,7 +62,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'メールアドレス'),
               keyboardType: TextInputType.emailAddress,
-              style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
+              style: const TextStyle(fontFamily: kFontDotGothic16, color: ButaColors.textPrimary),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -70,7 +70,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               controller: _passwordController,
               decoration: const InputDecoration(labelText: 'パスワード（8文字以上、大小英数字+記号）'),
               obscureText: true,
-              style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
+              style: const TextStyle(fontFamily: kFontDotGothic16, color: ButaColors.textPrimary),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -78,7 +78,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               controller: _confirmPasswordController,
               decoration: const InputDecoration(labelText: 'パスワード（確認）'),
               obscureText: true,
-              style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
+              style: const TextStyle(fontFamily: kFontDotGothic16, color: ButaColors.textPrimary),
             ),
             if (_errorMessage != null) ...[
               const SizedBox(height: 12),

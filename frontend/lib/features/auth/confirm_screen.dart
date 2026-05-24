@@ -61,7 +61,7 @@ class _ConfirmScreenState extends ConsumerState<ConfirmScreen> {
               decoration: const InputDecoration(labelText: '6桁の確認コード'),
               keyboardType: TextInputType.number,
               maxLength: 6,
-              style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
+              style: const TextStyle(fontFamily: kFontDotGothic16, color: ButaColors.textPrimary),
             ),
             if (_errorMessage != null) ...[
               const SizedBox(height: 12),
