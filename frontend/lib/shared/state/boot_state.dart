@@ -3,9 +3,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/models/models.dart';
-import 'package:buta_app/shared/cache_service.dart';
-import 'package:buta_app/shared/image_cache_service.dart';
-import 'package:buta_app/shared/auth_state.dart';
+import 'package:buta_app/shared/services/cache_service.dart';
+import 'package:buta_app/shared/services/image_cache_service.dart';
+import 'package:buta_app/shared/state/auth_state.dart';
 
 enum AppBootStatus { checking, loadingData, done, error }
 

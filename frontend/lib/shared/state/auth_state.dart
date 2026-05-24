@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:buta_app/shared/api_client.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/constants.dart';
-import 'package:buta_app/shared/cache_service.dart';
-import 'package:buta_app/shared/image_cache_service.dart';
+import 'package:buta_app/shared/services/cache_service.dart';
+import 'package:buta_app/shared/services/image_cache_service.dart';
 
 class AuthTokens {
   final String accessToken;

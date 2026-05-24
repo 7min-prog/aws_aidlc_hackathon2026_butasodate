@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:buta_app/shared/auth_state.dart';
+import 'package:buta_app/shared/state/auth_state.dart';
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   return ApiClient(ref);
@@ -24,8 +24,8 @@ class ApiClient {
 
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final authState = _ref.read(authStateProvider);
-        final token = authState.value?.accessToken;
+        final authState = await _ref.read(authStateProvider.future);
+        final token = authState?.accessToken;
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
@@ -47,4 +47,5 @@ class ApiClient {
   Future<Response> get(String path) => _dio.get(path);
   Future<Response> post(String path, {Object? data}) => _dio.post(path, data: data);
   Future<Response> put(String path, {Object? data}) => _dio.put(path, data: data);
+  Future<Response> delete(String path) => _dio.delete(path);
 }
