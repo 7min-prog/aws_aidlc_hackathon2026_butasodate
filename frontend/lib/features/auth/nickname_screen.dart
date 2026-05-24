@@ -70,7 +70,7 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
                 hintText: 'ぶたまる',
               ),
               maxLength: 10,
-              style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
+              style: const TextStyle(fontFamily: kFontDotGothic16, color: ButaColors.textPrimary),
             ),
             if (_errorMessage != null) ...[
               const SizedBox(height: 12),

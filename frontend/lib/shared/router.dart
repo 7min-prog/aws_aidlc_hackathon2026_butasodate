@@ -23,24 +23,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: '/signup',
-        builder: (context, state) => const SignupScreen(),
-      ),
-      GoRoute(
-        path: '/confirm',
-        builder: (context, state) => ConfirmScreen(
-          email: state.extra as String? ?? '',
-        ),
-      ),
-      GoRoute(
-        path: '/nickname',
-        builder: (context, state) => const NicknameScreen(),
-      ),
-      GoRoute(
         path: '/recording',
         builder: (context, state) => const RecordingScreen(),
       ),
@@ -51,6 +33,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/signup',
+        builder: (context, state) => const SignupScreen(),
+      ),
+      GoRoute(
+        path: '/confirm',
+        builder: (context, state) => ConfirmScreen(email: state.extra as String? ?? ''),
+      ),
+      GoRoute(
+        path: '/nickname',
+        builder: (context, state) => const NicknameScreen(),
       ),
     ],
   );

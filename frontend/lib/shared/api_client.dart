@@ -10,8 +10,9 @@ class ApiClient {
   final Ref _ref;
   late final Dio _dio;
 
-  // TODO: cdk deploy後に実際のURLに差し替え
-  static const baseUrl = 'https://YOUR_API_URL.execute-api.ap-northeast-1.amazonaws.com/dev';
+  // mockサーバー: http://localhost:3000
+  // 本番: https://YOUR_API_URL.execute-api.ap-northeast-1.amazonaws.com/dev
+  static const baseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'http://localhost:3000');
 
   ApiClient(this._ref) {
     _dio = Dio(BaseOptions(

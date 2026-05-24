@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.7.0 <4.0.0'
+  sdk: '>=3.9.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -19,13 +19,28 @@ dependencies:
   path_provider: ^2.1.5
   connectivity_plus: ^6.1.4
   cached_network_image: ^3.4.1
+  flutter_native_splash: ^2.4.6
+  carousel_slider: ^5.0.0
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  test: ^1.25.0
   flutter_lints: ^5.0.0
-  riverpod_generator: ^4.0.0
-  build_runner: ^2.4.9
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/pixel-art/backgrounds/
+    - assets/pixel-art/icons/
+  fonts:
+    - family: DotGothic16
+      fonts:
+        - asset: assets/fonts/DotGothic16-Regular.ttf
+    - family: PressStart2P
+      fonts:
+        - asset: assets/fonts/PressStart2P-Regular.ttf
+
+flutter_native_splash:
+  color: "#1a1228"
