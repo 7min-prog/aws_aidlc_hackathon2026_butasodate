@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 740" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 800 740" shape-rendering="crispEdges">
   <!-- Sky: blue gradient -->
-  <rect width="390" height="740" fill="#5A8ED1"/>
-  <rect y="0" width="390" height="120" fill="#4A7EC1"/>
-  <rect y="120" width="390" height="80" fill="#6A9EE1"/>
+  <rect x="-200" width="800" height="740" fill="#5A8ED1"/>
+  <rect x="-200" y="0" width="800" height="120" fill="#4A7EC1"/>
+  <rect x="-200" y="120" width="800" height="80" fill="#6A9EE1"/>
 
   <!-- Clouds -->
   <rect x="40" y="40" width="60" height="12" fill="#FFF8E6" opacity="0.7"/>
@@ -19,8 +19,8 @@
   <rect x="324" y="58" width="16" height="4" fill="#F6C453" opacity="0.5"/>
 
   <!-- Arena ground (sand) -->
-  <rect y="530" width="390" height="210" fill="#E8D9B0"/>
-  <rect y="526" width="390" height="8" fill="#8A5A2B"/>
+  <rect x="-200" y="530" width="800" height="210" fill="#E8D9B0"/>
+  <rect x="-200" y="526" width="800" height="8" fill="#8A5A2B"/>
 
   <!-- Sand texture -->
   <rect x="30" y="560" width="6" height="4" fill="#D4C89C"/>

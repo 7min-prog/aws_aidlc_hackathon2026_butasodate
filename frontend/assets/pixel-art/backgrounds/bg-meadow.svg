@@ -1,22 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 740" shape-rendering="crispEdges">
-  <!-- 昼の草原背景 390x740 -->
-  <!-- 空 (上部55%) -->
-  <rect width="390" height="400" fill="#5A8ED1"/>
-  <!-- 空のグラデーション（明るい帯） -->
-  <rect width="390" height="80" fill="#7AAEE0"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 800 740" shape-rendering="crispEdges">
+  <!-- 空 -->
+  <rect x="-200" width="800" height="400" fill="#5A8ED1"/>
+  <rect x="-200" width="800" height="80" fill="#7AAEE0"/>
   <!-- 雲 -->
   <g fill="#FFF8E6">
-    <!-- 雲1 -->
+    <rect x="-120" y="110" width="40" height="10"/>
+    <rect x="-112" y="104" width="24" height="6"/>
     <rect x="40" y="100" width="48" height="12"/>
     <rect x="48" y="92" width="32" height="8"/>
     <rect x="52" y="88" width="20" height="6"/>
-    <!-- 雲2 -->
     <rect x="240" y="140" width="60" height="12"/>
     <rect x="252" y="132" width="36" height="8"/>
     <rect x="260" y="126" width="20" height="6"/>
-    <!-- 雲3 (小) -->
     <rect x="150" y="60" width="32" height="10"/>
     <rect x="156" y="54" width="20" height="6"/>
+    <rect x="420" y="90" width="52" height="12"/>
+    <rect x="430" y="82" width="32" height="8"/>
+    <rect x="500" y="150" width="44" height="10"/>
+    <rect x="508" y="144" width="28" height="6"/>
   </g>
   <!-- 太陽 -->
   <rect x="310" y="40" width="32" height="32" fill="#F6C453"/>
@@ -25,15 +26,24 @@
   <rect x="322" y="36" width="8" height="4" fill="#F6C453"/>
   <rect x="322" y="76" width="8" height="4" fill="#F6C453"/>
   <!-- 遠景の丘 -->
-  <rect x="0" y="360" width="390" height="40" fill="#2F6B3C"/>
+  <rect x="-200" y="360" width="800" height="40" fill="#2F6B3C"/>
+  <rect x="-100" y="345" width="100" height="16" fill="#2F6B3C"/>
+  <rect x="-80" y="338" width="60" height="8" fill="#2F6B3C"/>
   <rect x="40" y="340" width="120" height="20" fill="#2F6B3C"/>
   <rect x="60" y="330" width="80" height="12" fill="#2F6B3C"/>
   <rect x="220" y="345" width="140" height="16" fill="#2F6B3C"/>
   <rect x="250" y="336" width="80" height="10" fill="#2F6B3C"/>
-  <!-- 草原 (下部) -->
-  <rect y="400" width="390" height="340" fill="#6CB979"/>
-  <!-- 草のテクスチャ（濃い緑のドット） -->
+  <rect x="400" y="342" width="120" height="18" fill="#2F6B3C"/>
+  <rect x="430" y="334" width="70" height="10" fill="#2F6B3C"/>
+  <!-- 草原 -->
+  <rect x="-200" y="400" width="800" height="340" fill="#6CB979"/>
+  <rect x="-200" y="398" width="800" height="4" fill="#2F6B3C"/>
+  <!-- 草テクスチャ -->
   <g fill="#2F6B3C" opacity="0.4">
+    <rect x="-180" y="420" width="4" height="8"/>
+    <rect x="-140" y="445" width="4" height="8"/>
+    <rect x="-90" y="425" width="4" height="8"/>
+    <rect x="-50" y="460" width="4" height="8"/>
     <rect x="20" y="420" width="4" height="8"/>
     <rect x="60" y="440" width="4" height="8"/>
     <rect x="110" y="415" width="4" height="8"/>
@@ -42,6 +52,12 @@
     <rect x="250" y="445" width="4" height="8"/>
     <rect x="300" y="418" width="4" height="8"/>
     <rect x="350" y="438" width="4" height="8"/>
+    <rect x="400" y="422" width="4" height="8"/>
+    <rect x="450" y="448" width="4" height="8"/>
+    <rect x="500" y="430" width="4" height="8"/>
+    <rect x="550" y="455" width="4" height="8"/>
+    <rect x="-160" y="490" width="4" height="8"/>
+    <rect x="-100" y="510" width="4" height="8"/>
     <rect x="40" y="480" width="4" height="8"/>
     <rect x="90" y="500" width="4" height="8"/>
     <rect x="140" y="490" width="4" height="8"/>
@@ -49,28 +65,40 @@
     <rect x="240" y="485" width="4" height="8"/>
     <rect x="290" y="505" width="4" height="8"/>
     <rect x="340" y="495" width="4" height="8"/>
+    <rect x="420" y="488" width="4" height="8"/>
+    <rect x="480" y="502" width="4" height="8"/>
+    <rect x="540" y="492" width="4" height="8"/>
+    <rect x="-130" y="560" width="4" height="8"/>
+    <rect x="-60" y="570" width="4" height="8"/>
     <rect x="70" y="560" width="4" height="8"/>
     <rect x="130" y="570" width="4" height="8"/>
     <rect x="220" y="555" width="4" height="8"/>
     <rect x="310" y="565" width="4" height="8"/>
     <rect x="370" y="550" width="4" height="8"/>
+    <rect x="440" y="562" width="4" height="8"/>
+    <rect x="520" y="558" width="4" height="8"/>
   </g>
   <!-- 花（ピンク） -->
   <g fill="#FF9BB3">
+    <rect x="-150" y="470" width="6" height="6"/>
+    <rect x="-70" y="530" width="6" height="6"/>
     <rect x="80" y="460" width="6" height="6"/>
     <rect x="170" y="520" width="6" height="6"/>
     <rect x="280" y="470" width="6" height="6"/>
     <rect x="350" y="540" width="6" height="6"/>
     <rect x="50" y="580" width="6" height="6"/>
     <rect x="230" y="600" width="6" height="6"/>
+    <rect x="430" y="475" width="6" height="6"/>
+    <rect x="520" y="545" width="6" height="6"/>
   </g>
   <!-- 花（黄色） -->
   <g fill="#F6C453">
+    <rect x="-120" y="500" width="6" height="6"/>
     <rect x="120" y="480" width="6" height="6"/>
     <rect x="260" y="530" width="6" height="6"/>
     <rect x="30" y="540" width="6" height="6"/>
     <rect x="330" y="590" width="6" height="6"/>
+    <rect x="460" y="510" width="6" height="6"/>
+    <rect x="550" y="580" width="6" height="6"/>
   </g>
-  <!-- 地面の境界（草原と空の間） -->
-  <rect y="398" width="390" height="4" fill="#2F6B3C"/>
 </svg>

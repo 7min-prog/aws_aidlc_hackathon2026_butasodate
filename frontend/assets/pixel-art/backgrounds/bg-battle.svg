@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 400" shape-rendering="crispEdges">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 800 740" shape-rendering="crispEdges">
   <!-- バトルフィールド背景 -->
   <!-- dark sky -->
-  <rect width="390" height="400" fill="#1A1228"/>
+  <rect x="-200" width="800" height="400" fill="#1A1228"/>
   <!-- arena floor -->
-  <rect x="0" y="240" width="390" height="160" fill="#3D2B4D"/>
+  <rect x="-200" y="240" width="800" height="160" fill="#3D2B4D"/>
   <rect x="40" y="260" width="310" height="120" fill="#0A0612"/>
   <rect x="40" y="260" width="310" height="4" fill="#5A8ED1"/>
   <!-- grid lines on floor -->
