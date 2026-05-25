@@ -3,11 +3,13 @@ import app from '../src/app';
 jest.mock('../src/utils/dynamo-client', () => ({
   docClient: { send: jest.fn() },
   AVATAR_TABLE: 'test-avatars',
-  EVOLUTION_PATH_TABLE: 'test-paths',
+  PIG_SPECIES_TABLE: 'test-species',
+  EVOLUTION_ROUTE_TABLE: 'test-routes',
   SKILL_TABLE: 'test-skills',
   AUDIT_LOG_TABLE: 'test-audit',
   GAME_CONFIG_TABLE: 'test-config',
-  RECORDING_TABLE: 'test-recordings',
+  ACTIVITY_RECORD_TABLE: 'test-records',
+  USER_PROFILES_TABLE: 'test-profiles',
 }));
 
 jest.mock('../src/utils/cognito-client', () => ({
@@ -175,6 +177,193 @@ describe('Admin API', () => {
       const body = await json(res);
       expect(body.openapi).toBe('3.1.0');
       expect(body.info.title).toBe('ぶたそだて Admin API');
+    });
+  });
+
+  // --- 追加テスト: 未カバーエンドポイント ---
+
+  describe('PUT /admin/users/:username/avatar', () => {
+    it('updates avatar data', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put avatar
+      mockDocSend.mockResolvedValueOnce({}); // audit log
+      const res = await app.request('/admin/users/user1/avatar', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalPoints: 9999, level: 20 }),
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Avatar updated');
+    });
+  });
+
+  describe('PUT /admin/users/:username/profile', () => {
+    it('updates game data fields', async () => {
+      mockDocSend.mockResolvedValueOnce({ Item: { userId: 'user1', totalPoints: 500, level: 3 } }); // get existing
+      mockDocSend.mockResolvedValueOnce({}); // put avatar
+      mockDocSend.mockResolvedValueOnce({}); // audit log
+      const res = await app.request('/admin/users/user1/profile', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalPoints: 1000, level: 5 }),
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Profile updated');
+    });
+
+    it('returns 404 when avatar not found for game fields update', async () => {
+      mockDocSend.mockResolvedValueOnce({ Item: undefined });
+      const res = await app.request('/admin/users/user1/profile', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalPoints: 1000 }),
+      });
+      expect(res.status).toBe(404);
+    });
+
+    it('updates nickname in user-profiles table', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // UpdateCommand for profiles
+      mockDocSend.mockResolvedValueOnce({}); // audit log
+      const res = await app.request('/admin/users/user1/profile', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: '新しい名前' }),
+      });
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe('POST /admin/users/:username/health-data', () => {
+    it('records health data manually', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put record
+      mockDocSend.mockResolvedValueOnce({}); // audit log
+      const res = await app.request('/admin/users/user1/health-data', {
+        method: 'POST', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ weight: 70.5, steps: 8000, date: '2026-05-25' }),
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Health data recorded');
+    });
+  });
+
+  describe('PUT /admin/evolution-paths/:pathId', () => {
+    it('updates species', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/evolution-paths/food_s2', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'ぽっちゃり改' }),
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Species updated');
+    });
+  });
+
+  describe('DELETE /admin/evolution-paths/:pathId', () => {
+    it('deletes species', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // delete
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/evolution-paths/food_s2', {
+        method: 'DELETE', headers: authHeader,
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Species deleted');
+    });
+  });
+
+  describe('GET /admin/evolution-routes', () => {
+    it('returns routes', async () => {
+      mockDocSend.mockResolvedValueOnce({ Items: [{ routeId: 'r1', fromSpeciesId: 'kobuta' }] });
+      const res = await app.request('/admin/evolution-routes', { headers: authHeader });
+      expect(res.status).toBe(200);
+      expect((await json(res)).routes).toHaveLength(1);
+    });
+  });
+
+  describe('POST /admin/evolution-routes', () => {
+    it('creates route', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/evolution-routes', {
+        method: 'POST', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ routeId: 'r_new', fromSpeciesId: 'kobuta', toSpeciesId: 'food_s2' }),
+      });
+      expect(res.status).toBe(201);
+    });
+  });
+
+  describe('PUT /admin/evolution-routes/:routeId', () => {
+    it('updates route', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/evolution-routes/r1', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ categoryThreshold: 0.7 }),
+      });
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe('DELETE /admin/evolution-routes/:routeId', () => {
+    it('deletes route', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // delete
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/evolution-routes/r1', {
+        method: 'DELETE', headers: authHeader,
+      });
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe('GET /admin/skills', () => {
+    it('returns skills', async () => {
+      mockDocSend.mockResolvedValueOnce({ Items: [{ skillId: 'sk1', name: '暴食タックル' }] });
+      const res = await app.request('/admin/skills', { headers: authHeader });
+      expect(res.status).toBe(200);
+      expect((await json(res)).skills).toHaveLength(1);
+    });
+  });
+
+  describe('POST /admin/skills', () => {
+    it('creates skill', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/skills', {
+        method: 'POST', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skillId: 'sk_new', name: '新スキル', type: 'ATTACK' }),
+      });
+      expect(res.status).toBe(201);
+    });
+  });
+
+  describe('PUT /admin/skills/:skillId', () => {
+    it('updates skill', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/skills/sk1', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: '暴食タックル改' }),
+      });
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe('DELETE /admin/skills/:skillId', () => {
+    it('deletes skill', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // delete
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/skills/sk1', {
+        method: 'DELETE', headers: authHeader,
+      });
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe('PUT /admin/game-config', () => {
+    it('updates config value', async () => {
+      mockDocSend.mockResolvedValueOnce({}); // put
+      mockDocSend.mockResolvedValueOnce({}); // audit
+      const res = await app.request('/admin/game-config', {
+        method: 'PUT', headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ configKey: 'MAX_LEVEL', value: 50 }),
+      });
+      expect(res.status).toBe(200);
+      expect((await json(res)).message).toBe('Config updated');
     });
   });
 });
