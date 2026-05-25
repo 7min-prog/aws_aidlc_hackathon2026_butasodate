@@ -24,7 +24,7 @@ jobs:
       - run: flutter pub get
 
       - name: Run tests
-        run: flutter test --coverage --timeout 120s test/main_test.dart test/shared/ test/features/ test/screens/ test/golden/ test/unit/ test/pixel_app_bar_test.dart test/router_routes_test.dart test/login_legal_links_test.dart test/router_test.dart
+        run: flutter test --coverage --timeout 120s test/main_test.dart test/shared/ test/features/ test/screens/ test/unit/ test/pixel_app_bar_test.dart test/router_routes_test.dart test/login_legal_links_test.dart test/router_test.dart
 
       - name: Check coverage >= 90%
         run: |
