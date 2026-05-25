@@ -40,17 +40,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final view = View.of(context);
+    final size = view.physicalSize / view.devicePixelRatio;
     final sx = size.width / 390;
     final sy = size.height / 740;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ButaColors.blue,
-      appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(
         children: [
           Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
           const Positioned.fill(child: CloudAnimation()),
+          Positioned.fill(child: SafeArea(top: false, child: Stack(children: [
           if (AppConfig.isDev) Positioned(top: 8, right: 12, child: GestureDetector(
             onTap: () async {
               await ref.read(authStateProvider.notifier).devLogin();
@@ -87,6 +89,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               GestureDetector(onTap: () => context.push('/privacy', extra: false), child: const Text('プライバシーポリシー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper, decoration: TextDecoration.underline, decorationColor: ButaColors.paper))),
             ],
           )),
+        ]))),
         ],
       ),
     );

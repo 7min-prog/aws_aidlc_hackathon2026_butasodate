@@ -24,10 +24,12 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final view = View.of(context);
+    final size = view.physicalSize / view.devicePixelRatio;
     final sx = size.width / 390, sy = size.height / 740;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ButaColors.blue,
       appBar: const PixelAppBar(title: 'プロフィール', showBack: true),
       bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
