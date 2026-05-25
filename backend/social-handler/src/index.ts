@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { PutCommand, DeleteCommand, QueryCommand, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { PutCommand, DeleteCommand, QueryCommand, GetCommand, ScanCommand, BatchGetCommand } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { successResponse, errorResponse } from './utils/response';
@@ -14,6 +14,20 @@ const USER_PROFILES_TABLE = process.env.USER_PROFILES_TABLE || 'butasodate-user-
 
 function getUserId(event: APIGatewayProxyEvent): string | null {
   return event.requestContext.authorizer?.claims?.sub || null;
+}
+
+async function fetchNicknames(userIds: string[]): Promise<Record<string, string>> {
+  if (userIds.length === 0) return {};
+  const result = await client.send(new BatchGetCommand({
+    RequestItems: {
+      [USER_PROFILES_TABLE]: { Keys: userIds.map(id => ({ userId: id })) },
+    },
+  }));
+  const map: Record<string, string> = {};
+  for (const item of result.Responses?.[USER_PROFILES_TABLE] || []) {
+    map[item.userId] = item.nickname || '';
+  }
+  return map;
 }
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -49,10 +63,15 @@ async function getFriends(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':uid': userId },
   }));
 
-  return successResponse(200, { friends: result.Items || [] });
+  const friends = result.Items || [];
+  const nicknames = await fetchNicknames(friends.map(f => f.friendId));
+  const enriched = friends.map(f => ({ ...f, nickname: nicknames[f.friendId] || '' }));
+
+  return successResponse(200, { friends: enriched });
 }
 
 async function searchUsers(event: APIGatewayProxyEvent) {
+  const userId = getUserId(event);
   const { query } = JSON.parse(event.body || '{}');
   if (!query) return errorResponse(400, 'query is required');
 
@@ -63,7 +82,8 @@ async function searchUsers(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':n': query },
   }));
 
-  return successResponse(200, { users: result.Items || [] });
+  const users = (result.Items || []).filter(u => u.userId !== userId);
+  return successResponse(200, { users });
 }
 
 async function sendFriendRequest(event: APIGatewayProxyEvent) {
@@ -153,7 +173,11 @@ async function getPendingRequests(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':uid': userId, ':pending': 'PENDING' },
   }));
 
-  return successResponse(200, { requests: result.Items || [] });
+  const requests = result.Items || [];
+  const nicknames = await fetchNicknames(requests.map(r => r.fromUserId));
+  const enriched = requests.map(r => ({ ...r, fromNickname: nicknames[r.fromUserId] || '' }));
+
+  return successResponse(200, { requests: enriched });
 }
 
 async function getRankings(_event: APIGatewayProxyEvent) {

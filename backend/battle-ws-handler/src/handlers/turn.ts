@@ -59,7 +59,7 @@ async function tryExecuteTurn(match: any) {
   }
 
   // Execute turn logic
-  const turnResult = executeTurnLogic(match);
+  const turnResult = await executeTurnLogic(match);
 
   // Update match state
   const updateExpr = turnResult.battleEnd

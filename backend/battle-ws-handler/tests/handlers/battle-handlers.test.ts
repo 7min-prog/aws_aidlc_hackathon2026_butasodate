@@ -251,6 +251,14 @@ describe('battle-ws-handler', () => {
         mockSend.mockResolvedValueOnce({
           Item: { matchId: 'm1', player1Id: 'user-1', player2Id: 'user-2', player1Ready: true, player2Ready: true },
         });
+        // GetCommand (player1 avatar)
+        mockSend.mockResolvedValueOnce({
+          Item: { userId: 'user-1', stats: { hp: 80, attack: 15, defense: 12, speed: 11 } },
+        });
+        // GetCommand (player2 avatar)
+        mockSend.mockResolvedValueOnce({
+          Item: { userId: 'user-2', stats: { hp: 90, attack: 18, defense: 10, speed: 13 } },
+        });
         // UpdateCommand (start battle)
         mockSend.mockResolvedValueOnce({});
         // getConnectionByUserId (player1)

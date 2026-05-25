@@ -13,6 +13,7 @@ jest.mock('@aws-sdk/lib-dynamodb', () => ({
   GetCommand: jest.fn((input: any) => ({ input })),
   ScanCommand: jest.fn((input: any) => ({ input })),
   UpdateCommand: jest.fn((input: any) => ({ input })),
+  BatchGetCommand: jest.fn((input: any) => ({ input })),
 }));
 
 import { handler } from '../src/index';
@@ -44,10 +45,14 @@ describe('social-handler', () => {
     });
 
     it('returns friends list', async () => {
-      mockSend.mockResolvedValue({ Items: [{ userId: 'u1', friendId: 'f1' }] });
+      mockSend
+        .mockResolvedValueOnce({ Items: [{ userId: 'u1', friendId: 'f1' }] })
+        .mockResolvedValueOnce({ Responses: { 'butasodate-user-profiles': [{ userId: 'f1', nickname: 'taro' }] } });
       const res = await handler(mockEvent('GET', '/social/friends', { userId: 'u1' }));
       expect(res.statusCode).toBe(200);
-      expect(JSON.parse(res.body).friends).toHaveLength(1);
+      const { friends } = JSON.parse(res.body);
+      expect(friends).toHaveLength(1);
+      expect(friends[0].nickname).toBe('taro');
     });
 
     it('returns empty array when no friends', async () => {
@@ -71,6 +76,22 @@ describe('social-handler', () => {
       );
       expect(res.statusCode).toBe(200);
       expect(JSON.parse(res.body).users).toHaveLength(1);
+    });
+
+    it('excludes the requesting user from search results', async () => {
+      mockSend.mockResolvedValue({
+        Items: [
+          { userId: 'u1', nickname: 'taro' },
+          { userId: 'u2', nickname: 'taro' },
+        ],
+      });
+      const res = await handler(
+        mockEvent('POST', '/social/friends/search', { userId: 'u1', body: { query: 'taro' } })
+      );
+      expect(res.statusCode).toBe(200);
+      const { users } = JSON.parse(res.body);
+      expect(users).toHaveLength(1);
+      expect(users[0].userId).toBe('u2');
     });
   });
 
@@ -170,10 +191,14 @@ describe('social-handler', () => {
     });
 
     it('returns pending requests', async () => {
-      mockSend.mockResolvedValue({ Items: [{ requestId: 'r1', fromUserId: 'u2', status: 'PENDING' }] });
+      mockSend
+        .mockResolvedValueOnce({ Items: [{ requestId: 'r1', fromUserId: 'u2', status: 'PENDING' }] })
+        .mockResolvedValueOnce({ Responses: { 'butasodate-user-profiles': [{ userId: 'u2', nickname: 'hanako' }] } });
       const res = await handler(mockEvent('GET', '/social/friends/requests', { userId: 'u1' }));
       expect(res.statusCode).toBe(200);
-      expect(JSON.parse(res.body).requests).toHaveLength(1);
+      const { requests } = JSON.parse(res.body);
+      expect(requests).toHaveLength(1);
+      expect(requests[0].fromNickname).toBe('hanako');
     });
   });
 
