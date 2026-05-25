@@ -7,7 +7,6 @@ import 'package:buta_app/shared/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  AppConfig.init(Flavor.dev);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
