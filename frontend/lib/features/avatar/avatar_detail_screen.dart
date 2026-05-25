@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 
@@ -26,7 +27,7 @@ class AvatarDetailScreen extends StatelessWidget {
                 color: ButaColors.bgDeep,
                 border: Border.all(color: ButaColors.ink, width: 3),
               ),
-              child: const Center(child: Text('🐷', style: TextStyle(fontSize: 80))),
+              child: Center(child: SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 80.0, height: 80.0)),
             ),
             const SizedBox(height: 16),
 

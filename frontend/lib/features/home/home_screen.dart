@@ -1,27 +1,34 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
-import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
+import 'package:buta_app/shared/repositories/avatar_repository.dart';
+import 'package:buta_app/shared/repositories/recording_repository.dart';
+import 'package:buta_app/shared/models/avatar.dart';
 
 final homeDataProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
     await ref.watch(authStateProvider.future);
-    final api = ref.read(apiClientProvider);
+    final avatarRepo = ref.read(avatarRepositoryProvider);
+    final recordingRepo = ref.read(recordingRepositoryProvider);
     final results = await Future.wait([
-      api.get('/avatar'),
-      api.get('/activities'),
+      avatarRepo.getAvatar(),
+      recordingRepo.getActivities(),
     ]);
+    final avatar = results[0] as Avatar?;
+    final activities = results[1] as Map<String, dynamic>;
     return {
-      'avatar': results[0].data['avatar'],
-      'records': results[1].data['records'] as List? ?? [],
-      'summary': results[1].data['summary'],
+      'avatar': avatar != null ? avatar.toJson() : {'name': 'こぶた', 'level': 1, 'totalPoints': 0, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}, 'categoryPoints': {'FOOD': 0, 'LIFESTYLE': 0, 'MIXED': 0}},
+      'records': activities['records'] as List? ?? [],
+      'summary': activities['summary'] ?? {'todayCount': 0, 'todayPoints': 0},
     };
   } catch (_) {
-    // APIエラー時はデフォルト値
     return {
       'avatar': {'name': 'こぶた', 'level': 1, 'totalPoints': 0, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}, 'categoryPoints': {'FOOD': 0, 'LIFESTYLE': 0, 'MIXED': 0}},
       'records': <dynamic>[],
@@ -42,6 +49,8 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'ぶたそだて'),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 0)),
       body: Stack(
         children: [
           // 背景
@@ -50,41 +59,23 @@ class HomeScreen extends ConsumerWidget {
           const Positioned.fill(child: CloudAnimation()),
           // 草アニメーション
           Positioned.fill(child: _GrassAnimation(sx: sx, sy: sy)),
-          // ヘッダー
-          Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(
-            color: ButaColors.ink,
-            padding: EdgeInsets.symmetric(horizontal: 12 * sx),
-            child: Row(children: [
-              const Spacer(),
-              Text('ぶたそだて', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper)),
-              const Spacer(),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8 * sx, vertical: 4 * sy),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-                  Text('SCORE', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 7, color: ButaColors.yellow)),
-                  homeData.when(
-                    data: (d) => Text('${d['avatar']?['totalPoints'] ?? 0}', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 12, color: ButaColors.paper)),
-                    loading: () => Text('---', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 12, color: ButaColors.paper)),
-                    error: (_, __) => Text('0', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 12, color: ButaColors.paper)),
-                  ),
-                ]),
-              ),
-            ]),
-          )),
           // サマリーカード
-          Positioned(top: 60 * sy, left: 14 * sx, child: _SummaryCard(sx: sx, sy: sy, homeData: homeData)),
+          Positioned(top: 12 * sy, left: 14 * sx, child: GestureDetector(
+            onTap: () => context.go('/recording'),
+            child: _SummaryCard(sx: sx, sy: sy, homeData: homeData),
+          )),
           // ステータスパネル
-          Positioned(top: 170 * sy, left: 14 * sx, child: _StatPanel(sx: sx, sy: sy, homeData: homeData)),
+          Positioned(top: 122 * sy, left: 14 * sx, child: _StatPanel(sx: sx, sy: sy, homeData: homeData)),
           // アバターエリア
-          Positioned(top: 310 * sy, left: 95 * sx, child: GestureDetector(
+          Positioned(top: 262 * sy, left: 0, right: 0, child: GestureDetector(
             onTap: () => context.push('/avatar-detail', extra: homeData.value?['avatar']),
             child: SizedBox(
-              width: 200 * sx, height: 200 * sy,
-              child: Center(child: _AnimatedPig(sx: sx, sy: sy)),
+              height: 200 * sx,
+              child: Center(child: _AnimatedPig(sx: sx, sy: sx)),
             ),
           )),
           // レベル + 名前
-          Positioned(top: 530 * sy, left: 95 * sx, child: homeData.when(
+          Positioned(top: 482 * sy, left: 95 * sx, child: homeData.when(
             data: (d) {
               final avatar = d['avatar'] ?? {};
               return Row(children: [
@@ -97,11 +88,19 @@ class HomeScreen extends ConsumerWidget {
                 Text(avatar['name'] ?? 'こぶた', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink)),
               ]);
             },
-            loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
+            loading: () => Container(width: 100, height: 16, decoration: BoxDecoration(color: ButaColors.paper.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(2))),
+            error: (_, __) => Row(children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6 * sx, vertical: 2 * sy),
+                color: const Color(0xFFC46A85),
+                child: Text('LV.1', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 10, color: ButaColors.paper)),
+              ),
+              SizedBox(width: 8 * sx),
+              Text('こぶた', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink)),
+            ]),
           )),
           // EXPバー
-          Positioned(top: 560 * sy, left: 95 * sx, child: homeData.when(
+          Positioned(top: 512 * sy, left: 95 * sx, child: homeData.when(
             data: (d) {
               final pts = (d['avatar']?['totalPoints'] ?? 0) as int;
               final progress = (pts % 500) / 500;
@@ -111,9 +110,8 @@ class HomeScreen extends ConsumerWidget {
             error: (_, __) => _ExpBar(sx: sx, sy: sy, progress: 0),
           )),
           // 記録ボタン
-          Positioned(top: 600 * sy, left: 95 * sx, child: _RecordButton(sx: sx, sy: sy)),
+          Positioned(bottom: 20, left: 95 * sx, child: _RecordButton(sx: sx, sy: sy)),
           // タブバー
-          Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 0)),
         ],
       ),
     );
@@ -135,16 +133,20 @@ class _SummaryCard extends StatelessWidget {
           final records = (d['records'] as List?) ?? [];
           final summary = d['summary'];
           final todayPts = summary?['todayPoints'] ?? 0;
-          final recent = records.take(2).toList();
+          final now = DateTime.now();
+          final todayRecords = records.where((r) {
+            final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? DateTime(2000);
+            return date.year == now.year && date.month == now.month && date.day == now.day;
+          }).take(2).toList();
           return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
             Text('きょうの きろく', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.ink)),
             SizedBox(height: 4 * sy),
-            if (recent.isEmpty) Text('まだ きろくが ないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray)),
-            for (final r in recent) ...[
-              _summaryRow(r['categoryId']?.toString().contains('food') == true ? '🍜' : '📱', _categoryName(r['categoryId']), '+${r['points']}pt'),
+            if (todayRecords.isEmpty) Text('まだ きろくが ないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray)),
+            for (final r in todayRecords) ...[
+              _summaryRow(_categoryName(r['categoryId']), '+${r['points']}pt'),
               SizedBox(height: 2 * sy),
             ],
-            if (recent.isNotEmpty) Text('きょうの合計: +${todayPts}pt', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: const Color(0xFFC46A85))),
+            if (todayRecords.isNotEmpty) Text('きょうの合計: +${todayPts}pt', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: const Color(0xFFC46A85))),
           ]);
         },
         loading: () => Center(child: Text('よみこみちゅう...', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
@@ -162,10 +164,8 @@ class _SummaryCard extends StatelessWidget {
     return names[id] ?? id ?? '???';
   }
 
-  Widget _summaryRow(String icon, String label, String pts) {
+  Widget _summaryRow(String label, String pts) {
     return Row(children: [
-      Text(icon, style: const TextStyle(fontSize: 12)),
-      SizedBox(width: 4 * sx),
       Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink2)),
       const Spacer(),
       Text(pts, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink2)),
@@ -182,19 +182,23 @@ class _StatPanel extends StatelessWidget {
     return homeData.when(
       data: (d) {
         final avatar = d['avatar'] ?? {};
-        final stats = avatar['stats'] ?? {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10};
-        return SizedBox(
-          width: 362 * sx, height: 123 * sy,
-          child: Wrap(spacing: 5 * sx, runSpacing: 5 * sy, children: [
-            _statCard('HP', '${stats['hp']}/100', (stats['hp'] as int) / 100, const Color(0xFFE8485A), 'assets/pixel-art/icons/stat-hp.svg'),
-            _statCard('ATK', '${stats['attack']}/50', (stats['attack'] as int) / 50, ButaColors.yellow, 'assets/pixel-art/icons/stat-atk.svg'),
-            _statCard('DEF', '${stats['defense']}/50', (stats['defense'] as int) / 50, ButaColors.green, 'assets/pixel-art/icons/stat-def.svg'),
-            _statCard('SPD', '${stats['speed']}/50', (stats['speed'] as int) / 50, ButaColors.blue, 'assets/pixel-art/icons/stat-spd.svg'),
-          ]),
-        );
+        final stats = avatar['stats'] ?? {'hp': 0, 'attack': 0, 'defense': 0, 'speed': 0};
+        return _buildStats(stats);
       },
-      loading: () => SizedBox(width: 362 * sx, height: 123 * sy),
-      error: (_, __) => SizedBox(width: 362 * sx, height: 123 * sy),
+      loading: () => _buildStats({'hp': 0, 'attack': 0, 'defense': 0, 'speed': 0}),
+      error: (_, __) => _buildStats({'hp': 0, 'attack': 0, 'defense': 0, 'speed': 0}),
+    );
+  }
+
+  Widget _buildStats(Map<String, dynamic> stats) {
+    return SizedBox(
+      width: 362 * sx, height: 123 * sy,
+      child: Wrap(spacing: 5 * sx, runSpacing: 5 * sy, children: [
+        _statCard('HP', '${stats['hp']}/100', (stats['hp'] as int) / 100, const Color(0xFFE8485A), 'assets/pixel-art/icons/stat-hp.svg'),
+        _statCard('ATK', '${stats['attack']}/50', (stats['attack'] as int) / 50, ButaColors.yellow, 'assets/pixel-art/icons/stat-atk.svg'),
+        _statCard('DEF', '${stats['defense']}/50', (stats['defense'] as int) / 50, ButaColors.green, 'assets/pixel-art/icons/stat-def.svg'),
+        _statCard('SPD', '${stats['speed']}/50', (stats['speed'] as int) / 50, ButaColors.blue, 'assets/pixel-art/icons/stat-spd.svg'),
+      ]),
     );
   }
 
@@ -230,21 +234,21 @@ class _AnimatedPig extends StatefulWidget {
 
 class _AnimatedPigState extends State<_AnimatedPig> with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
-  // 徘徊パス: [x, y, duration(秒), pause(秒)]
-  static const _path = [
-    [0.0, 0.0, 2.0, 1.5],   // 中央で立ち止まる
-    [25.0, -8.0, 2.5, 0.0], // 右上へ歩く
-    [30.0, 5.0, 1.5, 2.0],  // 少し下へ、立ち止まる
-    [-15.0, 10.0, 3.0, 0.0],// 左下へ歩く
-    [-25.0, -5.0, 2.0, 1.0],// 左上へ、立ち止まる
-    [0.0, 0.0, 2.5, 0.0],   // 中央に戻る
-  ];
-
+  // 徘徊パス: ランダム生成
+  late final List<List<double>> _path;
   double _totalDuration = 0;
 
   @override
   void initState() {
     super.initState();
+    final rng = math.Random();
+    final halfW = (390 - 80) / 2; // 正規化座標（sxで実画面に変換される）
+    _path = List.generate(6, (_) => [
+      (rng.nextDouble() - 0.5) * 2 * halfW, // x: ±155（sx掛けで実画面端まで）
+      (rng.nextDouble() * 60 - 30),
+      2.0 + rng.nextDouble() * 2.0,
+      rng.nextDouble() < 0.4 ? 1.0 + rng.nextDouble() : 0.0,
+    ]);
     for (final p in _path) _totalDuration += p[2] + p[3];
     _ctrl = AnimationController(vsync: this, duration: Duration(milliseconds: (_totalDuration * 1000).round()))..repeat();
   }
@@ -292,23 +296,21 @@ class _AnimatedPigState extends State<_AnimatedPig> with SingleTickerProviderSta
 
       return Transform.translate(
         offset: Offset(dx * widget.sx, dy * widget.sy + bounce),
-        child: CustomPaint(size: Size(80 * widget.sx, 80 * widget.sy), painter: _PigPainter(widget.sx, widget.sy)),
+        child: CustomPaint(size: const Size(80, 80), painter: _PigPainter()),
       );
     });
   }
 }
 
 class _PigPainter extends CustomPainter {
-  final double sx, sy;
-  _PigPainter(this.sx, this.sy);
+  _PigPainter();
 
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint();
-    // 80x80のグリッドで描画
     void r(double x, double y, double w, double h, Color c) {
       p.color = c;
-      canvas.drawRect(Rect.fromLTWH(x * sx * 80 / 120, y * sy * 80 / 120, w * sx * 80 / 120, h * sy * 80 / 120), p);
+      canvas.drawRect(Rect.fromLTWH(x * 80 / 120, y * 80 / 120, w * 80 / 120, h * 80 / 120), p);
     }
 
     const pink = Color(0xFFFF9BB3);
@@ -447,7 +449,7 @@ class _RecordButton extends StatelessWidget {
           width: 200 * sx, height: 48 * sy,
           decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
           alignment: Alignment.center,
-          child: Text('▶ ようすをみる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink)),
+          child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('ようすをみる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink))]),
         ),
         Container(width: 194 * sx, height: 5 * sy, color: Colors.black),
       ]),
@@ -455,60 +457,3 @@ class _RecordButton extends StatelessWidget {
   }
 }
 
-class PixelTabBar extends StatelessWidget {
-  const PixelTabBar({super.key, required this.sx, required this.sy, this.activeIndex = 0});
-  final double sx, sy;
-  final int activeIndex;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: ButaColors.black,
-      padding: EdgeInsets.only(top: 5 * sy, left: 4 * sx, right: 4 * sx),
-      child: Row(children: [
-        _tab(context, 'assets/pixel-art/icons/tab-home.svg', 'ホーム', activeIndex == 0, '/home'),
-        SizedBox(width: 2 * sx),
-        _tab(context, 'assets/pixel-art/icons/tab-record.svg', 'きろく', activeIndex == 1, '/recording'),
-        SizedBox(width: 2 * sx),
-        _tab(context, 'assets/pixel-art/icons/tab-battle.svg', 'バトル', activeIndex == 2, '/battle'),
-        SizedBox(width: 2 * sx),
-        _tab(context, 'assets/pixel-art/icons/tab-friend.svg', 'フレンド', activeIndex == 3, '/friends'),
-        SizedBox(width: 2 * sx),
-        _tab(context, 'assets/pixel-art/icons/tab-settings.svg', 'せってい', activeIndex == 4, '/settings'),
-      ]),
-    );
-  }
-
-  Widget _tab(BuildContext context, String iconAsset, String label, bool active, String route) {
-    final bg = active ? ButaColors.yellow : ButaColors.bg;
-    final fg = ButaColors.ink;
-    return Expanded(child: GestureDetector(
-      onTap: active ? null : () => GoRouter.of(context).go(route),
-      child: Container(
-        height: 48 * sy,
-        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(2)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SvgPicture.asset(iconAsset, width: 20 * sx, height: 20 * sy),
-          SizedBox(height: 2 * sy),
-          Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 8, color: fg)),
-        ]),
-      ),
-    ));
-  }
-
-  Widget _tabText(BuildContext context, String icon, String label, bool active, String route) {
-    final bg = active ? ButaColors.yellow : ButaColors.bg;
-    final fg = ButaColors.ink;
-    return Expanded(child: GestureDetector(
-      onTap: active ? null : () => GoRouter.of(context).go(route),
-      child: Container(
-        height: 48 * sy,
-        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(2)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(icon, style: TextStyle(fontSize: 16, color: fg)),
-          SizedBox(height: 2 * sy),
-          Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 8, color: fg)),
-        ]),
-      ),
-    ));
-  }
-}

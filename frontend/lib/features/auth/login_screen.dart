@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
@@ -18,8 +19,16 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailCtrl = TextEditingController();
   final _pwCtrl = TextEditingController();
+  late final TextEditingController _hostCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _hostCtrl = TextEditingController(text: AppConfig.devBaseUrl);
+  }
 
   Future<void> _login() async {
+    if (AppConfig.isDev) AppConfig.devBaseUrl = _hostCtrl.text;
     final ok = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
     if (!mounted) return;
     if (ok) {
@@ -37,11 +46,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(
         children: [
           Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
           const Positioned.fill(child: CloudAnimation()),
+          if (AppConfig.isDev) Positioned(top: 8, right: 12, child: GestureDetector(
+            onTap: () async {
+              await ref.read(authStateProvider.notifier).devLogin();
+              if (mounted) context.go('/home');
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(color: ButaColors.red, borderRadius: BorderRadius.circular(2)),
+              child: const Text('DEV', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 8, color: ButaColors.paper)),
+            ),
+          )),
           Positioned(top: 140 * sy, left: 0, right: 0, child: const Text('ログイン', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 20, color: ButaColors.paper))),
+          if (AppConfig.isDev) Positioned(top: 185 * sy, left: 55 * sx, child: PixelInput(controller: _hostCtrl, sx: sx, sy: sy, hintText: 'http://IP:PORT')),
           Positioned(top: 240 * sy, left: 0, right: 0, child: const Text('メールアドレス', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
           Positioned(top: 258 * sy, left: 55 * sx, child: PixelInput(controller: _emailCtrl, sx: sx, sy: sy, hintText: 'mail@example.com')),
           Positioned(top: 310 * sy, left: 0, right: 0, child: const Text('パスワード', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
@@ -50,14 +72,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             listenable: Listenable.merge([_emailCtrl, _pwCtrl]),
             builder: (_, __) {
               final enabled = _emailCtrl.text.isNotEmpty && _pwCtrl.text.isNotEmpty;
-              return PixelActionButton(width: 280 * sx, height: 44 * sy, label: '▶ ログイン', enabled: enabled, onTap: _login);
+              return PixelActionButton(width: 280 * sx, height: 44 * sy, label: 'ログイン', icon: 'assets/pixel-art/icons/play.svg', enabled: enabled, onTap: _login);
             },
           )),
           Positioned(top: 455 * sy, left: 0, right: 0, child: const Text('── または ──', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
           Positioned(top: 490 * sy, left: 55 * sx, child: PixelActionButton(width: 280 * sx, height: 40 * sy, label: 'Google で ログイン', fontSize: 14, color: ButaColors.paper, onTap: () {})),
           Positioned(top: 545 * sy, left: 55 * sx, child: PixelActionButton(width: 280 * sx, height: 40 * sy, label: 'X で ログイン', fontSize: 14, color: ButaColors.paper, onTap: () {})),
-          Positioned(top: 610 * sy, left: 0, right: 0, child: GestureDetector(onTap: () => context.push('/signup'), child: const Text('アカウントを つくる →', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),
-          Positioned(top: 660 * sy, left: 0, right: 0, child: const Text('利用規約 ｜ プライバシーポリシー', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper))),
+          Positioned(bottom: 50, left: 0, right: 0, child: GestureDetector(onTap: () => context.push('/signup'), child: const Text('アカウントを つくる →', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),
+          Positioned(bottom: 20, left: 0, right: 0, child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(onTap: () => context.push('/terms', extra: false), child: const Text('利用規約', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper, decoration: TextDecoration.underline, decorationColor: ButaColors.paper))),
+              const Text(' ｜ ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper)),
+              GestureDetector(onTap: () => context.push('/privacy', extra: false), child: const Text('プライバシーポリシー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper, decoration: TextDecoration.underline, decorationColor: ButaColors.paper))),
+            ],
+          )),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/starry_background.dart';
@@ -53,7 +54,7 @@ class StartScreen extends StatelessWidget {
               // PigSprite
               Positioned(
                 top: 400 * sy, left: (size.width - 160 * sx) / 2,
-                child: Container(width: 160 * sx, height: 140 * sy, decoration: BoxDecoration(color: ButaColors.pink, border: Border.all(color: ButaColors.ink, width: 2)), child: const Center(child: Text('🐷', style: TextStyle(fontSize: 64)))),
+                child: Container(width: 160 * sx, height: 140 * sy, decoration: BoxDecoration(color: ButaColors.pink, border: Border.all(color: ButaColors.ink, width: 2)), child: Center(child: SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 64, height: 64))),
               ),
 
               // PRESS START (点滅)

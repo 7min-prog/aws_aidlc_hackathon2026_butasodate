@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
+import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/ui/grass_animation.dart';
 
 class AvatarDetailScreen extends StatelessWidget {
   const AvatarDetailScreen({super.key, this.avatar});
@@ -18,38 +21,29 @@ class AvatarDetailScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'ぶたの ようす', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 0)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
-        // ヘッダー
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(
-          color: ButaColors.ink,
-          child: Row(children: [
-            GestureDetector(onTap: () => context.pop(), child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14 * sx),
-              child: Text('◀', style: TextStyle(fontSize: 18, color: ButaColors.paper)),
-            )),
-            Text('アバター', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.paper)),
-          ]),
-        )),
+        const Positioned.fill(child: CloudAnimation()),
+        Positioned.fill(child: GrassAnimation(sx: sx, sy: sy)),
         // アバター背景 + SVG
-        Positioned(top: 60 * sy, left: 120 * sx, child: Container(
-          width: 150 * sx, height: 150 * sy,
-          color: ButaColors.bgDeep,
-          alignment: Alignment.center,
-          child: SizedBox(width: 100 * sx, height: 100 * sy, child: CustomPaint(painter: _DetailPigPainter(sx, sy))),
+        Positioned(top: 12 * sy, left: 120 * sx, child: SizedBox(
+          width: 150 * sx, height: 150 * sx,
+          child: Center(child: SizedBox(width: 100, height: 100, child: CustomPaint(painter: _DetailPigPainter()))),
         )),
         // 名前
-        Positioned(top: 220 * sy, left: 14 * sx, width: 362 * sx, child: Text(
+        Positioned(top: 172 * sy, left: 14 * sx, width: 362 * sx, child: Text(
           a['name'] ?? 'こぶた', textAlign: TextAlign.center,
           style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink),
         )),
         // レベル
-        Positioned(top: 242 * sy, left: 14 * sx, width: 362 * sx, child: Text(
+        Positioned(top: 194 * sy, left: 14 * sx, width: 362 * sx, child: Text(
           'LV.${a['level'] ?? 1}', textAlign: TextAlign.center,
           style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: const Color(0xFFC46A85)),
         )),
         // ステータスカード
-        Positioned(top: 270 * sy, left: 14 * sx, child: Container(
+        Positioned(top: 222 * sy, left: 14 * sx, child: Container(
           width: 362 * sx, height: 105 * sy,
           padding: EdgeInsets.symmetric(horizontal: 12 * sx, vertical: 8 * sy),
           decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
@@ -66,10 +60,10 @@ class AvatarDetailScreen extends StatelessWidget {
           ]),
         )),
         // スキルタイトル
-        Positioned(top: 385 * sy, left: 14 * sx, child: Text('スキル', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
+        Positioned(top: 337 * sy, left: 14 * sx, child: Text('スキル', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
         // スキルリスト
         ...List.generate(4, (i) => Positioned(
-          top: (405 + i * 38) * sy, left: 14 * sx,
+          top: (357 + i * 38) * sy, left: 14 * sx,
           child: Container(
             width: 362 * sx, height: 34 * sy,
             padding: EdgeInsets.symmetric(horizontal: 12 * sx),
@@ -79,7 +73,7 @@ class AvatarDetailScreen extends StatelessWidget {
           ),
         )),
         // 進化図鑑リンク
-        Positioned(top: 570 * sy, left: 14 * sx, child: GestureDetector(
+        Positioned(top: 522 * sy, left: 14 * sx, child: GestureDetector(
           onTap: () => context.push('/evo-book'),
           child: Container(
             width: 362 * sx, height: 40 * sy,
@@ -89,7 +83,6 @@ class AvatarDetailScreen extends StatelessWidget {
           ),
         )),
         // タブバー
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 0)),
       ]),
     );
   }
@@ -109,14 +102,14 @@ class AvatarDetailScreen extends StatelessWidget {
 
 
 class _DetailPigPainter extends CustomPainter {
-  final double sx, sy;
-  _DetailPigPainter(this.sx, this.sy);
+  _DetailPigPainter();
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint();
+    final s = size.width / 120;
     void r(double x, double y, double w, double h, Color c) {
       p.color = c;
-      canvas.drawRect(Rect.fromLTWH(x * size.width / 120, y * size.height / 120, w * size.width / 120, h * size.height / 120), p);
+      canvas.drawRect(Rect.fromLTWH(x * s, y * s, w * s, h * s), p);
     }
     const pink = Color(0xFFFF9BB3);
     const darkPink = Color(0xFFC46A85);

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
@@ -28,15 +29,13 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'プロフィール', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
         Positioned.fill(child: GrassAnimation(sx: sx, sy: sy)),
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(color: ButaColors.ink, child: Stack(children: [
-          Align(alignment: Alignment.centerLeft, child: GestureDetector(onTap: () => Navigator.pop(context), child: Padding(padding: EdgeInsets.only(left: 12 * sx), child: Text('◀', style: TextStyle(fontSize: 18, color: ButaColors.paper))))),
-          Center(child: Text('プロフィール', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper))),
-        ]))),
-        Positioned(top: 48 * sy, left: 0, right: 0, child: Padding(
+        Positioned(top: 0 * sy, left: 0, right: 0, child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 55 * sx),
           child: Column(children: [
             SizedBox(height: 24 * sy),
@@ -57,7 +56,6 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             )),
           ]),
         )),
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       ]),
     );
   }

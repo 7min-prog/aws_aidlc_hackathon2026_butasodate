@@ -28,6 +28,8 @@ dev_dependencies:
     sdk: flutter
   test: ^1.25.0
   flutter_lints: ^5.0.0
+  golden_toolkit: ^0.15.0
+  http_mock_adapter: ^0.6.1
 
 flutter:
   uses-material-design: true
@@ -44,3 +46,10 @@ flutter:
 
 flutter_native_splash:
   color: "#1a1228"
+  image: assets/splash_icon.png
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: "#1a1228"
+    image: assets/splash_icon.png

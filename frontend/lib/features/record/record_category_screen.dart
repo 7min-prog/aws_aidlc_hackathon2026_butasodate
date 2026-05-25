@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 
@@ -29,7 +30,7 @@ class RecordCategoryScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () => context.pop(),
-                    child: const Text('◀', style: TextStyle(fontSize: 16, color: ButaColors.ink)),
+                    child: SvgPicture.asset('assets/pixel-art/icons/back.svg', width: 16.0, height: 16.0),
                   ),
                   const SizedBox(width: 12),
                   const Text('なにを した？', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink)),

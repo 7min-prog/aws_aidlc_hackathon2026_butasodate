@@ -4,9 +4,6 @@ import { authMiddleware } from '../app';
 
 export const recordingRouter = Router();
 
-// インメモリストア
-const records: Record<string, any[]> = {};
-
 const categories = [
   { categoryId: 'food-ramen', name: '深夜ラーメン', icon: '🍜', points: 50, group: 'FOOD' },
   { categoryId: 'food-snack', name: '間食した', icon: '🍰', points: 20, group: 'FOOD' },
@@ -17,6 +14,23 @@ const categories = [
   { categoryId: 'life-gaming', name: 'ゲーム三昧', icon: '🎮', points: 25, group: 'LIFESTYLE' },
   { categoryId: 'life-nap', name: '昼寝しすぎ', icon: '💤', points: 30, group: 'LIFESTYLE' },
 ];
+
+// インメモリストア
+const seedRecords: any[] = [];
+const catIds = ['food-ramen', 'food-snack', 'food-binge', 'life-late-night', 'life-skip-exercise', 'life-gaming', 'life-nap', 'life-oversleep'];
+const memos = ['とんこつ最高', 'ポテチ', '焼肉食べ放題', null, 'Netflix一気見', null, 'ゲーム三昧', '二度寝した', null, '味噌ラーメン'];
+for (let i = 0; i < 50; i++) {
+  const cat = categories.find(c => c.categoryId === catIds[i % catIds.length])!;
+  seedRecords.push({
+    recordId: `r-${i + 1}`,
+    categoryId: cat.categoryId,
+    memo: memos[i % memos.length],
+    points: cat.points,
+    recordedAt: new Date(Date.now() - i * 3600000 * 6).toISOString(),
+    source: i % 5 === 0 ? 'AUTO_DETECTED' : 'MANUAL',
+  });
+}
+const records: Record<string, any[]> = { 'admin': seedRecords };
 
 // GET /categories
 recordingRouter.get('/', (req: Request, res: Response) => {

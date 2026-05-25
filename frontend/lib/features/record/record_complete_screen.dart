@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/features/record/record_tab_screen.dart';
 import 'package:buta_app/features/home/home_screen.dart';
 
@@ -16,37 +17,37 @@ class RecordCompleteScreen extends ConsumerWidget {
     final sx = size.width / 390, sy = size.height / 740;
 
     return Scaffold(
+      appBar: const PixelAppBar(title: 'きろく かんりょう！'),
       backgroundColor: const Color(0xFF8A5A2B),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-record.svg', fit: BoxFit.cover)),
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(color: ButaColors.ink, alignment: Alignment.center, child: Text('きろく かんりょう！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper)))),
         // ぶたエリア
-        Positioned(top: 100 * sy, left: 0, right: 0, child: Center(child: Container(
+        Positioned(top: 52 * sy, left: 0, right: 0, child: Center(child: Container(
           width: 150 * sx, height: 150 * sy,
           decoration: BoxDecoration(color: const Color(0xFFFFF8E6), border: Border.all(color: ButaColors.ink, width: 2), borderRadius: BorderRadius.circular(8)),
           child: CustomPaint(painter: _HappyPigPainter()),
         ))),
         // リアクション
-        Positioned(top: 270 * sy, left: 0, right: 0, child: Center(child: Container(
+        Positioned(top: 222 * sy, left: 0, right: 0, child: Center(child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16 * sx, vertical: 6 * sy),
           decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),
           child: Text('ぶたが よろこんでる！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink)),
         ))),
         // ポイント
-        Positioned(top: 330 * sy, left: 0, right: 0, child: Center(child: Container(
+        Positioned(top: 282 * sy, left: 0, right: 0, child: Center(child: Container(
           width: 160 * sx, height: 60 * sy,
           decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
           alignment: Alignment.center,
           child: Text('+${points}pt!', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 20, color: ButaColors.ink)),
         ))),
         // ホームへ戻るボタン
-        Positioned(top: 480 * sy, left: 55 * sx, right: 55 * sx, child: GestureDetector(
+        Positioned(top: 432 * sy, left: 55 * sx, right: 55 * sx, child: GestureDetector(
           onTap: () { ref.invalidate(recordsProvider); ref.invalidate(homeDataProvider); context.go('/home'); },
           child: Container(
             height: 44 * sy,
             decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
             alignment: Alignment.center,
-            child: Text('▶ ホームへ もどる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('ホームへ もどる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink))]),
           ),
         )),
       ]),

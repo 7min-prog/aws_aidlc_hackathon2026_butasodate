@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/router.dart';
 import 'package:buta_app/shared/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  AppConfig.init(Flavor.dev);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(0xFF0A0612),
+    systemNavigationBarIconBrightness: Brightness.light,
+  ));
 
   runApp(
     ProviderScope(
@@ -31,6 +37,7 @@ class ButaApp extends ConsumerWidget {
       theme: butaTheme,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => SafeArea(child: child ?? const SizedBox.shrink()),
     );
   }
 }

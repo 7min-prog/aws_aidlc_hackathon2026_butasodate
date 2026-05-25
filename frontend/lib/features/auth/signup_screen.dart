@@ -45,6 +45,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(
         children: [
           Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
@@ -61,18 +62,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             onTap: () => setState(() => _agreed = !_agreed),
             child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(width: 20, height: 20, decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),
-                child: _agreed ? const Center(child: Text('✓', style: TextStyle(fontSize: 14, color: ButaColors.ink))) : null),
+                child: _agreed ? Center(child: SvgPicture.asset('assets/pixel-art/icons/check.svg', width: 14, height: 14)) : null),
               const SizedBox(width: 8),
-              GestureDetector(onTap: () => context.push('/terms'), child: const Text('利用規約', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.paper, decoration: TextDecoration.underline))),
+              GestureDetector(onTap: () => context.push('/terms', extra: false), child: const Text('利用規約', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.paper, decoration: TextDecoration.underline))),
               const Text('・', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.gray)),
-              GestureDetector(onTap: () => context.push('/privacy'), child: const Text('プライバシーポリシー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.paper, decoration: TextDecoration.underline))),
+              GestureDetector(onTap: () => context.push('/privacy', extra: false), child: const Text('プライバシーポリシー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.paper, decoration: TextDecoration.underline))),
               const Text('に同意', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.gray)),
             ]),
           )),
           // ボタン
           Positioned(top: 430 * sy, left: 55 * sx, child: ListenableBuilder(
             listenable: Listenable.merge([_emailCtrl, _pwCtrl, _pwConfirmCtrl]),
-            builder: (_, __) => PixelActionButton(width: 280 * sx, height: 44 * sy, label: '▶ アカウントを つくる', enabled: _canSubmit, onTap: _signup),
+            builder: (_, __) => PixelActionButton(width: 280 * sx, height: 44 * sy, label: 'アカウントを つくる', icon: 'assets/pixel-art/icons/play.svg', enabled: _canSubmit, onTap: _signup),
           )),
           Positioned(top: 500 * sy, left: 0, right: 0, child: GestureDetector(onTap: () => context.pop(), child: const Text('すでに アカウントが ある →', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),
         ],

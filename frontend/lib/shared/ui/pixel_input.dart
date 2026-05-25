@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:buta_app/shared/theme.dart';
 
 /// Penpot準拠のピクセルアート風テキスト入力欄
@@ -44,13 +45,14 @@ class _PixelInputState extends State<PixelInput> {
 /// Penpot準拠のピクセルアート風ボタン
 /// enabled=falseでグレー表示
 class PixelActionButton extends StatelessWidget {
-  const PixelActionButton({super.key, required this.width, required this.height, required this.label, this.onTap, this.enabled = true, this.fontSize = 16, this.color});
+  const PixelActionButton({super.key, required this.width, required this.height, required this.label, this.onTap, this.enabled = true, this.fontSize = 16, this.color, this.icon});
   final double width, height;
   final String label;
   final VoidCallback? onTap;
   final bool enabled;
   final double fontSize;
   final Color? color;
+  final String? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,10 @@ class PixelActionButton extends StatelessWidget {
       child: Container(
         width: width, height: height,
         decoration: BoxDecoration(color: bg, border: Border.all(color: ButaColors.ink, width: 2)),
-        child: Center(child: Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: fontSize, color: textColor))),
+        child: Center(child: Row(mainAxisSize: MainAxisSize.min, children: [
+          if (icon != null) ...[SvgPicture.asset(icon!, width: 14, height: 14), const SizedBox(width: 6)],
+          Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: fontSize, color: textColor)),
+        ])),
       ),
     );
   }

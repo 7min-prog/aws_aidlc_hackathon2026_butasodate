@@ -33,6 +33,19 @@ class BootResult {
   });
 }
 
+/// テストでオーバーライド可能なConnectivityチェック
+final connectivityCheckProvider = Provider<Future<List<ConnectivityResult>> Function()>((ref) {
+  return () => Connectivity().checkConnectivity();
+});
+
+/// テストでオーバーライド可能なDioファクトリ（baseURL + token付き）
+final bootDioFactoryProvider = Provider<Dio Function(String baseUrl, String token)>((ref) {
+  return (baseUrl, token) => Dio(BaseOptions(
+    baseUrl: baseUrl,
+    headers: {'Authorization': 'Bearer $token'},
+  ));
+});
+
 class BootNotifier extends AsyncNotifier<BootResult> {
   @override
   Future<BootResult> build() => _executeBoot();
@@ -49,8 +62,9 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     }
 
     // ネットワーク確認
-    final connectivity = await Connectivity().checkConnectivity();
-    final isOffline = connectivity.contains(ConnectivityResult.none);
+    final checkConnectivity = ref.read(connectivityCheckProvider);
+    final connectivityResult = await checkConnectivity();
+    final isOffline = connectivityResult.contains(ConnectivityResult.none);
 
     if (isOffline) {
       return _handleOffline(startTime);
@@ -86,10 +100,8 @@ class BootNotifier extends AsyncNotifier<BootResult> {
   }
 
   Future<UserProfile?> _fetchProfile(String accessToken) async {
-    final dio = Dio(BaseOptions(
-      baseUrl: AppConstants.authApiBase,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    ));
+    final dioFactory = ref.read(bootDioFactoryProvider);
+    final dio = dioFactory(AppConstants.authApiBase, accessToken);
     try {
       final res = await dio.get('/users/me');
       return UserProfile.fromJson(res.data as Map<String, dynamic>);
@@ -102,19 +114,11 @@ class BootNotifier extends AsyncNotifier<BootResult> {
   Future<BootResult> _fetchInitialData(String accessToken, UserProfile profile) async {
     final cache = ref.read(cacheServiceProvider);
     final imageCache = ref.read(imageCacheServiceProvider);
+    final dioFactory = ref.read(bootDioFactoryProvider);
 
-    final avatarDio = Dio(BaseOptions(
-      baseUrl: AppConstants.avatarApiBase,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    ));
-    final recordingDio = Dio(BaseOptions(
-      baseUrl: AppConstants.recordingApiBase,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    ));
-    final socialDio = Dio(BaseOptions(
-      baseUrl: AppConstants.socialApiBase,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    ));
+    final avatarDio = dioFactory(AppConstants.avatarApiBase, accessToken);
+    final recordingDio = dioFactory(AppConstants.recordingApiBase, accessToken);
+    final socialDio = dioFactory(AppConstants.socialApiBase, accessToken);
 
     // 並列実行
     final results = await Future.wait([
@@ -157,7 +161,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
       return Avatar.fromJson(res.data['avatar'] as Map<String, dynamic>);
     } on DioException catch (e) {
       if (e.response?.statusCode == 404) {
-        // 自己修復: アバター自動作成
         try {
           final createRes = await dio.post('/avatar', data: {'name': 'ぶたさん'});
           return Avatar.fromJson(createRes.data['avatar'] as Map<String, dynamic>);
@@ -189,7 +192,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
   }
 
   void _syncHealthData(Dio dio) {
-    // fire-and-forget
     dio.post('/health-sync', data: {'records': []}).ignore();
   }
 

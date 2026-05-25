@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 final recordsProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
@@ -33,19 +34,22 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final sx = size.width / 390, sy = size.height / 740;
+    final sx = size.width / 390;
     final data = ref.watch(recordsProvider);
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
-      body: Stack(children: [
+      appBar: const PixelAppBar(title: 'きろく'),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: size.height / 740, activeIndex: 1)),
+      body: LayoutBuilder(builder: (context, constraints) {
+        final sy = constraints.maxHeight / 636;
+        return Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
         Positioned.fill(child: GrassAnimation(sx: sx, sy: sy)),
         // ヘッダー
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(color: ButaColors.ink, alignment: Alignment.center, child: Text('きろく', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper)))),
         // セグメント
-        Positioned(top: 60 * sy, left: 55 * sx, child: Container(
+        Positioned(top: 12 * sy, left: 55 * sx, child: Container(
           width: 280 * sx, height: 32 * sy,
           color: const Color(0xFFE8D9B0),
           padding: EdgeInsets.all(2 * sx),
@@ -61,53 +65,64 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
           ]),
         )),
         // 記録カード
-        Positioned(top: 110 * sy, left: 14 * sx, child: data.when(
+        Positioned(top: 62 * sy, left: 14 * sx, right: 14 * sx, bottom: 75, child: data.when(
           data: (d) {
-            final records = d['records'] as List;
+            final allRecords = d['records'] as List;
             final todayPts = d['summary']?['todayPoints'] ?? 0;
-            if (records.isEmpty) {
-              return Column(children: [
-                Container(
-                  width: 362 * sx, height: 60 * sy,
-                  decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
-                  alignment: Alignment.center,
-                  child: Text('まだ きろくが ないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.gray)),
-                ),
-              ]);
-            }
-            return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              for (final r in records.take(3)) _buildCard(r, sx, sy),
-              SizedBox(height: 10 * sy),
-              SizedBox(width: 362 * sx, child: Text('きょうの合計: +${todayPts}pt', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: const Color(0xFFC46A85)))),
+            final now = DateTime.now();
+            final records = allRecords.where((r) {
+              final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? now;
+              if (_segIndex == 0) return date.year == now.year && date.month == now.month && date.day == now.day;
+              if (_segIndex == 1) return now.difference(date).inDays < 7;
+              return now.difference(date).inDays < 30;
+            }).toList();
+            return Column(children: [
+              SizedBox(height: 180 * sy, child: records.isEmpty
+                ? Container(
+                    decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
+                    alignment: Alignment.center,
+                    child: Text('まだ きろくが ないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.gray)),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: records.length,
+                    itemBuilder: (context, i) => _buildCard(records[i], sx, sy),
+                  ),
+              ),
+              SizedBox(height: 8 * sy),
+              Text('合計: +${todayPts}pt', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: const Color(0xFFC46A85))),
+              SizedBox(height: 8 * sy),
+              SizedBox(height: 260 * sy, child: Container(
+                padding: EdgeInsets.all(10 * sx),
+                decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
+                child: records.isEmpty
+                  ? Center(child: Text('データなし', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray)))
+                  : Column(children: [
+                      Text(_segIndex == 0 ? 'きょうの きろく' : _segIndex == 1 ? 'しゅうかん グラフ' : 'げっかん グラフ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink)),
+                      SizedBox(height: 8 * sy),
+                      Expanded(child: SizedBox.expand(child: CustomPaint(painter: _ChartPainter(sx, sy, _segIndex, records)))),
+                    ]),
+              )),
             ]);
           },
-          loading: () => const SizedBox.shrink(),
+          loading: () => Container(width: 362 * sx, height: 60 * sy, decoration: BoxDecoration(color: ButaColors.paper.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(2))),
           error: (_, __) => const SizedBox.shrink(),
         )),
-        // 週間チャート
-        Positioned(top: 370 * sy, left: 14 * sx, child: Container(
-          width: 362 * sx, height: 220 * sy,
-          padding: EdgeInsets.all(10 * sx),
-          decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
-          child: Column(children: [
-            Text(_segIndex == 0 ? 'きょうの きろく' : _segIndex == 1 ? 'しゅうかん グラフ' : 'げっかん グラフ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink)),
-            SizedBox(height: 8 * sy),
-            Expanded(child: _WeeklyChart(sx: sx, sy: sy, segIndex: _segIndex)),
+        // きろくするボタン
+        Positioned(bottom: 20, left: 95 * sx, child: GestureDetector(
+          onTap: () => context.push('/record-category'),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Container(
+              width: 200 * sx, height: 48 * sy,
+              decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
+              alignment: Alignment.center,
+              child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('きろくする', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink))]),
+            ),
+            Container(width: 194 * sx, height: 5 * sy, color: Colors.black),
           ]),
         )),
-        // タブバー
-        // きろくするボタン
-        Positioned(bottom: 64 * sy, left: 55 * sx, child: GestureDetector(
-          onTap: () => context.push('/record-category'),
-          child: Container(
-            width: 280 * sx, height: 44 * sy,
-            decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
-            alignment: Alignment.center,
-            child: Text('▶ きろくする', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink)),
-          ),
-        )),
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 1)),
-      ]),
+      ]);
+      }),
     );
   }
 
@@ -115,6 +130,8 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
     final catId = record['categoryId'] as String? ?? '';
     final pts = record['points'] ?? 0;
     final name = const {'food-ramen': '深夜ラーメン', 'food-snack': '間食した', 'food-binge': '暴飲暴食', 'life-oversleep': '二度寝した', 'life-skip-exercise': '運動サボり', 'life-late-night': '夜更かし', 'life-gaming': 'ゲーム三昧', 'life-nap': '昼寝しすぎ'}[catId] ?? catId;
+    final date = DateTime.tryParse(record['recordedAt'] ?? '') ?? DateTime.now();
+    final dateStr = '${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     return GestureDetector(
       onTap: () => context.push('/record-detail', extra: {...record as Map<String, dynamic>, 'categoryName': name}),
       child: Container(
@@ -122,9 +139,12 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
         padding: EdgeInsets.symmetric(horizontal: 14 * sx),
         decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
         child: Row(children: [
-          Text(name, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink)),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(name, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.ink)),
+            Text(dateStr, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.gray)),
+          ]),
           const Spacer(),
-          Text('+${pts}pt', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 12, color: const Color(0xFFC46A85))),
+          Text('+${pts}pt', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 11, color: const Color(0xFFC46A85))),
         ]),
       ),
     );
@@ -133,14 +153,16 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
 
 
 class _WeeklyChart extends StatelessWidget {
-  const _WeeklyChart({required this.sx, required this.sy, required this.segIndex});
+  const _WeeklyChart({required this.sx, required this.sy, required this.segIndex, required this.records});
   final double sx, sy;
   final int segIndex;
+  final List<dynamic> records;
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _ChartPainter(sx, sy, segIndex),
-      size: Size(362 * sx, 260 * sy),
+    return SizedBox.expand(
+      child: CustomPaint(
+        painter: _ChartPainter(sx, sy, segIndex, records),
+      ),
     );
   }
 }
@@ -148,73 +170,104 @@ class _WeeklyChart extends StatelessWidget {
 class _ChartPainter extends CustomPainter {
   final double sx, sy;
   final int segIndex;
-  _ChartPainter(this.sx, this.sy, this.segIndex);
+  final List<dynamic> records;
+  _ChartPainter(this.sx, this.sy, this.segIndex, this.records);
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
-    final chartLeft = 30 * sx;
-    final chartTop = 20 * sy;
-    final chartBottom = 180 * sy;
+    final chartLeft = 30.0;
+    final chartTop = 10.0;
+    final chartBottom = size.height - 40;
     final chartHeight = chartBottom - chartTop;
-    final barWidth = 30 * sx;
-    final barSpacing = 44 * sx;
 
-    // セグメントに応じたデータ
+    // 実データから集計
     final List<int> values;
     final List<String> labels;
-    final int maxVal;
+    final now = DateTime.now();
+
     if (segIndex == 0) {
-      values = [50, 35, 40];
-      labels = ['ラーメン', 'よふかし', 'サボり'];
-      maxVal = 100;
+      // きょう: カテゴリ別
+      final Map<String, int> catPts = {};
+      for (final r in records) {
+        final cat = r['categoryId'] as String? ?? '?';
+        final short = cat.split('-').last;
+        catPts[short] = (catPts[short] ?? 0) + ((r['points'] as num?)?.toInt() ?? 0);
+      }
+      if (catPts.isEmpty) { values = [0]; labels = ['-']; } else {
+        values = catPts.values.toList();
+        labels = catPts.keys.toList();
+      }
     } else if (segIndex == 1) {
-      values = [60, 100, 40, 160, 80, 180, 120];
-      labels = ['5/18', '5/19', '5/20', '5/21', '5/22', '5/23', '5/24'];
-      maxVal = 200;
+      // しゅう: 日別
+      values = List.filled(7, 0);
+      labels = List.generate(7, (i) { final d = now.subtract(Duration(days: 6 - i)); return '${d.month}/${d.day}'; });
+      for (final r in records) {
+        final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? now;
+        final diff = now.difference(DateTime(date.year, date.month, date.day)).inDays;
+        if (diff >= 0 && diff < 7) values[6 - diff] += (r['points'] as num?)?.toInt() ?? 0;
+      }
     } else {
-      values = [400, 520, 380, 600];
+      // つき: 週別
+      values = List.filled(4, 0);
       labels = ['1週', '2週', '3週', '4週'];
-      maxVal = 700;
+      for (final r in records) {
+        final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? now;
+        final diff = now.difference(date).inDays;
+        final week = (diff / 7).floor();
+        if (week >= 0 && week < 4) values[3 - week] += (r['points'] as num?)?.toInt() ?? 0;
+      }
     }
+
+    final int maxVal = values.isEmpty ? 1 : (values.reduce((a, b) => a > b ? a : b)).clamp(1, 99999);
+    final barCount = values.length;
+    final barWidth = (size.width - chartLeft - 20) / barCount * 0.6;
+    final barSpacing = (size.width - chartLeft - 20) / barCount;
 
     final colors = [const Color(0xFFB8A99A), const Color(0xFFF6C453), const Color(0xFF6CB979), const Color(0xFF6CB979), const Color(0xFFF6C453), const Color(0xFF6CB979), const Color(0xFFB8A99A)];
     final total = values.reduce((a, b) => a + b);
-    final spacing = values.length <= 4 ? 70.0 * sx : barSpacing;
 
     // Y軸メモリ
     for (int i = 0; i <= 4; i++) {
       final gy = chartTop + i * (chartHeight / 4);
       paint.color = const Color(0xFFB8A99A);
-      canvas.drawRect(Rect.fromLTWH(chartLeft, gy, 300 * sx, 1), paint);
+      canvas.drawRect(Rect.fromLTWH(chartLeft, gy, size.width - chartLeft - 10, 1), paint);
       final label = (maxVal - (maxVal / 4 * i)).round().toString();
-      _drawText(canvas, label, 2 * sx, gy - 6 * sy, 9, const Color(0xFFB8A99A));
+      _drawText(canvas, label, 2, gy - 6, 9, const Color(0xFFB8A99A));
     }
 
     // 棒グラフ
     for (int i = 0; i < values.length; i++) {
       final barH = (values[i] / maxVal) * chartHeight;
-      final barX = chartLeft + i * spacing;
+      final barX = chartLeft + i * barSpacing;
       final barY = chartBottom - barH;
       paint.color = colors[i % colors.length];
       canvas.drawRect(Rect.fromLTWH(barX, barY, barWidth, barH), paint);
       if (values[i] > 0) {
-        _drawText(canvas, '${values[i]}', barX + 4 * sx, barY - 14 * sy, 9, const Color(0xFF1A1228));
+        _drawText(canvas, '${values[i]}', barX + 2, barY - 14, 9, const Color(0xFF1A1228));
       }
     }
 
     // X軸ラベル
     for (int i = 0; i < labels.length; i++) {
-      _drawText(canvas, labels[i], chartLeft + i * spacing, 188 * sy, 9, const Color(0xFF1A1228));
+      final tp = TextPainter(
+        text: TextSpan(text: labels[i], style: const TextStyle(fontFamily: 'DotGothic16', fontSize: 9, color: Color(0xFF1A1228))),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      tp.paint(canvas, Offset(chartLeft + i * barSpacing + (barWidth - tp.width) / 2, chartBottom + 4));
     }
 
     // 合計
-    _drawText(canvas, '合計: +${total}pt', 130 * sx, 200 * sy, 11, const Color(0xFFC46A85));
+    final totalTp = TextPainter(
+      text: TextSpan(text: '合計: +${total}pt', style: const TextStyle(fontFamily: 'DotGothic16', fontSize: 11, color: Color(0xFFC46A85))),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    totalTp.paint(canvas, Offset((size.width - totalTp.width) / 2, chartBottom + 20));
   }
 
   void _drawText(Canvas canvas, String text, double x, double y, double fontSize, Color color) {
     final tp = TextPainter(
-      text: TextSpan(text: text, style: TextStyle(fontFamily: 'DotGothic16', fontSize: fontSize * sx, color: color)),
+      text: TextSpan(text: text, style: TextStyle(fontFamily: 'DotGothic16', fontSize: fontSize, color: color)),
       textDirection: TextDirection.ltr,
     )..layout();
     tp.paint(canvas, Offset(x, y));

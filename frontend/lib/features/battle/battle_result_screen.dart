@@ -19,7 +19,7 @@ class BattleResultScreen extends StatelessWidget {
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-arena.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
-        Positioned.fill(child: AudienceAnimation(sx: sx, sy: sy)),
+        const Positioned.fill(child: AudienceAnimation()),
         // 結果
         Positioned(top: 100 * sy, left: 55 * sx, width: 280 * sx, child: Text(
           win ? 'WIN!' : 'LOSE...',
@@ -52,7 +52,7 @@ class BattleResultScreen extends StatelessWidget {
             width: 280 * sx, height: 44 * sy,
             decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
             alignment: Alignment.center,
-            child: Text('▶ もう1かい', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink)),
+            child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('もう1かい', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink))]),
           ),
         )),
         // ホームへ戻るボタン

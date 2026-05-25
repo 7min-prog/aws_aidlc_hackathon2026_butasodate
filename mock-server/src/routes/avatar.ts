@@ -5,7 +5,24 @@ import { authMiddleware } from '../app';
 export const avatarRouter = Router();
 
 // インメモリストア
-const avatars: Record<string, any> = {};
+const avatars: Record<string, any> = {
+  'admin': {
+    avatarId: 'avatar-admin-001',
+    userId: 'admin',
+    name: 'ぽんたろう',
+    totalPoints: 280,
+    level: 3,
+    evolutionStage: 2,
+    evolutionPathId: 'food-path',
+    categoryPoints: { FOOD: 180, LIFESTYLE: 100, MIXED: 0 },
+    subCategoryPoints: { 'food-ramen': 100, 'food-snack': 20, 'food-binge': 60, 'life-late-night': 35, 'life-skip-exercise': 40, 'life-gaming': 25 },
+    stats: { hp: 100, attack: 25, defense: 18, speed: 15 },
+    skillIds: ['skill-1', 'skill-2'],
+    spriteSheetKey: 'pocchari-normal',
+    createdAt: '2026-05-20T10:00:00Z',
+    updatedAt: new Date().toISOString(),
+  },
+};
 
 function createDefaultAvatar(userId: string, name?: string) {
   return {

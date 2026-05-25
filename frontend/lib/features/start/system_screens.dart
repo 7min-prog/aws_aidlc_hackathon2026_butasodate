@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/starry_background.dart';
@@ -24,7 +25,7 @@ class MaintenanceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SystemScreen(
-      icon: '🔧',
+      icon: 'assets/pixel-art/icons/wrench.svg',
       title: 'メンテナンスちゅう',
       message: 'ただいま メンテナンスを\nおこなっています。\n\nよてい しゅうりょう: 15:00',
       buttonLabel: 'とじる',
@@ -62,7 +63,9 @@ class _SystemScreen extends StatelessWidget {
       body: Stack(children: [
         const Positioned.fill(child: StarryBackground(seed: 99)),
         Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(icon, style: TextStyle(fontSize: 48 * sx)),
+          icon.endsWith('.svg')
+            ? SvgPicture.asset(icon, width: 48 * sx, height: 48 * sx)
+            : Text(icon, style: TextStyle(fontSize: 48 * sx)),
           SizedBox(height: 16 * sy),
           Text(title, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.paper), textAlign: TextAlign.center),
           SizedBox(height: 16 * sy),

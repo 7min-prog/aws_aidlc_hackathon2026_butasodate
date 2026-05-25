@@ -5,19 +5,40 @@ import { authMiddleware } from '../app';
 export const battleSocialRouter = Router();
 
 // インメモリストア
-const friends: Record<string, string[]> = {};
-const friendRequests: any[] = [];
+const friends: Record<string, string[]> = {
+  'admin': ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6', 'user-7', 'user-8'],
+};
+const friendRequests: any[] = [
+  { requestId: 'req-1', from: 'user-9', to: 'admin', status: 'PENDING' },
+  { requestId: 'req-2', from: 'user-10', to: 'admin', status: 'PENDING' },
+];
+
+// フレンドのプロフィールデータ
+const friendProfiles: Record<string, { nickname: string; level: number }> = {
+  'user-1': { nickname: 'メガトンぶた', level: 8 },
+  'user-2': { nickname: 'まるまるキング', level: 6 },
+  'user-3': { nickname: 'ぽっちゃり姫', level: 5 },
+  'user-4': { nickname: 'こぶたマン', level: 4 },
+  'user-5': { nickname: 'デブねこ', level: 7 },
+  'user-6': { nickname: 'ねむりぶた', level: 3 },
+  'user-7': { nickname: 'はやあしぶた', level: 5 },
+  'user-8': { nickname: 'てつぶた', level: 6 },
+  'user-9': { nickname: 'ほのおぶた', level: 4 },
+  'user-10': { nickname: 'こおりぶた', level: 3 },
+};
 
 // --- Rankings ---
 // GET /rankings
 battleSocialRouter.get('/', (_req: Request, res: Response) => {
-  res.json({
-    rankings: [
-      { userId: 'user-1', nickname: 'メガトンぶた', points: 9800, wins: 42, losses: 8 },
-      { userId: 'user-2', nickname: 'まるまるキング', points: 8500, wins: 35, losses: 12 },
-      { userId: 'user-3', nickname: 'ぽっちゃり', points: 3450, wins: 15, losses: 20 },
-    ],
-  });
+  const names = ['メガトンぶた', 'まるまるキング', 'ぽっちゃり姫', 'こぶたマスター', 'デブねこ', 'ねむりぶた', 'はやあしぶた', 'てつぶた', 'ほのおぶた', 'スリムぶた', 'ゴッドぶた', 'にんじゃぶた', 'ドラゴンぶた', 'うちゅうぶた', 'おうさまぶた'];
+  const rankings = names.map((name, i) => ({
+    userId: `user-${i + 1}`,
+    nickname: name,
+    points: 9800 - i * 450,
+    wins: 42 - i * 2,
+    losses: 8 + i * 3,
+  }));
+  res.json({ rankings });
 });
 
 // GET /rankings/me
@@ -29,13 +50,20 @@ battleSocialRouter.get('/me', authMiddleware, (req: Request, res: Response) => {
 // --- Battles ---
 // GET /battles/history (mapped as /history from /battles base)
 battleSocialRouter.get('/history', authMiddleware, (_req: Request, res: Response) => {
-  res.json({
-    history: [
-      { matchId: 'match-1', opponentId: 'user-1', opponentNickname: 'こぶたマン', result: 'WIN', pointsChange: 120, date: '2026-05-23T18:00:00Z' },
-      { matchId: 'match-2', opponentId: 'user-2', opponentNickname: 'デブねこ', result: 'LOSE', pointsChange: -80, date: '2026-05-22T20:00:00Z' },
-      { matchId: 'match-3', opponentId: 'user-3', opponentNickname: 'スリムぶた', result: 'WIN', pointsChange: 100, date: '2026-05-21T15:00:00Z' },
-    ],
-  });
+  const opponents = ['こぶたマン', 'デブねこ', 'スリムぶた', 'メガトンくん', 'ぽっちゃり姫', 'ねむりぶた', 'はやあし', 'てつぶた'];
+  const history = [];
+  for (let i = 0; i < 30; i++) {
+    const win = i % 3 !== 1;
+    history.push({
+      matchId: `match-${i + 1}`,
+      opponentId: `user-${(i % 8) + 1}`,
+      opponentNickname: opponents[i % opponents.length],
+      result: win ? 'WIN' : 'LOSE',
+      pointsChange: win ? 80 + (i % 5) * 20 : -(60 + (i % 4) * 10),
+      date: new Date(Date.now() - i * 86400000).toISOString(),
+    });
+  }
+  res.json({ history });
 });
 
 // GET /battles/history/:matchId
@@ -59,7 +87,12 @@ battleSocialRouter.get('/friends', authMiddleware, (req: Request, res: Response)
   const userId = (req as any).userId;
   const userFriends = friends[userId] || [];
   res.json({
-    friends: userFriends.map(id => ({ userId: id, nickname: id, online: Math.random() > 0.5 })),
+    friends: userFriends.map(id => ({
+      userId: id,
+      nickname: friendProfiles[id]?.nickname || id,
+      level: friendProfiles[id]?.level || 1,
+      online: Math.random() > 0.5,
+    })),
   });
 });
 

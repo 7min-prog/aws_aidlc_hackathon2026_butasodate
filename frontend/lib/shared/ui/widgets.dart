@@ -84,7 +84,7 @@ class PixelButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (showMarker) Text('▶ ', style: TextStyle(fontSize: 12, color: _fg)),
+            if (showMarker) Padding(padding: const EdgeInsets.only(right: 4), child: SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 12, height: 12)),
             Text(text, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: _fg, letterSpacing: 1)),
           ],
         ),
@@ -201,4 +201,34 @@ class _NavItem {
   final String svg;
   final String label;
   const _NavItem({required this.svg, required this.label});
+}
+
+/// PixelAppBar — ピクセル風AppBar
+class PixelAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final bool showBack;
+  const PixelAppBar({super.key, required this.title, this.showBack = false});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(48);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 48 + MediaQuery.paddingOf(context).top,
+      padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+      color: ButaColors.ink2,
+      child: Stack(
+        children: [
+          if (showBack)
+            Align(alignment: Alignment.centerLeft, child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => Navigator.of(context).maybePop(),
+              child: SizedBox(width: 48, height: 48, child: Center(child: SvgPicture.asset('assets/pixel-art/icons/back.svg', width: 18.0, height: 18.0, colorFilter: const ColorFilter.mode(ButaColors.paper, BlendMode.srcIn)))),
+            )),
+          Center(child: Text(title, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.paper))),
+        ],
+      ),
+    );
+  }
 }

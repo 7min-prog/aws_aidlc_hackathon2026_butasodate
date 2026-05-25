@@ -1,10 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
-import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/services/cache_service.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
+
+/// テストでオーバーライド可能なDioプロバイダー
+final authDioProvider = Provider<Dio>((ref) => Dio(BaseOptions(baseUrl: AppConfig.authApiBase)));
+final avatarDioProvider = Provider<Dio>((ref) => Dio(BaseOptions(baseUrl: AppConstants.avatarApiBase)));
 
 class AuthTokens {
   final String accessToken;
@@ -30,7 +34,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
   Future<bool> login(String email, String password) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = ref.read(authDioProvider);
       final response = await dio.post('/auth/login', data: {
         'email': email,
         'password': password,
@@ -51,9 +55,15 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     }
   }
 
+  Future<void> devLogin() async {
+    final tokens = AuthTokens(accessToken: 'mock-token-admin', refreshToken: 'mock-refresh-admin');
+    await _saveTokens(tokens);
+    state = AsyncData(tokens);
+  }
+
   Future<bool> signup(String email, String password) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = ref.read(authDioProvider);
       await dio.post('/auth/signup', data: {
         'email': email,
         'password': password,
@@ -66,7 +76,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
   Future<bool> confirmSignup(String email, String code) async {
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = ref.read(authDioProvider);
       await dio.post('/auth/confirm', data: {
         'email': email,
         'code': code,
@@ -82,7 +92,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     if (currentTokens?.refreshToken == null) return false;
 
     try {
-      final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+      final dio = ref.read(authDioProvider);
       final response = await dio.post('/auth/refresh', data: {
         'refreshToken': currentTokens!.refreshToken,
       });
@@ -102,6 +112,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     }
   }
 
+
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_accessTokenKey);
@@ -117,10 +128,8 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     final tokens = state.value;
     if (tokens == null) return false;
 
-    final dio = Dio(BaseOptions(
-      baseUrl: AppConstants.avatarApiBase,
-      headers: {'Authorization': 'Bearer ${tokens.accessToken}'},
-    ));
+    final dio = ref.read(avatarDioProvider);
+    dio.options.headers['Authorization'] = 'Bearer ${tokens.accessToken}';
 
     for (var i = 0; i < AppConstants.avatarCreateMaxRetries; i++) {
       try {

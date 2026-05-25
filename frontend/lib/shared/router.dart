@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:buta_app/features/legal/license_list_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +7,9 @@ import 'package:buta_app/features/auth/signup_screen.dart';
 import 'package:buta_app/features/auth/confirm_screen.dart';
 import 'package:buta_app/features/auth/nickname_screen.dart';
 import 'package:buta_app/features/legal/legal_screen.dart';
-import 'package:buta_app/features/splash/splash_screen.dart';
+import 'package:buta_app/features/start/start_screen.dart';
+import 'package:buta_app/features/start/loading_screen.dart';
+import 'package:buta_app/features/start/tutorial_screen.dart';
 import 'package:buta_app/features/home/home_screen.dart';
 import 'package:buta_app/features/record/record_tab_screen.dart';
 import 'package:buta_app/features/record/category_select_screen.dart';
@@ -31,13 +34,37 @@ import 'package:buta_app/features/settings/notification_settings_screen.dart';
 import 'package:buta_app/features/settings/account_manage_screen.dart';
 import 'package:buta_app/features/start/system_screens.dart';
 
+/// レトロゲーム風フェードトランジション
+CustomTransitionPage<void> pixelFadePage({required Widget child, required GoRouterState state}) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 200),
+    reverseTransitionDuration: const Duration(milliseconds: 150),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
+  );
+}
+
+final initialRouteProvider = Provider<String>((ref) => '/start');
+
 final routerProvider = Provider<GoRouter>((ref) {
+  final initialRoute = ref.watch(initialRouteProvider);
   return GoRouter(
-    initialLocation: '/splash',
+    initialLocation: initialRoute,
     routes: [
       GoRoute(
-        path: '/splash',
-        builder: (context, state) => const SplashScreen(),
+        path: '/start',
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const StartScreen()),
+      ),
+      GoRoute(
+        path: '/loading',
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const LoadingScreen()),
+      ),
+      GoRoute(
+        path: '/tutorial',
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const TutorialScreen()),
       ),
       GoRoute(
         path: '/',
@@ -57,22 +84,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/battle-matching',
-        builder: (context, state) => const BattleMatchingScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const BattleMatchingScreen()),
       ),
       GoRoute(
         path: '/battle-ready',
-        builder: (context, state) => const BattleReadyScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const BattleReadyScreen()),
       ),
       GoRoute(
         path: '/battle-fight',
-        builder: (context, state) => const BattleFightScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const BattleFightScreen()),
       ),
       GoRoute(
         path: '/battle-result',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          return BattleResultScreen(win: extra['win'] as bool? ?? true);
-        },
+        pageBuilder: (context, state) { final extra = state.extra as Map<String, dynamic>? ?? {}; return pixelFadePage(state: state, child: BattleResultScreen(win: extra['win'] as bool? ?? true)); },
       ),
       GoRoute(
         path: '/settings',
@@ -80,18 +104,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/avatar-detail',
-        builder: (context, state) => AvatarDetailScreen(avatar: state.extra as Map<String, dynamic>?),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: AvatarDetailScreen(avatar: state.extra as Map<String, dynamic>?)),
       ),
       GoRoute(
         path: '/evo-book',
-        builder: (context, state) => const EvoBookScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const EvoBookScreen()),
       ),
       GoRoute(
         path: '/evo-anim',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          return EvoAnimScreen(newName: extra['name'] as String? ?? 'ぽっちゃり', newLevel: extra['level'] as int? ?? 3);
-        },
+        pageBuilder: (context, state) { final extra = state.extra as Map<String, dynamic>? ?? {}; return pixelFadePage(state: state, child: EvoAnimScreen(newName: extra['name'] as String? ?? 'ぽっちゃり', newLevel: extra['level'] as int? ?? 3)); },
       ),
       GoRoute(
         path: '/friends',
@@ -99,94 +120,97 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/friend-search',
-        builder: (context, state) => const FriendSearchScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const FriendSearchScreen()),
       ),
       GoRoute(
         path: '/battle-history',
-        builder: (context, state) => const BattleHistoryScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const BattleHistoryScreen()),
       ),
       GoRoute(
         path: '/profile-edit',
-        builder: (context, state) => const ProfileEditScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const ProfileEditScreen()),
       ),
       GoRoute(
         path: '/health-data',
-        builder: (context, state) => const HealthDataScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const HealthDataScreen()),
       ),
       GoRoute(
         path: '/notification-settings',
-        builder: (context, state) => const NotificationSettingsScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const NotificationSettingsScreen()),
       ),
       GoRoute(
         path: '/account-manage',
-        builder: (context, state) => const AccountManageScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const AccountManageScreen()),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const LoginScreen()),
       ),
       GoRoute(
         path: '/record-category',
-        builder: (context, state) => const CategorySelectScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const CategorySelectScreen()),
       ),
       GoRoute(
         path: '/record-confirm',
-        builder: (context, state) => RecordConfirmScreen(category: state.extra as Map<String, dynamic>? ?? {}),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: RecordConfirmScreen(category: state.extra as Map<String, dynamic>? ?? {})),
       ),
       GoRoute(
         path: '/record-complete',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          return RecordCompleteScreen(points: extra['points'] as int? ?? 0);
-        },
+        pageBuilder: (context, state) { final extra = state.extra as Map<String, dynamic>? ?? {}; return pixelFadePage(state: state, child: RecordCompleteScreen(points: extra['points'] as int? ?? 0)); },
       ),
       GoRoute(
         path: '/record-detail',
-        builder: (context, state) => RecordDetailScreen(record: state.extra as Map<String, dynamic>? ?? {}),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: RecordDetailScreen(record: state.extra as Map<String, dynamic>? ?? {})),
       ),
       GoRoute(
         path: '/signup',
-        builder: (context, state) => const SignupScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const SignupScreen()),
       ),
       GoRoute(
         path: '/confirm',
-        builder: (context, state) => ConfirmScreen(email: state.extra as String? ?? ''),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: ConfirmScreen(email: state.extra as String? ?? '')),
       ),
       GoRoute(
         path: '/nickname',
-        builder: (context, state) => const NicknameScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const NicknameScreen()),
       ),
       GoRoute(
         path: '/terms',
-        builder: (context, state) => const LegalScreen(title: '利用規約', type: LegalType.terms),
+        pageBuilder: (context, state) {
+          final showTab = state.extra == false ? false : true;
+          return pixelFadePage(state: state, child: LegalScreen(title: '利用規約', type: LegalType.terms, showTabBar: showTab));
+        },
       ),
       GoRoute(
         path: '/privacy',
-        builder: (context, state) => const LegalScreen(title: 'プライバシーポリシー', type: LegalType.privacy),
+        pageBuilder: (context, state) {
+          final showTab = state.extra == false ? false : true;
+          return pixelFadePage(state: state, child: LegalScreen(title: 'プライバシーポリシー', type: LegalType.privacy, showTabBar: showTab));
+        },
       ),
       GoRoute(
         path: '/licenses',
-        builder: (context, state) => const LicenseListScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const LicenseListScreen()),
       ),
       GoRoute(
         path: '/error',
-        builder: (context, state) => const ErrorScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const ErrorScreen()),
       ),
       GoRoute(
         path: '/maintenance',
-        builder: (context, state) => const MaintenanceScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const MaintenanceScreen()),
       ),
       GoRoute(
         path: '/force-update',
-        builder: (context, state) => const ForceUpdateScreen(),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const ForceUpdateScreen()),
       ),
       GoRoute(
         path: '/health-consent',
-        builder: (context, state) => const LegalScreen(title: 'ヘルスデータ どうい', type: LegalType.healthConsent),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const LegalScreen(title: 'ヘルスデータ どうい', type: LegalType.healthConsent)),
       ),
       GoRoute(
         path: '/commercial-law',
-        builder: (context, state) => const LegalScreen(title: 'とくてい しょうとりひきほう', type: LegalType.commercialLaw),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: const LegalScreen(title: 'とくてい しょうとりひきほう', type: LegalType.commercialLaw)),
       ),
     ],
   );

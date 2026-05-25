@@ -42,6 +42,7 @@ class _ConfirmScreenState extends ConsumerState<ConfirmScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(
         children: [
           Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
@@ -56,7 +57,7 @@ class _ConfirmScreenState extends ConsumerState<ConfirmScreen> {
           // 確認ボタン
           Positioned(top: 380 * sy, left: 55 * sx, child: ListenableBuilder(
             listenable: _codeCtrl,
-            builder: (_, __) => PixelActionButton(width: 280 * sx, height: 44 * sy, label: '▶ かくにん', enabled: _codeCtrl.text.length == 6, onTap: _confirm),
+            builder: (_, __) => PixelActionButton(width: 280 * sx, height: 44 * sy, label: 'かくにん', icon: 'assets/pixel-art/icons/play.svg', enabled: _codeCtrl.text.length == 6, onTap: _confirm),
           )),
           // 再送信リンク
           Positioned(top: 450 * sy, left: 0, right: 0, child: GestureDetector(onTap: _resend, child: const Text('コードを さいそうしん', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.paper)))),

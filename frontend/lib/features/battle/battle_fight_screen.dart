@@ -110,14 +110,16 @@ class _BattleFightScreenState extends State<BattleFightScreen> with TickerProvid
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final sx = size.width / 390, sy = size.height / 740;
+    final sx = size.width / 390;
+    final fieldHeight = size.height - 270;
+    final sy = (fieldHeight / 500).clamp(0.0, 1.5);
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-arena.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
-        Positioned.fill(child: AudienceAnimation(sx: sx, sy: sy)),
+        const Positioned.fill(child: AudienceAnimation()),
         // フラッシュ
         if (_flash) Positioned.fill(child: IgnorePointer(child: Container(color: Colors.white.withValues(alpha: 0.3)))),
         // タイマー（1ターン20秒）
@@ -134,55 +136,67 @@ class _BattleFightScreenState extends State<BattleFightScreen> with TickerProvid
         Positioned(top: 70 * sy, left: 200 * sx, child: Text('まるまる LV.5', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
         Positioned(top: 90 * sy, left: 200 * sx, child: _hpBar(170 * sx, 10 * sy, _oppHp)),
         // 相手アバター（揺れ）
-        Positioned(top: 130 * sy, left: 230 * sx, child: AnimatedBuilder(
+        Positioned(top: 110 * sy, left: 240 * sx, child: AnimatedBuilder(
           animation: _shakeCtrl,
           builder: (_, child) {
             final offset = _oppShake ? sin(_shakeCtrl.value * pi * 6) * 6 : 0.0;
             return Transform.translate(offset: Offset(offset, 0), child: child);
           },
-          child: SizedBox(width: 120 * sx, height: 120 * sy, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFF5A8ED1)))),
+          child: SizedBox(width: 90 * sx, height: 90 * sx, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFF5A8ED1)))),
         )),
         // 自分名前+HP
-        Positioned(top: 290 * sy, left: 20 * sx, child: Text('ぽっちゃり LV.3', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
-        Positioned(top: 310 * sy, left: 20 * sx, child: _hpBar(170 * sx, 10 * sy, _myHp)),
+        Positioned(top: 220 * sy, left: 20 * sx, child: Text('ぽっちゃり LV.3', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
+        Positioned(top: 240 * sy, left: 20 * sx, child: _hpBar(170 * sx, 10 * sy, _myHp)),
         // 自分アバター（揺れ）
-        Positioned(top: 350 * sy, left: 40 * sx, child: AnimatedBuilder(
+        Positioned(top: 260 * sy, left: 40 * sx, child: AnimatedBuilder(
           animation: _shakeCtrl,
           builder: (_, child) {
             final offset = _myShake ? sin(_shakeCtrl.value * pi * 6) * 6 : 0.0;
             return Transform.translate(offset: Offset(offset, 0), child: child);
           },
-          child: SizedBox(width: 120 * sx, height: 120 * sy, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFFFF9BB3)))),
+          child: SizedBox(width: 90 * sx, height: 90 * sx, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFFFF9BB3)))),
         )),
         // ダメージ数字
         if (_showDamage) Positioned(
-          top: (_damageOnOpp ? 140 : 360) * sy, left: (_damageOnOpp ? 280 : 90) * sx,
+          top: (_damageOnOpp ? 120 : 270) * sy, left: (_damageOnOpp ? 280 : 90) * sx,
           child: Text(_damageText, style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 18, color: ButaColors.red)),
         ),
         // ログ
-        Positioned(top: 490 * sy, left: 14 * sx, child: Container(
-          width: 362 * sx, height: 40 * sy,
+        Positioned(bottom: 230, left: 14 * sx, right: 14 * sx, child: Container(
+          height: 36,
           decoration: BoxDecoration(color: ButaColors.black),
           alignment: Alignment.center,
           child: Text(_log, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.paper)),
         )),
         // コマンドパネル
-        Positioned(top: 545 * sy, left: 14 * sx, child: Container(
-          width: 362 * sx, height: 180 * sy,
+        Positioned(bottom: 0, left: 14 * sx, right: 14 * sx, height: 220, child: Container(
           decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),
-          padding: EdgeInsets.all(8 * sx),
-          child: GridView.count(
-            crossAxisCount: 2, mainAxisSpacing: 8 * sy, crossAxisSpacing: 8 * sx, childAspectRatio: 2.3,
-            physics: const NeverScrollableScrollPhysics(),
-            children: List.generate(4, (i) => GestureDetector(
-              onTap: _inputLocked ? null : () => _attack(i),
-              child: Container(
-                decoration: BoxDecoration(color: _skillColors[i], border: Border.all(color: ButaColors.ink, width: 1)),
-                alignment: Alignment.center,
-                child: Text(_skills[i], style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink)),
-              ),
-            )),
-          ),
+          padding: const EdgeInsets.all(8),
+          child: Column(children: [
+            Expanded(child: Row(children: [
+              for (int i = 0; i < 2; i++) Expanded(child: GestureDetector(
+                onTap: _inputLocked ? null : () => _attack(i),
+                child: Container(
+                  margin: EdgeInsets.only(right: i == 0 ? 4 : 0, left: i == 1 ? 4 : 0),
+                  decoration: BoxDecoration(color: _skillColors[i], border: Border.all(color: ButaColors.ink, width: 1)),
+                  alignment: Alignment.center,
+                  child: Text(_skills[i], style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink)),
+                ),
+              )),
+            ])),
+            const SizedBox(height: 8),
+            Expanded(child: Row(children: [
+              for (int i = 2; i < 4; i++) Expanded(child: GestureDetector(
+                onTap: _inputLocked ? null : () => _attack(i),
+                child: Container(
+                  margin: EdgeInsets.only(right: i == 2 ? 4 : 0, left: i == 3 ? 4 : 0),
+                  decoration: BoxDecoration(color: _skillColors[i], border: Border.all(color: ButaColors.ink, width: 1)),
+                  alignment: Alignment.center,
+                  child: Text(_skills[i], style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink)),
+                ),
+              )),
+            ])),
+          ]),
         )),
       ]),
     );

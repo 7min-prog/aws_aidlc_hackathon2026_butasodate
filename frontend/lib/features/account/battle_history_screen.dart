@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 class BattleHistoryScreen extends StatelessWidget {
   const BattleHistoryScreen({super.key});
@@ -22,21 +23,12 @@ class BattleHistoryScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'バトル りれき', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 2)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
-        // ヘッダー
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(
-          color: ButaColors.ink,
-          child: Row(children: [
-            GestureDetector(onTap: () => context.pop(), child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14 * sx),
-              child: Text('◀', style: TextStyle(fontSize: 18, color: ButaColors.paper)),
-            )),
-            Text('バトル りれき', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.paper)),
-          ]),
-        )),
         // 勝率
-        Positioned(top: 60 * sy, left: 14 * sx, width: 362 * sx, child: Text(
+        Positioned(top: 12 * sy, left: 14 * sx, width: 362 * sx, child: Text(
           'しょうりつ: 65%  (13勝 / 7敗)',
           style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink),
         )),
@@ -65,7 +57,6 @@ class BattleHistoryScreen extends StatelessWidget {
           );
         }),
         // タブバー
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 2)),
       ]),
     );
   }

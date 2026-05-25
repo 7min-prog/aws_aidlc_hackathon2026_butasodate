@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/services/api_client.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 final _categoriesProvider = FutureProvider<List<dynamic>>((ref) async {
   try {
@@ -42,18 +43,12 @@ class CategorySelectScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF8A5A2B),
+      appBar: const PixelAppBar(title: 'なにを した？', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 1)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-record.svg', fit: BoxFit.cover)),
-        // ヘッダー
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(
-          color: ButaColors.ink,
-          child: Stack(children: [
-            Positioned(left: 14 * sx, top: 14 * sy, child: GestureDetector(onTap: () => context.pop(), child: Text('◀', style: TextStyle(fontSize: 16, color: ButaColors.paper)))),
-            Center(child: Text('なにを した？', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper))),
-          ]),
-        )),
         // カテゴリグリッド
-        Positioned(top: 68 * sy, left: 14 * sx, right: 14 * sx, bottom: 56 * sy, child: cats.when(
+        Positioned(top: 20 * sy, left: 14 * sx, right: 14 * sx, bottom: 56 * sy, child: cats.when(
           data: (list) => Wrap(spacing: 10 * sx, runSpacing: 10 * sy, children: [
             for (final cat in list) GestureDetector(
               onTap: () => context.push('/record-confirm', extra: cat),
@@ -68,11 +63,10 @@ class CategorySelectScreen extends ConsumerWidget {
               ),
             ),
           ]),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => Center(child: Text('よみこみちゅう...', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper))),
           error: (_, __) => const SizedBox.shrink(),
         )),
         // タブバー
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 1)),
       ]),
     );
   }

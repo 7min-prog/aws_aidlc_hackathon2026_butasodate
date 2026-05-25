@@ -53,7 +53,7 @@ class _BattleMatchingScreenState extends State<BattleMatchingScreen> {
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-arena.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
-        Positioned.fill(child: AudienceAnimation(sx: sx, sy: sy)),
+        const Positioned.fill(child: AudienceAnimation()),
         Positioned(top: 200 * sy, left: 55 * sx, width: 280 * sx, child: Text(
           'たいせんあいてを\nさがしています...',
           textAlign: TextAlign.center,

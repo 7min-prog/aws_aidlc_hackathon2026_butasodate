@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:buta_app/shared/theme.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 class HealthDataScreen extends StatefulWidget {
   const HealthDataScreen({super.key});
@@ -19,15 +20,13 @@ class _HealthDataScreenState extends State<HealthDataScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'ヘルスデータ', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
         // Header
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(color: ButaColors.ink, child: Stack(children: [
-          Align(alignment: Alignment.centerLeft, child: GestureDetector(onTap: () => Navigator.pop(context), child: Padding(padding: EdgeInsets.only(left: 14 * sx), child: Text('◀', style: TextStyle(fontSize: 18, color: ButaColors.paper))))),
-          Center(child: Text('ヘルスデータ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper))),
-        ]))),
         // Content
-        Positioned(top: 60 * sy, left: 14 * sx, right: 14 * sx, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Positioned(top: 12 * sy, left: 14 * sx, right: 14 * sx, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // ステータスラベル
           Text('れんけい じょうたい', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray)),
           SizedBox(height: 4 * sy),
@@ -65,7 +64,6 @@ class _HealthDataScreenState extends State<HealthDataScreen> {
           ),
         ])),
         // TabBar
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       ]),
     );
   }
@@ -78,7 +76,7 @@ class _HealthDataScreenState extends State<HealthDataScreen> {
       child: Row(children: [
         Text(label, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink)),
         const Spacer(),
-        Text('▶', style: TextStyle(fontSize: 12, color: ButaColors.ink)),
+        SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 12, height: 12),
       ]),
     );
   }

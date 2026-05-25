@@ -4,7 +4,9 @@ import { authMiddleware } from '../app';
 export const authRouter = Router();
 
 // インメモリストア
-const users: Record<string, { email: string; password: string; nickname?: string; confirmed: boolean }> = {};
+const users: Record<string, { email: string; password: string; nickname?: string; confirmed: boolean }> = {
+  'admin@example.com': { email: 'admin@example.com', password: 'password', nickname: 'ぶたマスター', confirmed: true },
+};
 
 // POST /auth/signup
 authRouter.post('/signup', (req: Request, res: Response) => {

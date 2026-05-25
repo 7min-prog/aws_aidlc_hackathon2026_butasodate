@@ -40,6 +40,7 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
@@ -66,7 +67,7 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
           listenable: Listenable.merge([_nicknameCtrl, _pigNameCtrl]),
           builder: (_, __) => PixelActionButton(
             width: 280 * sx, height: 44 * sy,
-            label: '▶ はじめる！',
+            label: 'はじめる！', icon: 'assets/pixel-art/icons/play.svg',
             enabled: _nicknameCtrl.text.trim().isNotEmpty && _pigNameCtrl.text.trim().isNotEmpty,
             onTap: _submit,
           ),

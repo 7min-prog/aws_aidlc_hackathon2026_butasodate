@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -23,22 +24,19 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
+      appBar: const PixelAppBar(title: 'おしらせ', showBack: true),
+      bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       body: Stack(children: [
         Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
         const Positioned.fill(child: CloudAnimation()),
         Positioned.fill(child: GrassAnimation(sx: sx, sy: sy)),
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(color: ButaColors.ink, child: Stack(children: [
-          Align(alignment: Alignment.centerLeft, child: GestureDetector(onTap: () => Navigator.pop(context), child: Padding(padding: EdgeInsets.only(left: 12 * sx), child: Text('◀', style: TextStyle(fontSize: 18, color: ButaColors.paper))))),
-          Center(child: Text('つうち せってい', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper))),
-        ]))),
-        Positioned(top: 60 * sy, left: 14 * sx, child: Column(children: [
+        Positioned(top: 12 * sy, left: 14 * sx, child: Column(children: [
           _toggle(sx, sy, 'プッシュつうち', _pushEnabled, (v) => setState(() => _pushEnabled = v)),
           SizedBox(height: 2 * sy),
           _toggle(sx, sy, 'バトル しょうたい', _battleInvite, (v) => setState(() => _battleInvite = v)),
           SizedBox(height: 2 * sy),
           _toggle(sx, sy, 'きろく リマインダー', _recordReminder, (v) => setState(() => _recordReminder = v)),
         ])),
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       ]),
     );
   }

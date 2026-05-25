@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
-import 'package:buta_app/features/home/home_screen.dart';
+import 'package:buta_app/shared/ui/widgets.dart';
+import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 enum LegalType { terms, privacy, license, healthConsent, commercialLaw }
 
 class LegalScreen extends StatelessWidget {
-  const LegalScreen({super.key, required this.title, required this.type});
+  const LegalScreen({super.key, required this.title, required this.type, this.showTabBar = true});
   final String title;
   final LegalType type;
+  final bool showTabBar;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,11 @@ class LegalScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ButaColors.ink,
+      appBar: PixelAppBar(title: title, showBack: true),
+      bottomNavigationBar: showTabBar ? SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)) : null,
       body: Stack(children: [
         // 本文
-        Positioned(top: 48 * sy, left: 0, right: 0, bottom: 56 * sy, child: Container(
+        Positioned(top: 0 * sy, left: 0, right: 0, bottom: 0, child: Container(
           color: ButaColors.paper,
           padding: EdgeInsets.all(14 * sx),
           child: SingleChildScrollView(
@@ -29,54 +33,120 @@ class LegalScreen extends StatelessWidget {
             ),
           ),
         )),
-        // ヘッダー
-        Positioned(top: 0, left: 0, right: 0, height: 48 * sy, child: Container(
-          color: ButaColors.ink,
-          padding: EdgeInsets.symmetric(horizontal: 14 * sx),
-          child: Row(children: [
-            GestureDetector(onTap: () => context.pop(), child: const Text('◀', style: TextStyle(fontSize: 16, color: ButaColors.paper))),
-            SizedBox(width: 14 * sx),
-            Text(title, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.paper)),
-          ]),
-        )),
-        Positioned(bottom: 0, left: 0, right: 0, height: 56 * sy, child: PixelTabBar(sx: sx, sy: sy, activeIndex: 4)),
       ]),
     );
   }
 }
 
-const _termsText = '''だい1じょう（もくてき）
-このきやくは「ぶたそだて」の
-りようじょうけんを さだめます。
+const _termsText = '''だい1じょう（てきよう）
+このきやくは「ぶたそだて」（いか
+「ほんサービス」）の りようじょうけんを
+さだめるものです。ユーザーは
+ほんきやくに どういのうえ
+ほんサービスを りようするものと
+します。
 
-だい2じょう（りよう）
-ユーザーは このアプリを
-たのしく つかってください。
+だい2じょう（アカウント）
+1. ユーザーは じぶんの アカウントを
+てきせつに かんりする ぎむを
+おいます。
+2. アカウントの ふせいりようにより
+しょうじた そんがいについて
+うんえいは せきにんを おいません。
 
-だい3じょう（きんし）
-ほかのユーザーへの めいわく
-こういは きんしです。
+だい3じょう（きんしじこう）
+ユーザーは いかの こういを
+してはなりません。
+・ほうれいに いはんする こうい
+・ほかの ユーザーへの めいわくこうい
+・サーバーに かどな ふかを かける
+こうい
+・ふせいアクセス または それに
+じゅんずる こうい
+・うんえいが ふてきせつと はんだん
+する こうい
 
-だい4じょう（めんせき）
-うんえいは サービスの
-ていしに ついて せきにんを
-おいません。''';
+だい4じょう（サービスの ていし）
+うんえいは いかの ばあいに
+サービスを ていし できます。
+・システムの ほしゅう じ
+・てんさいちへん とうの ばあい
+・そのた うんえいが ひつようと
+はんだんした ばあい
 
-const _privacyText = '''1. しゅうしゅうする じょうほう
-メールアドレス、ニックネーム、
-けんこうデータ（にゅうりょくぶん）
+だい5じょう（めんせきじこう）
+1. うんえいは ほんサービスの
+かんぜんせいを ほしょう しません。
+2. ユーザーかんの トラブルについて
+うんえいは かんよ しません。
 
-2. りようもくてき
-アカウントかんり、
-サービスていきょう
+だい6じょう（きやくの へんこう）
+うんえいは ユーザーへの つうちなく
+ほんきやくを へんこう できます。
+へんこうごの りようをもって
+どういと みなします。
 
-3. だいさんしゃていきょう
-ユーザーの どういなく
-だいさんしゃに ていきょう
-しません。
+だい7じょう（じゅんきょほう）
+ほんきやくは にほんほうに
+じゅんきょします。
 
-4. おといあわせ
-buta@example.com''';
+2024ねん 4がつ 1にち せいてい''';
+
+const _privacyText = '''プライバシーポリシー
+
+さいしゅう こうしんび: 2024ねん 4がつ 1にち
+
+「ぶたそだて」（いか「ほんサービス」）
+における こじんじょうほうの
+とりあつかいについて いかのとおり
+さだめます。
+
+■ しゅうしゅうする じょうほう
+・メールアドレス
+・ニックネーム
+・プロフィール がぞう
+・けんこうデータ（たいじゅう、ほすう、
+すいみんじかん）
+・アプリの りようりれき
+・たんまつ じょうほう（OS、バージョン）
+
+■ りよう もくてき
+・アカウントの さくせい・かんり
+・サービスの ていきょう・かいぜん
+・アバターの せいちょう はんてい
+・ゲームない ポイントの けいさん
+・おしらせの はいしん
+・とうけい データの さくせい
+
+■ データの ほかん
+・しゅうしゅうした データは
+あんごうかして ほかんします
+・ほかん きかんは アカウント
+さくじょご 30にちかん です
+
+■ だいさんしゃ ていきょう
+いかの ばあいを のぞき
+だいさんしゃに ていきょう しません。
+・ユーザーの どうい がある ばあい
+・ほうれいに もとづく ばあい
+
+■ Cookie・トラッキング
+ほんサービスでは サービスかいぜんの
+ため Cookie を しようします。
+
+■ おこさまの プライバシー
+13さい みまんの おこさまからは
+ほごしゃの どうい なく じょうほうを
+しゅうしゅう しません。
+
+■ ポリシーの へんこう
+ほんポリシーは ひつようにおうじて
+へんこう されることが あります。
+じゅうような へんこうは アプリない
+で つうち します。
+
+■ おといあわせ
+support@butasodate.example.com''';
 
 const _licenseText = '''このアプリは いかの
 オープンソース ライブラリを
@@ -95,7 +165,7 @@ Copyright 2013 The Flutter Authors
 ━━━━━━━━━━━━━━━━━━
 dio (5.8.0)
 MIT License
-Copyright (c) 2018 ��
+Copyright (c) 2018 February
 
 ━━━━━━━━━━━━━━━━━━
 flutter_svg (2.0.17)
@@ -130,30 +200,48 @@ Copyright (c) 2019 serenader''';
 
 const _healthConsentText = '''ヘルスデータ りよう どうい
 
-「ぶたそだて」では いかの
-ヘルスデータを しゅとくします。
+さいしゅう こうしんび: 2024ねん 4がつ 1にち
+
+「ぶたそだて」では ユーザーの
+けんこうじょうたいに もとづいて
+アバターを せいちょう させるため
+いかの ヘルスデータを しゅとく
+します。
 
 ■ しゅとく こうもく
-・たいじゅう
-・ほすう
-・すいみん じかん
+・たいじゅう（まいにちの きろく）
+・ほすう（まいにちの ごうけい）
+・すいみん じかん（しゅうしん・きしょう）
 
 ■ りよう もくてき
 ・アバターの せいちょう はんてい
+ほすうが おおいと すばやさ UP
+すいみんが じゅうぶんだと HP UP
 ・ゲーム ないの ポイント けいさん
+きろくを つけると ポイント かくとく
 ・ユーザーの けんこう けいこう ぶんせき
+しゅうかん・げっかんの グラフ ひょうじ
 
 ■ データの ほかん
-しゅとくした データは
-あんごうかして ほかんされます。
+・しゅとくした データは AES-256で
+あんごうかして ほかんされます
+・サーバーは AWS とうきょう リージョン
+に せっちされています
 
 ■ だいさんしゃ ていきょう
 ヘルスデータを だいさんしゃに
-ていきょう することは ありません。
+ていきょう することは いっさい
+ありません。
 
 ■ どうい の てっかい
-せってい がめんから いつでも
-れんけいを かいじょ できます。''';
+せってい がめん ＞ ヘルスデータ
+から いつでも れんけいを
+かいじょ できます。
+かいじょご、ほかんデータは
+30にち いないに さくじょ されます。
+
+■ おといあわせ
+support@butasodate.example.com''';
 
 const _commercialLawText = '''とくてい しょうとりひきほう に
 もとづく ひょうじ
@@ -168,10 +256,13 @@ const _commercialLawText = '''とくてい しょうとりひきほう に
 〒100-0001
 とうきょうと ちよだく
 ちよだ 1-1-1
+ぶたそだて ビル 3F
 
 ■ でんわばんごう
 03-0000-0000
-（おといあわせは メールにて）
+（じゅでん じかん: へいじつ 10:00〜17:00）
+※おといあわせは メールにて
+おねがいします
 
 ■ メールアドレス
 support@butasodate.example.com
@@ -179,14 +270,29 @@ support@butasodate.example.com
 ■ はんばい かかく
 アプリないに ひょうじされた
 かかく（ぜいこみ）
+・ぶたの おやつ パック: 120えん
+・プレミアム パス（げっかく）: 480えん
+・ほうせき セット: 250えん〜3,000えん
 
 ■ しはらい ほうほう
-Apple App Store / Google Play
-けっさい
+・Apple App Store けっさい
+・Google Play けっさい
+※かくプラットフォームの きていに
+じゅんじます
 
 ■ ひきわたし じき
 こうにゅうご そくじ りよう かのう
 
 ■ へんぴん・キャンセル
-デジタル コンテンツの ため
-へんぴんは おうけ できません。''';
+デジタル コンテンツの せいしつじょう
+こうにゅうご の へんぴん・へんきんは
+おうけ できません。
+ただし いかの ばあいは のぞきます。
+・しょうひんが せいじょうに
+ていきょう されなかった ばあい
+
+■ どうさ かんきょう
+・iOS 16.0 いじょう
+・Android 10.0 いじょう
+
+2024ねん 4がつ 1にち せいてい''';
