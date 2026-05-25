@@ -36,7 +36,7 @@ class ButaApp extends ConsumerWidget {
       theme: butaTheme,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) => SafeArea(child: child ?? const SizedBox.shrink()),
+      builder: (context, child) => SafeArea(bottom: false, child: child ?? const SizedBox.shrink()),
     );
   }
 }

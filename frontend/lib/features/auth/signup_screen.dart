@@ -44,6 +44,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     final sy = size.height / 740;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ButaColors.blue,
       appBar: PreferredSize(preferredSize: Size.zero, child: Container(color: Colors.transparent)),
       body: Stack(
