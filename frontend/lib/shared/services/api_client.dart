@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 
@@ -21,8 +20,8 @@ class ApiClient {
 
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString('id_token') ?? prefs.getString('access_token');
+        final authState = await _ref.read(authStateProvider.future);
+        final token = authState?.idToken ?? authState?.accessToken;
         if (token != null) {
           options.headers['Authorization'] = token;
         }

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
@@ -27,13 +25,11 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   }
 
   Future<void> _loadCurrent() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('id_token') ?? '';
-    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
     try {
+      final api = ref.read(apiClientProvider);
       final results = await Future.wait([
-        dio.get('${AppConfig.authApiBase}/users/me'),
-        dio.get('${AppConfig.avatarApiBase}/avatar'),
+        api.get('/users/me'),
+        api.get('/avatar'),
       ]);
       final profile = results[0].data as Map<String, dynamic>? ?? {};
       final avatarData = results[1].data as Map<String, dynamic>? ?? {};
@@ -52,39 +48,21 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
 
   Future<void> _save() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('access_token');
-      // Cognito AuthorizerはIDトークンを要求する場合がある
-      final idToken = prefs.getString('id_token');
-      final authToken = idToken ?? token;
-      if (authToken == null) {
-        if (mounted) showPixelAlert(context, message: 'トークンなし');
-        return;
-      }
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-        headers: {'Content-Type': 'application/json', 'Authorization': authToken},
-      ));
-      await dio.put('${AppConfig.authApiBase}/users/profile', data: {'nickname': _nickCtrl.text.trim()});
-      // アバター名も更新
+      final api = ref.read(apiClientProvider);
+      await api.put('/users/profile', data: {'nickname': _nickCtrl.text.trim()});
       if (_avatarCtrl.text.trim().isNotEmpty) {
-        await dio.put('${AppConfig.avatarApiBase}/avatar/name', data: {'name': _avatarCtrl.text.trim()});
+        await api.put('/avatar/name', data: {'name': _avatarCtrl.text.trim()});
       }
       if (mounted) await showPixelAlert(context, message: 'ほぞんしました！');
       if (mounted) Navigator.pop(context);
-    } catch (e) {
-      if (mounted) {
-        final msg = e is DioException ? '${e.response?.statusCode ?? e.type}' : e.runtimeType.toString();
-        showPixelAlert(context, message: 'エラー: $msg');
-      }
+    } catch (_) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final view = View.of(context);
-    final size = view.physicalSize / view.devicePixelRatio;
+    final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390, sy = size.height / 740;
 
     return Scaffold(

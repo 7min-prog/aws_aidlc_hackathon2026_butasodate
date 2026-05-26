@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/audience_animation.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
-class BattleResultScreen extends StatefulWidget {
+class BattleResultScreen extends ConsumerStatefulWidget {
   const BattleResultScreen({super.key, this.win = true, this.myName = ''});
   final bool win;
   final String myName;
   @override
-  State<BattleResultScreen> createState() => _BattleResultScreenState();
+  ConsumerState<BattleResultScreen> createState() => _BattleResultScreenState();
 }
 
-class _BattleResultScreenState extends State<BattleResultScreen> {
+class _BattleResultScreenState extends ConsumerState<BattleResultScreen> {
   int? _wins;
   int? _losses;
 
@@ -28,10 +27,8 @@ class _BattleResultScreenState extends State<BattleResultScreen> {
 
   Future<void> _fetchRanking() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('id_token') ?? '';
-      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
-      final res = await dio.get('${AppConfig.socialApiBase}/rankings/me');
+      final api = ref.read(apiClientProvider);
+      final res = await api.get('/rankings/me');
       final body = res.data is String ? {} : res.data as Map<String, dynamic>;
       final r = body['ranking'] as Map<String, dynamic>? ?? {};
       if (mounted) {
@@ -40,9 +37,7 @@ class _BattleResultScreenState extends State<BattleResultScreen> {
         _losses = (r['losses'] as num?)?.toInt() ?? 0;
       });
       }
-    } catch (e) {
-      debugPrint('fetchRanking error: $e');
-    }
+    } catch (_) {}
   }
 
   @override

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 class RecordConfirmScreen extends ConsumerStatefulWidget {
   const RecordConfirmScreen({super.key, required this.category});
@@ -44,10 +42,8 @@ class _RecordConfirmScreenState extends ConsumerState<RecordConfirmScreen> {
   Future<void> _submit() async {
     final cat = widget.category;
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('id_token') ?? '';
-      final dio = Dio(BaseOptions(headers: {'Content-Type': 'application/json', 'Authorization': token}));
-      final res = await dio.post('${AppConfig.recordingApiBase}/activities', data: {'records': [{'categoryId': cat['categoryId']}]});
+      final api = ref.read(apiClientProvider);
+      final res = await api.post('/activities', data: {'records': [{'categoryId': cat['categoryId']}]});
       if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points'], 'result': res.data});
     } catch (_) {
       if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points']});

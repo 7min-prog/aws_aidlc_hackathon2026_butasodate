@@ -3,48 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 String _shortId(dynamic id) {
   final s = id?.toString() ?? '';
   return s.length > 8 ? '${s.substring(0, 8)}...' : (s.isEmpty ? 'あいて' : s);
 }
 
-Future<Dio> _getAuthDio() async {
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
-  return Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-    headers: {'Content-Type': 'application/json', 'Authorization': token},
-  ));
-}
-
 final battleHistoryProvider = FutureProvider.autoDispose<List<dynamic>>((ref) async {
   try {
-    final dio = await _getAuthDio();
-    final res = await dio.get('${AppConfig.socialApiBase}/battles/history');
+    final api = ref.read(apiClientProvider);
+    final res = await api.get('/battles/history');
     return (res.data['history'] as List?) ?? [];
-  } catch (e) {
-    debugPrint('battleHistory error: $e');
+  } catch (_) {
     return [];
   }
 });
 
 final rankingsProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
-    final dio = await _getAuthDio();
-    final res = await dio.get('${AppConfig.socialApiBase}/rankings');
+    final api = ref.read(apiClientProvider);
+    final res = await api.get('/rankings');
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('id_token') ?? '';
+    final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
     String myId = '';
     try {
       final parts = token.split('.');
@@ -61,8 +49,8 @@ final rankingsProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) 
 
 final friendsForBattleProvider = FutureProvider.autoDispose<List<dynamic>>((ref) async {
   try {
-    final dio = await _getAuthDio();
-    final res = await dio.get('${AppConfig.socialApiBase}/social/friends');
+    final api = ref.read(apiClientProvider);
+    final res = await api.get('/social/friends');
     return (res.data['friends'] as List?) ?? [];
   } catch (_) {
     return [];

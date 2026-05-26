@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
-class EvoBookScreen extends StatefulWidget {
+class EvoBookScreen extends ConsumerStatefulWidget {
   const EvoBookScreen({super.key});
   @override
-  State<EvoBookScreen> createState() => _EvoBookScreenState();
+  ConsumerState<EvoBookScreen> createState() => _EvoBookScreenState();
 }
 
-class _EvoBookScreenState extends State<EvoBookScreen> {
+class _EvoBookScreenState extends ConsumerState<EvoBookScreen> {
   List<Map<String, dynamic>> _evos = [];
   int _currentLevel = 1;
   bool _loading = true;
@@ -29,17 +28,15 @@ class _EvoBookScreenState extends State<EvoBookScreen> {
 
   Future<void> _load() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('id_token') ?? '';
-      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+      final api = ref.read(apiClientProvider);
 
       // アバター情報取得（レベル）
-      final avatarRes = await dio.get('${AppConfig.avatarApiBase}/avatar');
+      final avatarRes = await api.get('/avatar');
       final avatar = avatarRes.data['avatar'] as Map<String, dynamic>? ?? avatarRes.data as Map<String, dynamic>;
       _currentLevel = (avatar['level'] as num?)?.toInt() ?? 1;
 
       // 進化履歴取得
-      final histRes = await dio.get('${AppConfig.avatarApiBase}/avatar/evolution-history');
+      final histRes = await api.get('/avatar/evolution-history');
       final history = (histRes.data['history'] as List?) ?? [];
       final unlockedStages = history.map((h) => (h as Map<String, dynamic>)['stage'] ?? h['evolutionStage']).toSet();
 

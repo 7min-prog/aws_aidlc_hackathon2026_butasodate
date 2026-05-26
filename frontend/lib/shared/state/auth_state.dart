@@ -129,7 +129,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     if (tokens == null) return false;
 
     final dio = ref.read(avatarDioProvider);
-    dio.options.headers['Authorization'] = 'Bearer ${tokens.accessToken}';
+    dio.options.headers['Authorization'] = tokens.idToken ?? tokens.accessToken;
 
     for (var i = 0; i < AppConstants.avatarCreateMaxRetries; i++) {
       try {

@@ -2,41 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
-
-Future<Dio> _getAuthDio() async {
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
-  return Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-    headers: {'Content-Type': 'application/json', 'Authorization': token},
-  ));
-}
+import 'package:buta_app/shared/services/api_client.dart';
 
 final friendListProvider = FutureProvider.autoDispose<Map<String, List<dynamic>>>((ref) async {
-  final dio = await _getAuthDio();
+  final api = ref.read(apiClientProvider);
   List<dynamic> friends = [];
   List<dynamic> requests = [];
   try {
-    final res = await dio.get('${AppConfig.socialApiBase}/social/friends');
+    final res = await api.get('/social/friends');
     friends = (res.data['friends'] as List?) ?? [];
-  } catch (e) {
-    debugPrint('friends error: $e');
-  }
+  } catch (_) {}
   try {
-    final res = await dio.get('${AppConfig.socialApiBase}/social/friends/requests');
+    final res = await api.get('/social/friends/requests');
     requests = (res.data['requests'] as List?) ?? [];
-  } catch (e) {
-    debugPrint('requests error: $e');
-  }
+  } catch (_) {}
   return {'friends': friends, 'requests': requests};
 });
 
@@ -55,19 +39,18 @@ class _FriendListScreenState extends ConsumerState<FriendListScreen> {
     final confirmed = await showPixelConfirm(context, title: 'フレンドさくじょ', message: 'このフレンドを\nさくじょしますか？');
     if (confirmed != true) return;
     try {
-      final dio = await _getAuthDio();
-      await dio.delete('${AppConfig.socialApiBase}/social/friends/$friendId');
+      final api = ref.read(apiClientProvider);
+      await api.delete('/social/friends/$friendId');
       setState(() => _friends.removeWhere((f) => (f['friendId'] ?? f['userId']) == friendId));
-    } catch (e) {
-      final msg = e is DioException ? '${e.response?.statusCode}: ${e.response?.data}' : '$e';
-      if (mounted) showPixelAlert(context, message: msg);
+    } catch (_) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
     }
   }
 
   Future<void> _respond(String requestId, bool accept) async {
     try {
-      final dio = await _getAuthDio();
-      await dio.post('${AppConfig.socialApiBase}/social/friends/respond', data: {'requestId': requestId, 'accept': accept});
+      final api = ref.read(apiClientProvider);
+      await api.post('/social/friends/respond', data: {'requestId': requestId, 'accept': accept});
       setState(() => _requests.removeWhere((r) => r['requestId'] == requestId));
       if (accept) ref.invalidate(friendListProvider);
       if (mounted) showPixelAlert(context, message: accept ? 'しょうにん しました！' : 'きょひ しました');

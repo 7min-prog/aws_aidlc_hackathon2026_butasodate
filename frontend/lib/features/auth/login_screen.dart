@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_input.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 /// A-01 ログイン画面
 class LoginScreen extends ConsumerStatefulWidget {
@@ -36,10 +35,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (ok) {
       // ニックネーム設定済みか確認
       try {
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
-        final dio = Dio(BaseOptions(headers: {'Authorization': token}, receiveTimeout: const Duration(seconds: 5)));
-        final res = await dio.get('${AppConfig.authApiBase}/users/me');
+        final api = ref.read(apiClientProvider);
+        final res = await api.get('/users/me');
         final nickname = res.data['nickname'] as String?;
         if (!mounted) return;
         if (nickname == null || nickname.isEmpty) {
@@ -57,8 +54,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final view = View.of(context);
-    final size = view.physicalSize / view.devicePixelRatio;
+    final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390;
     final sy = size.height / 740;
 

@@ -2,24 +2,24 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/audience_animation.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/services/battle_ws_service.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
-class BattleFightScreen extends StatefulWidget {
+class BattleFightScreen extends ConsumerStatefulWidget {
   const BattleFightScreen({super.key, this.matchData});
   final Map<String, dynamic>? matchData;
   @override
-  State<BattleFightScreen> createState() => _BattleFightScreenState();
+  ConsumerState<BattleFightScreen> createState() => _BattleFightScreenState();
 }
 
-class _BattleFightScreenState extends State<BattleFightScreen> with TickerProviderStateMixin {
+class _BattleFightScreenState extends ConsumerState<BattleFightScreen> with TickerProviderStateMixin {
   int _turn = 1;
   double _myHp = 1.0, _oppHp = 1.0;
   String _log = 'じゅんび しています...';
@@ -58,7 +58,7 @@ class _BattleFightScreenState extends State<BattleFightScreen> with TickerProvid
 
   Future<void> _loadSkillsAndReady(Map<String, dynamic> md) async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('id_token') ?? '';
+    final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
     // JWTからuserId取得
     try {
       final parts = token.split('.');
@@ -72,8 +72,8 @@ class _BattleFightScreenState extends State<BattleFightScreen> with TickerProvid
 
     // アバターAPIからスキルと名前取得
     try {
-      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
-      final res = await dio.get('${AppConfig.avatarApiBase}/avatar');
+      final api = ref.read(apiClientProvider);
+      final res = await api.get('/avatar');
       final data = res.data as Map<String, dynamic>;
       _myName = (data['name'] as String?) ?? 'じぶん';
       final skillIds = (data['skillIds'] as List?)?.cast<String>() ?? [];
