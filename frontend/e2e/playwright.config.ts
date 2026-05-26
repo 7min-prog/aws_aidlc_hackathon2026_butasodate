@@ -3,11 +3,18 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   timeout: 30_000,
+  retries: process.env.CI ? 1 : 0,
+  reporter: [
+    ['list'],
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+  ],
   use: {
     baseURL: 'http://localhost:8085',
     viewport: { width: 390, height: 740 },
     actionTimeout: 10_000,
     headless: process.env.HEADED !== 'true',
+    screenshot: 'only-on-failure',
+    trace: 'on-first-retry',
   },
   webServer: {
     command: 'python -m http.server 8085 --directory ../build/web',
