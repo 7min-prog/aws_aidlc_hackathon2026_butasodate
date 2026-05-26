@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -99,15 +100,22 @@ export class AvatarStack extends cdk.Stack {
 
     this.assetsBucketName = assetsBucket.bucketName;
 
-    // Lambda Function
-    const avatarHandler = new lambda.Function(this, 'AvatarHandler', {
+    // Lambda Function (esbuild bundled)
+    const avatarHandler = new lambdaNodejs.NodejsFunction(this, 'AvatarHandler', {
       functionName: 'buta-avatar-handler-dev',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'dist/app.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/avatar-handler'), {
-        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
-      }),
+      entry: path.join(__dirname, '../../backend/avatar-handler/src/app.ts'),
+      handler: 'handler',
+      projectRoot: path.join(__dirname, '../../'),
+      bundling: {
+        minify: true,
+        sourceMap: false,
+        target: 'node22',
+        format: lambdaNodejs.OutputFormat.CJS,
+        externalModules: ['@aws-sdk/*'],
+        forceDockerBundling: false,
+      },
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {

@@ -132,6 +132,35 @@ app.openapi(getHistoryRoute, async (c) => {
   return c.json({ history }, 200);
 });
 
+// PUT /avatar/name - アバター名変更
+const updateNameRoute = createRoute({
+  method: 'put',
+  path: '/avatar/name',
+  tags: ['Avatar'],
+  summary: 'アバター名を変更',
+  request: { body: { content: { 'application/json': { schema: z.object({ name: z.string().min(1).max(20) }) } } } },
+  responses: {
+    200: { description: '変更成功', content: { 'application/json': { schema: z.object({ avatar: AvatarSchema }) } } },
+    401: { description: '認証エラー', content: { 'application/json': { schema: ErrorResponseSchema } } },
+    404: { description: '未発見', content: { 'application/json': { schema: ErrorResponseSchema } } },
+  },
+});
+
+app.openapi(updateNameRoute, async (c) => {
+  const userId = getUserId(c);
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401);
+  const { name } = c.req.valid('json');
+  try {
+    const avatar = await avatarService.updateAvatarName(userId, name);
+    return c.json({ avatar }, 200);
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message === 'AVATAR_NOT_FOUND') {
+      return c.json({ error: 'Avatar not found' }, 404);
+    }
+    throw e;
+  }
+});
+
 // GET /avatar/score-detail - スコア詳細取得
 const getScoreDetailRoute = createRoute({
   method: 'get',

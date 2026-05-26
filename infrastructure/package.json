@@ -15,6 +15,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "22.15.0",
     "aws-cdk": "2.1124.1",
+    "esbuild": "^0.28.0",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.11",
     "ts-node": "10.9.2",
@@ -23,6 +24,8 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.ts"]
+    "testMatch": [
+      "**/tests/**/*.test.ts"
+    ]
   }
 }

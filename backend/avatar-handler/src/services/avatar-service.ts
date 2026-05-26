@@ -136,6 +136,15 @@ export async function deductPoints(
   return { avatar, leveledDown, devolved, lostSkills };
 }
 
+export async function updateAvatarName(userId: string, name: string): Promise<Avatar> {
+  const avatar = await getAvatar(userId);
+  if (!avatar) throw new Error('AVATAR_NOT_FOUND');
+  avatar.name = name;
+  avatar.updatedAt = new Date().toISOString();
+  await saveAvatar(avatar);
+  return avatar;
+}
+
 export async function getEvolutionHistory(userId: string): Promise<EvolutionHistory[]> {
   const result = await docClient.send(new QueryCommand({
     TableName: EVOLUTION_HISTORY_TABLE,
