@@ -11,27 +11,23 @@ import 'package:buta_app/features/auth/confirm_screen.dart';
 import 'package:buta_app/features/auth/nickname_screen.dart';
 import 'package:buta_app/features/home/home_screen.dart';
 import 'package:buta_app/features/record/record_tab_screen.dart';
-import 'package:buta_app/features/record/category_select_screen.dart';
 import 'package:buta_app/features/record/record_confirm_screen.dart';
 import 'package:buta_app/features/record/record_complete_screen.dart';
 import 'package:buta_app/features/record/record_detail_screen.dart';
 import 'package:buta_app/features/battle/battle_tab_screen.dart';
 import 'package:buta_app/features/battle/battle_matching_screen.dart';
-import 'package:buta_app/features/battle/battle_ready_screen.dart';
 import 'package:buta_app/features/battle/battle_fight_screen.dart';
 import 'package:buta_app/features/battle/battle_result_screen.dart';
 import 'package:buta_app/features/account/account_tab_screen.dart';
 import 'package:buta_app/features/account/friend_list_screen.dart';
 import 'package:buta_app/features/account/friend_search_screen.dart';
 import 'package:buta_app/features/account/battle_history_screen.dart';
-import 'package:buta_app/features/avatar/avatar_detail_screen2.dart';
 import 'package:buta_app/features/avatar/evo_book_screen.dart';
 import 'package:buta_app/features/avatar/evo_anim_screen.dart';
 import 'package:buta_app/features/settings/settings_screen.dart';
 import 'package:buta_app/features/settings/profile_edit_screen.dart';
 import 'package:buta_app/features/settings/health_data_screen.dart';
 import 'package:buta_app/features/settings/notification_settings_screen.dart';
-import 'package:buta_app/features/settings/account_manage_screen.dart';
 import 'package:buta_app/features/legal/legal_screen.dart';
 import 'package:buta_app/features/legal/license_list_screen.dart';
 import 'package:buta_app/features/start/system_screens.dart';
@@ -105,7 +101,6 @@ void main() {
     testWidgets('ProfileEditScreen', (t) async => _renders(t, const ProfileEditScreen(), 'ProfileEdit'));
     testWidgets('HealthDataScreen', (t) async => _renders(t, const HealthDataScreen(), 'HealthData'));
     testWidgets('NotificationSettingsScreen', (t) async => _renders(t, const NotificationSettingsScreen(), 'NotificationSettings'));
-    testWidgets('AccountManageScreen', (t) async => _renders(t, const AccountManageScreen(), 'AccountManage'));
   });
 
   group('Legal screens render', () {

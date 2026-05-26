@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
@@ -148,54 +147,7 @@ const _privacyText = '''プライバシーポリシー
 ■ おといあわせ
 support@butasodate.example.com''';
 
-const _licenseText = '''このアプリは いかの
-オープンソース ライブラリを
-しようしています。
 
-━━━━━━━━━━━━━━━━━━
-flutter_riverpod (3.3.1)
-MIT License
-Copyright (c) 2020 Remi Rousselet
-
-━━━━━━━━━━━━━━━━━━
-go_router (14.8.0)
-BSD 3-Clause License
-Copyright 2013 The Flutter Authors
-
-━━━━━━━━━━━━━━━━━━
-dio (5.8.0)
-MIT License
-Copyright (c) 2018 February
-
-━━━━━━━━━━━━━━━━━━
-flutter_svg (2.0.17)
-MIT License
-Copyright (c) 2018 Dan Field
-
-━━━━━━━━━━━━━━━━━━
-shared_preferences (2.5.0)
-BSD 3-Clause License
-Copyright 2013 The Flutter Authors
-
-━━━━━━━━━━━━━━━━━━
-flutter_secure_storage (10.2.0)
-BSD 3-Clause License
-Copyright (c) 2017 German Saprykin
-
-━━━━━━━━━━━━━━━━━━
-cached_network_image (3.4.1)
-MIT License
-Copyright (c) 2018 Baseflow
-
-━━━━━━━━━━━━━━━━━━
-connectivity_plus (6.1.4)
-BSD 3-Clause License
-Copyright 2017 The Chromium Authors
-
-━━━━━━━━━━━━━━━━━━
-carousel_slider (5.0.0)
-MIT License
-Copyright (c) 2019 serenader''';
 
 
 const _healthConsentText = '''ヘルスデータ りよう どうい

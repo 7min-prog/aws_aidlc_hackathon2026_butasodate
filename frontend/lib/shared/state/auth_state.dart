@@ -145,11 +145,16 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     return false;
   }
 
+  static const _idTokenKey = 'id_token';
+
   Future<void> _saveTokens(AuthTokens tokens) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_accessTokenKey, tokens.accessToken);
     if (tokens.refreshToken != null) {
       await prefs.setString(_refreshTokenKey, tokens.refreshToken!);
+    }
+    if (tokens.idToken != null) {
+      await prefs.setString(_idTokenKey, tokens.idToken!);
     }
   }
 }

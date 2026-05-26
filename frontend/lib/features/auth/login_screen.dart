@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
@@ -32,7 +34,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final ok = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
     if (!mounted) return;
     if (ok) {
-      context.go('/');
+      // ニックネーム設定済みか確認
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
+        final dio = Dio(BaseOptions(headers: {'Authorization': token}, receiveTimeout: const Duration(seconds: 5)));
+        final res = await dio.get('${AppConfig.authApiBase}/users/me');
+        final nickname = res.data['nickname'] as String?;
+        if (!mounted) return;
+        if (nickname == null || nickname.isEmpty) {
+          context.go('/nickname');
+        } else {
+          context.go('/home');
+        }
+      } catch (_) {
+        if (mounted) context.go('/nickname');
+      }
     } else {
       showPixelAlert(context, message: 'ログインに しっぱい\nしました。');
     }
@@ -55,8 +72,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           Positioned.fill(child: SafeArea(top: false, child: Stack(children: [
           if (AppConfig.isDev) Positioned(top: 8, right: 12, child: GestureDetector(
             onTap: () async {
+              final router = GoRouter.of(context);
               await ref.read(authStateProvider.notifier).devLogin();
-              if (mounted) context.go('/home');
+              if (!mounted) return;
+              router.go('/home');
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

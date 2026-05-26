@@ -5,9 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
-import 'package:buta_app/shared/services/cache_service.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
-import 'package:buta_app/shared/app_config.dart';
 
 void main() {
 

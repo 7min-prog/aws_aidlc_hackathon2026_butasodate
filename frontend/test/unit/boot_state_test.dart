@@ -4,15 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:buta_app/shared/state/boot_state.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
-import 'package:buta_app/shared/app_config.dart';
-
-/// テスト用Connectivity関数
-Future<List<ConnectivityResult>> Function() fakeOnline() => () async => [ConnectivityResult.wifi];
-Future<List<ConnectivityResult>> Function() fakeOffline() => () async => [ConnectivityResult.none];
 
 void main() {
 
@@ -29,25 +23,15 @@ void main() {
       final dio = Dio(BaseOptions(baseUrl: baseUrl));
       final adapter = DioAdapter(dio: dio);
 
-      // Auth API
       if (profileResponse != null) {
         adapter.onGet('/users/me', (s) => s.reply(profileStatus, profileResponse));
       }
-
-      // Avatar API
       if (avatarResponse != null) {
         adapter.onGet('/avatar', (s) => s.reply(avatarStatus, avatarResponse));
       }
       adapter.onPost('/avatar', (s) => s.reply(201, avatarResponse ?? {}), data: Matchers.any);
-
-      // Recording API
       adapter.onGet('/activities/summary', (s) => s.reply(200, summaryResponse ?? {'todayCount': 0, 'todayPoints': 0, 'date': DateTime.now().toIso8601String().substring(0, 10)}), queryParameters: {'period': 'today'});
-
-      // Social API
       adapter.onGet('/social/friends/requests', (s) => s.reply(200, friendsResponse ?? {'requests': []}));
-
-      // Health sync (fire-and-forget)
-      adapter.onPost('/health-sync', (s) => s.reply(200, {}), data: Matchers.any);
 
       return dio;
     };
@@ -61,35 +45,11 @@ void main() {
 
       final c = ProviderContainer(overrides: [
         authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOnline()),
       ]);
       addTearDown(c.dispose);
 
       final result = await c.read(bootProvider.future);
       expect(result.destination, BootDestination.login);
-    });
-  });
-
-  group('BootNotifier - offline', () {
-    test('returns home with offline flag when no cache', () async {
-      SharedPreferences.setMockInitialValues({'access_token': 'a', 'refresh_token': 'r'});
-      final tempDir = await Directory.systemTemp.createTemp('boot_offline_');
-      final authDio = Dio(BaseOptions(baseUrl: 'http://mock'));
-      DioAdapter(dio: authDio);
-
-      final c = ProviderContainer(overrides: [
-        authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOffline()),
-        cacheDirectoryProvider.overrideWithValue(() async => tempDir),
-      ]);
-      addTearDown(() async { c.dispose(); if (await tempDir.exists()) await tempDir.delete(recursive: true); });
-
-      // authStateを先に初期化
-      await c.read(authStateProvider.future);
-      final result = await c.read(bootProvider.future);
-      expect(result.destination, BootDestination.home);
-      expect(result.isOffline, isTrue);
-      expect(result.errorMessage, 'ネットワークに接続できません');
     });
   });
 
@@ -106,7 +66,6 @@ void main() {
 
       final c = ProviderContainer(overrides: [
         authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOnline()),
         bootDioFactoryProvider.overrideWithValue(factory),
         cacheDirectoryProvider.overrideWithValue(() async => tempDir),
       ]);
@@ -135,7 +94,6 @@ void main() {
 
       final c = ProviderContainer(overrides: [
         authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOnline()),
         bootDioFactoryProvider.overrideWithValue(factory),
         cacheDirectoryProvider.overrideWithValue(() async => tempDir),
       ]);
@@ -148,7 +106,6 @@ void main() {
       expect(result.avatar?.name, 'ぶた');
       expect(result.avatar?.level, 2);
       expect(result.pendingRequestCount, 2);
-      expect(result.isOffline, isFalse);
     });
   });
 
@@ -161,16 +118,15 @@ void main() {
       final authAdapter = DioAdapter(dio: authDio);
       authAdapter.onPost('/auth/refresh', (s) => s.reply(401, {'error': 'invalid'}), data: Matchers.any);
 
-      final factory = (String baseUrl, String token) {
+      Dio factory(String baseUrl, String token) {
         final dio = Dio(BaseOptions(baseUrl: baseUrl));
         final adapter = DioAdapter(dio: dio);
         adapter.onGet('/users/me', (s) => s.reply(401, {'error': 'unauthorized'}));
         return dio;
-      };
+      }
 
       final c = ProviderContainer(overrides: [
         authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOnline()),
         bootDioFactoryProvider.overrideWithValue(factory),
         cacheDirectoryProvider.overrideWithValue(() async => tempDir),
       ]);
@@ -196,7 +152,6 @@ void main() {
 
       final c = ProviderContainer(overrides: [
         authDioProvider.overrideWithValue(authDio),
-        connectivityCheckProvider.overrideWithValue(fakeOnline()),
         bootDioFactoryProvider.overrideWithValue(factory),
         cacheDirectoryProvider.overrideWithValue(() async => tempDir),
       ]);

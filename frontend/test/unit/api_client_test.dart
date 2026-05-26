@@ -7,7 +7,6 @@ import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
-import 'package:buta_app/shared/app_config.dart';
 
 void main() {
 

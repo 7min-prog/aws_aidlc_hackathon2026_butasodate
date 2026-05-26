@@ -12,7 +12,7 @@ import '../helpers/test_helpers.dart';
 void main() {
   setUp(() => SharedPreferences.setMockInitialValues({'access_token': 'a', 'refresh_token': 'r'}));
 
-  Future<void> _testRoute(WidgetTester t, String path) async {
+  Future<void> testRoute(WidgetTester t, String path) async {
     t.view.physicalSize = const Size(390, 740);
     t.view.devicePixelRatio = 1.0;
     addTearDown(() => t.view.resetPhysicalSize());
@@ -32,7 +32,7 @@ void main() {
 
   group('Router all routes', () {
     for (final path in ['/login', '/signup', '/confirm', '/nickname', '/', '/home', '/recording', '/battle', '/settings', '/evo-book', '/battle-result', '/friend-list', '/friend-search', '/battle-history', '/profile-edit', '/health-data', '/notification-settings', '/account-manage', '/legal/terms', '/legal/privacy', '/licenses']) {
-      testWidgets('route $path', (t) async => _testRoute(t, path));
+      testWidgets('route $path', (t) async => testRoute(t, path));
     }
   });
 }

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
-import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
+import 'package:buta_app/features/record/record_tab_screen.dart';
 
 class RecordDetailScreen extends ConsumerWidget {
   const RecordDetailScreen({super.key, required this.record});
@@ -89,9 +92,19 @@ class RecordDetailScreen extends ConsumerWidget {
     final confirmed = await showPixelConfirm(context, title: 'きろくをけす', message: 'このきろくを\nけしますか？');
     if (confirmed != true || !context.mounted) return;
     try {
-      final api = ref.read(apiClientProvider);
-      await api.delete('/activities/${record['recordId']}');
-    } catch (_) {}
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('id_token') ?? '';
+      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+      await dio.delete('${AppConfig.recordingApiBase}/activities/${record['recordId']}');
+      debugPrint('DELETE OK: ${record['recordId']}');
+      ref.invalidate(recordsProvider);
+    } catch (e) {
+      if (context.mounted) {
+        final msg = e is DioException ? '${e.response?.statusCode}: ${e.response?.data}' : '$e';
+        showPixelAlert(context, message: msg);
+        return;
+      }
+    }
     if (context.mounted) context.pop();
   }
 }

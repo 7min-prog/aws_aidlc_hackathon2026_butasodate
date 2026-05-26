@@ -9,9 +9,6 @@ import 'package:buta_app/features/battle/battle_tab_screen.dart';
 import 'package:buta_app/features/home/home_screen.dart';
 import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
-import 'package:buta_app/shared/repositories/avatar_repository.dart';
-import 'package:buta_app/shared/repositories/recording_repository.dart';
-import 'package:buta_app/shared/theme.dart';
 
 import '../helpers/test_helpers.dart';
 
@@ -20,29 +17,25 @@ void main() {
 
   group('RecordTabScreen', () {
     testWidgets('renders with records data', (tester) async {
-      final dio = Dio(BaseOptions(baseUrl: 'http://mock'));
-      final adapter = DioAdapter(dio: dio);
       final now = DateTime.now().toIso8601String();
-      adapter.onGet('/activities', (s) => s.reply(200, {
-        'records': [
-          {'recordId': 'r1', 'categoryId': 'food-ramen', 'points': 50, 'recordedAt': now, 'source': 'MANUAL'},
-          {'recordId': 'r2', 'categoryId': 'life-oversleep', 'points': 30, 'recordedAt': now, 'source': 'MANUAL'},
-        ],
-        'summary': {'todayPoints': 80, 'todayCount': 2},
-      }));
-
       await tester.pumpWidget(ProviderScope(
         overrides: [
           authStateProvider.overrideWith(() => FakeAuthNotifier(testTokens)),
-          apiClientProvider.overrideWithValue(FakeApiClient(dio)),
+          recordsProvider.overrideWith((ref) async => {
+            'records': [
+              {'recordId': 'r1', 'categoryId': 'food_late_ramen', 'points': 50, 'recordedAt': now},
+              {'recordId': 'r2', 'categoryId': 'life_oversleep', 'points': 30, 'recordedAt': now},
+            ],
+            'summary': {'todayPoints': 80},
+          }),
         ],
         child: const MaterialApp(home: RecordTabScreen()),
       ));
       for (var i = 0; i < 20; i++) { await tester.pump(const Duration(milliseconds: 100)); }
 
       expect(find.text('きろく'), findsWidgets);
-      expect(find.text('深夜ラーメン'), findsOneWidget);
-      expect(find.text('二度寝した'), findsOneWidget);
+      expect(find.text('しんやラーメン'), findsOneWidget);
+      expect(find.text('にどね'), findsOneWidget);
       expect(find.text('+50pt'), findsOneWidget);
     });
 
@@ -127,18 +120,14 @@ void main() {
 
   group('HomeScreen with homeDataProvider', () {
     testWidgets('renders with avatar and records', (tester) async {
-      final dio = Dio(BaseOptions(baseUrl: 'http://mock'));
-      final adapter = DioAdapter(dio: dio);
-      adapter.onGet('/avatar', (s) => s.reply(200, {'avatar': {'avatarId': 'a1', 'userId': 'u1', 'name': 'テストぶた', 'totalPoints': 200, 'level': 3, 'evolutionStage': 1, 'stats': {'hp': 60, 'attack': 15, 'defense': 12, 'speed': 11}, 'skillIds': [], 'spriteSheetKey': 'sprites/stage1/default'}}));
-      adapter.onGet('/activities', (s) => s.reply(200, {'records': [{'recordId': 'r1', 'categoryId': 'food-ramen', 'points': 50, 'recordedAt': DateTime.now().toIso8601String(), 'source': 'MANUAL'}], 'summary': {'todayCount': 1, 'todayPoints': 50}}));
-
-      final fakeApi = FakeApiClient(dio);
       await tester.pumpWidget(ProviderScope(
         overrides: [
           authStateProvider.overrideWith(() => FakeAuthNotifier(testTokens)),
-          apiClientProvider.overrideWithValue(fakeApi),
-          avatarRepositoryProvider.overrideWithValue(AvatarRepository(fakeApi)),
-          recordingRepositoryProvider.overrideWithValue(RecordingRepository(fakeApi)),
+          homeDataProvider.overrideWith((ref) async => {
+            'avatar': {'avatarId': 'a1', 'name': 'テストぶた', 'totalPoints': 200, 'level': 3, 'evolutionStage': 1},
+            'records': [{'recordId': 'r1', 'categoryId': 'food_late_ramen', 'points': 50, 'recordedAt': DateTime.now().toIso8601String()}],
+            'summary': {'todayCount': 1, 'todayPoints': 50},
+          }),
         ],
         child: const MaterialApp(home: HomeScreen()),
       ));
@@ -148,18 +137,14 @@ void main() {
     });
 
     testWidgets('renders fallback on error', (tester) async {
-      final dio = Dio(BaseOptions(baseUrl: 'http://mock'));
-      final adapter = DioAdapter(dio: dio);
-      adapter.onGet('/avatar', (s) => s.reply(500, {}));
-      adapter.onGet('/activities', (s) => s.reply(500, {}));
-
-      final fakeApi = FakeApiClient(dio);
       await tester.pumpWidget(ProviderScope(
         overrides: [
           authStateProvider.overrideWith(() => FakeAuthNotifier(testTokens)),
-          apiClientProvider.overrideWithValue(fakeApi),
-          avatarRepositoryProvider.overrideWithValue(AvatarRepository(fakeApi)),
-          recordingRepositoryProvider.overrideWithValue(RecordingRepository(fakeApi)),
+          homeDataProvider.overrideWith((ref) async => {
+            'avatar': {'name': 'こぶた', 'level': 1, 'totalPoints': 0},
+            'records': <dynamic>[],
+            'summary': {'todayCount': 0, 'todayPoints': 0},
+          }),
         ],
         child: const MaterialApp(home: HomeScreen()),
       ));

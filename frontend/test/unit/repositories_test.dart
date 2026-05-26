@@ -1,6 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:buta_app/shared/repositories/auth_repository.dart';
@@ -8,8 +6,6 @@ import 'package:buta_app/shared/repositories/avatar_repository.dart';
 import 'package:buta_app/shared/repositories/recording_repository.dart';
 import 'package:buta_app/shared/repositories/social_repository.dart';
 import 'package:buta_app/shared/services/api_client.dart';
-import 'package:buta_app/shared/state/auth_state.dart';
-import 'package:buta_app/shared/app_config.dart';
 
 void main() {
   group('AuthRepository', () {

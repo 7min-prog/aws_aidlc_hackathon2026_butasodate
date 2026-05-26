@@ -116,13 +116,13 @@ class _PixelConfirmDialog extends StatelessWidget {
           )),
           // ボタン
           Padding(padding: const EdgeInsets.fromLTRB(16, 0, 16, 16), child: Row(children: [
-            Expanded(child: GestureDetector(
+            Expanded(child: InkWell(
               onTap: () => Navigator.of(context).pop(true),
               child: Container(height: 40, decoration: BoxDecoration(color: ButaColors.red, border: Border.all(color: ButaColors.ink, width: 2)),
                 child: Center(child: Text(confirmLabel, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),
             )),
             const SizedBox(width: 12),
-            Expanded(child: GestureDetector(
+            Expanded(child: InkWell(
               onTap: () => Navigator.of(context).pop(false),
               child: Container(height: 40, decoration: BoxDecoration(color: const Color(0xFFB8A99A), border: Border.all(color: ButaColors.ink, width: 2)),
                 child: Center(child: Text(cancelLabel, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),

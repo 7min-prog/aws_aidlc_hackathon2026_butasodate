@@ -1,9 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/models/models.dart';
-import 'package:buta_app/shared/services/cache_service.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
 
@@ -17,9 +15,7 @@ class BootResult {
   final Avatar? avatar;
   final RecordSummary? summary;
   final int pendingRequestCount;
-  final bool isOffline;
   final String? avatarImagePath;
-  final String? errorMessage;
 
   BootResult({
     required this.destination,
@@ -27,16 +23,9 @@ class BootResult {
     this.avatar,
     this.summary,
     this.pendingRequestCount = 0,
-    this.isOffline = false,
     this.avatarImagePath,
-    this.errorMessage,
   });
 }
-
-/// テストでオーバーライド可能なConnectivityチェック
-final connectivityCheckProvider = Provider<Future<List<ConnectivityResult>> Function()>((ref) {
-  return () => Connectivity().checkConnectivity();
-});
 
 /// テストでオーバーライド可能なDioファクトリ（baseURL + token付き）
 final bootDioFactoryProvider = Provider<Dio Function(String baseUrl, String token)>((ref) {
@@ -61,15 +50,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
       return BootResult(destination: BootDestination.login);
     }
 
-    // ネットワーク確認
-    final checkConnectivity = ref.read(connectivityCheckProvider);
-    final connectivityResult = await checkConnectivity();
-    final isOffline = connectivityResult.contains(ConnectivityResult.none);
-
-    if (isOffline) {
-      return _handleOffline(startTime);
-    }
-
     // トークン検証 + プロフィール取得
     try {
       final profile = await _fetchProfile(tokens.accessToken);
@@ -84,18 +64,19 @@ class BootNotifier extends AsyncNotifier<BootResult> {
       return results;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        // リフレッシュ試行
         final refreshed = await ref.read(authStateProvider.notifier).refreshToken();
         if (!refreshed) {
           await _waitMinDuration(startTime);
           return BootResult(destination: BootDestination.login);
         }
-        // リフレッシュ成功 → 再実行
         return _executeBoot();
       }
-      return _handleOffline(startTime);
+      // ネットワークエラー → ログインに戻す
+      await _waitMinDuration(startTime);
+      return BootResult(destination: BootDestination.login);
     } catch (_) {
-      return _handleOffline(startTime);
+      await _waitMinDuration(startTime);
+      return BootResult(destination: BootDestination.login);
     }
   }
 
@@ -112,7 +93,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
   }
 
   Future<BootResult> _fetchInitialData(String accessToken, UserProfile profile) async {
-    final cache = ref.read(cacheServiceProvider);
     final imageCache = ref.read(imageCacheServiceProvider);
     final dioFactory = ref.read(bootDioFactoryProvider);
 
@@ -131,19 +111,11 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     final summary = results[1] as RecordSummary?;
     final pendingCount = results[2] as int? ?? 0;
 
-    // キャッシュ保存
-    await cache.saveProfile(profile);
-    if (avatar != null) await cache.saveAvatar(avatar);
-    if (summary != null) await cache.saveSummary(summary);
-
     // 画像プリロード（非ブロッキング）
     String? imagePath;
     if (avatar != null) {
       imagePath = await imageCache.getOrDownload(avatar.spriteSheetKey);
     }
-
-    // ヘルスデータ同期（fire-and-forget）
-    _syncHealthData(recordingDio);
 
     return BootResult(
       destination: BootDestination.home,
@@ -189,44 +161,6 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     } catch (_) {
       return 0;
     }
-  }
-
-  void _syncHealthData(Dio dio) {
-    dio.post('/health-sync', data: {'records': []}).ignore();
-  }
-
-  Future<BootResult> _handleOffline(DateTime startTime) async {
-    final cache = ref.read(cacheServiceProvider);
-    final profile = await cache.loadProfile();
-    final avatar = await cache.loadAvatar();
-    final summary = await cache.loadSummary();
-
-    if (profile != null) {
-      String? imagePath;
-      if (avatar != null) {
-        final imageCache = ref.read(imageCacheServiceProvider);
-        final cached = await imageCache.isCached(avatar.spriteSheetKey);
-        if (cached) {
-          imagePath = await imageCache.getOrDownload(avatar.spriteSheetKey);
-        }
-      }
-      await _waitMinDuration(startTime);
-      return BootResult(
-        destination: BootDestination.home,
-        profile: profile,
-        avatar: avatar,
-        summary: summary,
-        isOffline: true,
-        avatarImagePath: imagePath,
-      );
-    }
-
-    await _waitMinDuration(startTime);
-    return BootResult(
-      destination: BootDestination.home,
-      isOffline: true,
-      errorMessage: 'ネットワークに接続できません',
-    );
   }
 
   Future<void> _waitMinDuration(DateTime startTime) async {

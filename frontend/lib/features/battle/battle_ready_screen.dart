@@ -19,7 +19,7 @@ class _BattleReadyScreenState extends State<BattleReadyScreen> with SingleTicker
     super.initState();
     _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 800))..repeat(reverse: true);
     Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) context.go('/battle-fight');
+      if (mounted) context.go('/battle-fight', extra: GoRouterState.of(context).extra);
     });
   }
 

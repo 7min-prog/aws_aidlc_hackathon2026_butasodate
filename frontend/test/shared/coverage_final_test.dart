@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/services/api_client.dart';
-import 'package:buta_app/shared/app_config.dart';
 
 void main() {
   group('ButaBottomNavBar', () {

@@ -58,7 +58,7 @@ void main() {
       t.view.devicePixelRatio = 1.0;
       addTearDown(() => t.view.resetPhysicalSize());
       await t.pumpWidget(_w(const BattleResultScreen(win: true)));
-      await t.pump();
+      for (var i = 0; i < 20; i++) { await t.pump(const Duration(milliseconds: 100)); }
       expect(find.byType(Scaffold), findsAtLeast(1));
     });
 
@@ -67,7 +67,7 @@ void main() {
       t.view.devicePixelRatio = 1.0;
       addTearDown(() => t.view.resetPhysicalSize());
       await t.pumpWidget(_w(const BattleResultScreen(win: false)));
-      await t.pump();
+      for (var i = 0; i < 20; i++) { await t.pump(const Duration(milliseconds: 100)); }
       expect(find.byType(Scaffold), findsAtLeast(1));
     });
 

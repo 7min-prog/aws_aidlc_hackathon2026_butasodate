@@ -11,7 +11,6 @@ import 'package:buta_app/shared/ui/starry_background.dart';
 import 'package:buta_app/features/home/widgets/avatar_card.dart';
 import 'package:buta_app/features/home/widgets/summary_card.dart';
 import 'package:buta_app/features/home/widgets/record_button.dart';
-import 'package:buta_app/features/home/widgets/offline_banner.dart';
 
 import '../helpers/test_helpers.dart';
 
@@ -111,12 +110,6 @@ void main() {
       await t.pumpWidget(_w(const RecordButton()));
       await t.pump();
       expect(find.byType(RecordButton), findsOneWidget);
-    });
-
-    testWidgets('OfflineBanner', (t) async {
-      await t.pumpWidget(_w(const OfflineBanner()));
-      await t.pump();
-      expect(find.byType(OfflineBanner), findsOneWidget);
     });
   });
 

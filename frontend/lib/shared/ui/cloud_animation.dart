@@ -43,11 +43,11 @@ class _CloudPainter extends CustomPainter {
     final paint = Paint()..color = const Color(0x60FFFFFF);
 
     for (final cloud in _clouds) {
-      final baseX = cloud[0] as double;
-      final yRatio = cloud[1] as double;
-      final w = cloud[2] as double;
-      final h = cloud[3] as double;
-      final speed = cloud[4] as double;
+      final baseX = cloud[0];
+      final yRatio = cloud[1];
+      final w = cloud[2];
+      final h = cloud[3];
+      final speed = cloud[4];
 
       // 右から左へゆっくり流れる、画面外に出たら右から再登場
       final x = ((baseX + t * speed * 0.3) % 1.3 - 0.15) * size.width;

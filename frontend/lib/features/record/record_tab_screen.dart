@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
-import 'package:buta_app/shared/services/api_client.dart';
-import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 
 final recordsProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
-    await ref.watch(authStateProvider.future);
-    final api = ref.read(apiClientProvider);
-    final res = await api.get('/activities');
-    return {'records': res.data['records'] as List? ?? [], 'summary': res.data['summary']};
-  } catch (_) {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('id_token') ?? '';
+    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+    final res = await dio.get('${AppConfig.recordingApiBase}/activities');
+    debugPrint('activities response: ${res.data}');
+    final data = res.data is String ? <String, dynamic>{} : res.data as Map<String, dynamic>;
+    return {'records': (data['items'] ?? data['records'] ?? []) as List, 'summary': data['summary']};
+  } catch (e) {
+    debugPrint('activities error: $e');
     return {'records': <dynamic>[], 'summary': {'todayPoints': 0}};
   }
 });
@@ -71,7 +76,7 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
             final todayPts = d['summary']?['todayPoints'] ?? 0;
             final now = DateTime.now();
             final records = allRecords.where((r) {
-              final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? now;
+              final date = (DateTime.tryParse(r['recordedAt'] ?? '') ?? now).toLocal();
               if (_segIndex == 0) return date.year == now.year && date.month == now.month && date.day == now.day;
               if (_segIndex == 1) return now.difference(date).inDays < 7;
               return now.difference(date).inDays < 30;
@@ -113,7 +118,7 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
           onTap: () => context.push('/record-category'),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(
-              width: 200 * sx, height: 48 * sy,
+              width: 200 * sx, height: 48,
               decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
               alignment: Alignment.center,
               child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('きろくする', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink))]),
@@ -129,7 +134,11 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
   Widget _buildCard(dynamic record, double sx, double sy) {
     final catId = record['categoryId'] as String? ?? '';
     final pts = record['points'] ?? 0;
-    final name = const {'food-ramen': '深夜ラーメン', 'food-snack': '間食した', 'food-binge': '暴飲暴食', 'life-oversleep': '二度寝した', 'life-skip-exercise': '運動サボり', 'life-late-night': '夜更かし', 'life-gaming': 'ゲーム三昧', 'life-nap': '昼寝しすぎ'}[catId] ?? catId;
+    final name = const {
+      'food_late_ramen': 'しんやラーメン', 'food_snack': 'かんしょく', 'food_binge': 'ぼういんぼうしょく',
+      'food_junkfood': 'ジャンクフード', 'life_stay_up': 'よふかし', 'life_oversleep': 'にどね',
+      'life_skip_exercise': 'うんどうサボり', 'life_binge_watch': 'いっきみ',
+    }[catId] ?? catId;
     final date = DateTime.tryParse(record['recordedAt'] ?? '') ?? DateTime.now();
     final dateStr = '${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     return GestureDetector(
@@ -152,21 +161,6 @@ class _RecordTabScreenState extends ConsumerState<RecordTabScreen> {
 }
 
 
-class _WeeklyChart extends StatelessWidget {
-  const _WeeklyChart({required this.sx, required this.sy, required this.segIndex, required this.records});
-  final double sx, sy;
-  final int segIndex;
-  final List<dynamic> records;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.expand(
-      child: CustomPaint(
-        painter: _ChartPainter(sx, sy, segIndex, records),
-      ),
-    );
-  }
-}
-
 class _ChartPainter extends CustomPainter {
   final double sx, sy;
   final int segIndex;
@@ -188,10 +182,15 @@ class _ChartPainter extends CustomPainter {
 
     if (segIndex == 0) {
       // きょう: カテゴリ別
+      const catNames = {
+        'food_late_ramen': 'ラーメン', 'food_snack': 'かんしょく', 'food_binge': 'ぼうしょく',
+        'food_junkfood': 'ジャンク', 'life_stay_up': 'よふかし', 'life_oversleep': 'にどね',
+        'life_skip_exercise': 'サボり', 'life_binge_watch': 'いっきみ',
+      };
       final Map<String, int> catPts = {};
       for (final r in records) {
         final cat = r['categoryId'] as String? ?? '?';
-        final short = cat.split('-').last;
+        final short = catNames[cat] ?? cat;
         catPts[short] = (catPts[short] ?? 0) + ((r['points'] as num?)?.toInt() ?? 0);
       }
       if (catPts.isEmpty) { values = [0]; labels = ['-']; } else {
