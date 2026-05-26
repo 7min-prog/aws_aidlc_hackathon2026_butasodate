@@ -40,9 +40,30 @@ jobs:
         env:
           E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
           E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
-        run: npx playwright test
+        run: npx playwright test --reporter=list,html,json 2>&1 | tee test-output.txt
 
-      - name: Upload report
+      - name: Generate test summary
+        if: always()
+        working-directory: frontend/e2e
+        run: |
+          PASS=$(grep -c "ok " test-output.txt 2>/dev/null || echo 0)
+          FAIL=$(grep -c "  x " test-output.txt 2>/dev/null || echo 0)
+          TOTAL=$((PASS + FAIL))
+          echo "## 🌐 E2E Tests (Playwright)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed | $PASS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAIL |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$FAIL" -eq 0 ]; then
+            echo "✅ All E2E tests passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ $FAIL test(s) failed — see report artifact for details" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v6
         with:
@@ -50,7 +71,7 @@ jobs:
           path: frontend/e2e/playwright-report/
           retention-days: 14
 
-      - name: Upload test results
+      - name: Upload test results (on failure)
         if: failure()
         uses: actions/upload-artifact@v6
         with:

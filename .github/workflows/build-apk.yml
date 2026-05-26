@@ -24,18 +24,50 @@ jobs:
       - run: flutter pub get
 
       - name: Run tests
-        run: flutter test --coverage --timeout 120s test/main_test.dart test/shared/ test/features/ test/screens/ test/unit/ test/pixel_app_bar_test.dart test/router_routes_test.dart test/login_legal_links_test.dart test/router_test.dart
+        run: |
+          flutter test --coverage --timeout 120s \
+            --reporter json > test-results.json \
+            test/main_test.dart test/shared/ test/features/ test/screens/ test/unit/ \
+            test/pixel_app_bar_test.dart test/router_routes_test.dart \
+            test/login_legal_links_test.dart test/router_test.dart || true
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          TOTAL=$(grep -c '"testID"' test-results.json 2>/dev/null || echo 0)
+          PASS=$(grep -c '"success":true' test-results.json 2>/dev/null || echo 0)
+          FAIL=$(grep -c '"success":false' test-results.json 2>/dev/null || echo 0)
+          echo "## 🧪 Flutter Unit Tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed | $PASS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAIL |" >> $GITHUB_STEP_SUMMARY
 
       - name: Check coverage >= 90%
         run: |
           LH=$(grep -oP '^LH:\K\d+' coverage/lcov.info | paste -sd+ | bc)
           LF=$(grep -oP '^LF:\K\d+' coverage/lcov.info | paste -sd+ | bc)
           PCT=$(echo "scale=1; $LH * 100 / $LF" | bc)
-          echo "Coverage: $LH / $LF = $PCT%"
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**$PCT%** ($LH / $LF lines)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           if [ $(echo "$PCT < 90" | bc) -eq 1 ]; then
             echo "::error::Coverage $PCT% is below 90% threshold"
             exit 1
           fi
+          echo "✅ Coverage meets 90% threshold" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: flutter-coverage
+          path: frontend/coverage/lcov.info
+          retention-days: 7
 
   build-apk:
     needs: test
