@@ -151,7 +151,7 @@ async function removeFriend(event: APIGatewayProxyEvent) {
   const userId = getUserId(event);
   if (!userId) return errorResponse(401, 'Unauthorized');
 
-  const friendId = event.pathParameters?.id;
+  const friendId = event.pathParameters?.friendId;
   if (!friendId) return errorResponse(400, 'friendId is required');
 
   await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { compositeId: `${userId}#${friendId}` } }));
@@ -187,7 +187,10 @@ async function getRankings(_event: APIGatewayProxyEvent) {
   }));
 
   const sorted = (result.Items || []).sort((a, b) => (b.points || 0) - (a.points || 0));
-  return successResponse(200, { rankings: sorted });
+  const userIds = sorted.map(r => r.userId).filter(Boolean) as string[];
+  const nicknames = await fetchNicknames(userIds);
+  const rankings = sorted.map(r => ({ ...r, nickname: nicknames[r.userId] || '' }));
+  return successResponse(200, { rankings });
 }
 
 async function getMyRanking(event: APIGatewayProxyEvent) {
@@ -215,7 +218,12 @@ async function getBattleHistory(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':uid': userId },
   }));
 
-  return successResponse(200, { history: result.Items || [] });
+  const items = result.Items || [];
+  const opponentIds = [...new Set(items.map(i => i.opponentId).filter(Boolean))] as string[];
+  const nicknames = await fetchNicknames(opponentIds);
+  const history = items.map(i => ({ ...i, opponentName: nicknames[i.opponentId] || '' }));
+
+  return successResponse(200, { history });
 }
 
 async function getBattleDetail(event: APIGatewayProxyEvent) {
