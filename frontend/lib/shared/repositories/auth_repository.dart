@@ -30,11 +30,11 @@ class AuthRepository {
   }
 
   Future<UserProfile> getProfile(String accessToken) async {
-    final res = await _dio.get('/users/me', options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+    final res = await _dio.get('/users/me', options: Options(headers: {'Authorization': accessToken}));
     return UserProfile.fromJson(res.data as Map<String, dynamic>);
   }
 
   Future<void> setNickname(String accessToken, String nickname) async {
-    await _dio.post('/users/profile', data: {'nickname': nickname}, options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+    await _dio.post('/users/profile', data: {'nickname': nickname}, options: Options(headers: {'Authorization': accessToken}));
   }
 }

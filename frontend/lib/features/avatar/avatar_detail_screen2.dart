@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
-class AvatarDetailScreen extends StatefulWidget {
+class AvatarDetailScreen extends ConsumerStatefulWidget {
   const AvatarDetailScreen({super.key, this.avatar});
   final Map<String, dynamic>? avatar;
   @override
-  State<AvatarDetailScreen> createState() => _AvatarDetailScreenState();
+  ConsumerState<AvatarDetailScreen> createState() => _AvatarDetailScreenState();
 }
 
-class _AvatarDetailScreenState extends State<AvatarDetailScreen> {
+class _AvatarDetailScreenState extends ConsumerState<AvatarDetailScreen> {
   Map<String, dynamic>? _avatar;
 
   @override
@@ -29,10 +28,8 @@ class _AvatarDetailScreenState extends State<AvatarDetailScreen> {
 
   Future<void> _fetchAvatar() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('id_token') ?? '';
-      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
-      final res = await dio.get('${AppConfig.avatarApiBase}/avatar');
+      final api = ref.read(apiClientProvider);
+      final res = await api.get('/avatar');
       final data = res.data as Map<String, dynamic>? ?? {};
       if (mounted) setState(() => _avatar = data['avatar'] as Map<String, dynamic>? ?? data);
     } catch (_) {}

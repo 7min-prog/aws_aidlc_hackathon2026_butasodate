@@ -2,26 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 final recordsProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('id_token') ?? '';
-    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
-    final res = await dio.get('${AppConfig.recordingApiBase}/activities');
-    debugPrint('activities response: ${res.data}');
+    final api = ref.read(apiClientProvider);
+    final res = await api.get('/activities');
     final data = res.data is String ? <String, dynamic>{} : res.data as Map<String, dynamic>;
     return {'records': (data['items'] ?? data['records'] ?? []) as List, 'summary': data['summary']};
-  } catch (e) {
-    debugPrint('activities error: $e');
+  } catch (_) {
     return {'records': <dynamic>[], 'summary': {'todayPoints': 0}};
   }
 });

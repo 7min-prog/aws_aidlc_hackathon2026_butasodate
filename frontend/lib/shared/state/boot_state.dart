@@ -31,7 +31,7 @@ class BootResult {
 final bootDioFactoryProvider = Provider<Dio Function(String baseUrl, String token)>((ref) {
   return (baseUrl, token) => Dio(BaseOptions(
     baseUrl: baseUrl,
-    headers: {'Authorization': 'Bearer $token'},
+    headers: {'Authorization': token},
   ));
 });
 
@@ -52,14 +52,14 @@ class BootNotifier extends AsyncNotifier<BootResult> {
 
     // トークン検証 + プロフィール取得
     try {
-      final profile = await _fetchProfile(tokens.accessToken);
+      final profile = await _fetchProfile(tokens.idToken ?? tokens.accessToken);
       if (profile == null || !profile.hasNickname) {
         await _waitMinDuration(startTime);
         return BootResult(destination: BootDestination.nickname, profile: profile);
       }
 
       // 初期データ並列取得
-      final results = await _fetchInitialData(tokens.accessToken, profile);
+      final results = await _fetchInitialData(tokens.idToken ?? tokens.accessToken, profile);
       await _waitMinDuration(startTime);
       return results;
     } on DioException catch (e) {

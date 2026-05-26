@@ -23,8 +23,8 @@ class _ConfirmScreenState extends ConsumerState<ConfirmScreen> {
     final ok = await ref.read(authStateProvider.notifier).confirmSignup(widget.email, _codeCtrl.text);
     if (!mounted) return;
     if (ok) {
-      if (mounted) showPixelAlert(context, title: 'かんりょう', message: 'メールを かくにん しました！\nログインして ください。');
-      context.go('/login');
+      await showPixelAlert(context, title: 'かんりょう', message: 'メールを かくにん しました！\nログインして ください。');
+      if (mounted) context.go('/login');
     } else {
       showPixelAlert(context, message: 'コードが ちがいます。');
     }

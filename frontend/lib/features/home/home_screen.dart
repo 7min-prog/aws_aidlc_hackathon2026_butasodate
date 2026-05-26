@@ -3,23 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
 final homeDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('id_token') ?? '';
-    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+    final api = ref.read(apiClientProvider);
     final results = await Future.wait([
-      dio.get('${AppConfig.avatarApiBase}/avatar'),
-      dio.get('${AppConfig.recordingApiBase}/activities'),
+      api.get('/avatar'),
+      api.get('/activities'),
     ]);
     final avatarData = results[0].data is Map<String, dynamic> ? results[0].data as Map<String, dynamic> : <String, dynamic>{};
     final avatar = avatarData['avatar'] as Map<String, dynamic>? ?? avatarData;

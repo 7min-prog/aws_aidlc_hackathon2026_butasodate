@@ -13,7 +13,7 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
@@ -47,7 +47,7 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
@@ -66,7 +66,7 @@ jobs:
       - name: Build APK (${{ matrix.flavor }})
         run: flutter build apk --release -t lib/main_${{ matrix.flavor }}.dart
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: apk-${{ matrix.flavor }}
           path: frontend/build/app/outputs/flutter-apk/app-release.apk
