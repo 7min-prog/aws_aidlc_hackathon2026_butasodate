@@ -109,6 +109,35 @@ app.openapi(getAvatarRoute, async (c) => {
   }, 200);
 });
 
+// PUT /avatar/name - アバター名更新
+const updateNameRoute = createRoute({
+  method: 'put',
+  path: '/avatar/name',
+  tags: ['Avatar'],
+  summary: 'アバター名を更新',
+  request: { body: { content: { 'application/json': { schema: z.object({ name: z.string() }) } } } },
+  responses: {
+    200: { description: '更新成功', content: { 'application/json': { schema: z.object({ avatar: AvatarSchema }) } } },
+    401: { description: '認証エラー', content: { 'application/json': { schema: ErrorResponseSchema } } },
+    404: { description: '未発見', content: { 'application/json': { schema: ErrorResponseSchema } } },
+  },
+});
+
+app.openapi(updateNameRoute, async (c) => {
+  const userId = getUserId(c);
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401);
+  const body = c.req.valid('json');
+  try {
+    const avatar = await avatarService.updateAvatarName(userId, body.name);
+    return c.json({ avatar }, 200);
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message === 'AVATAR_NOT_FOUND') {
+      return c.json({ error: 'Avatar not found' }, 404);
+    }
+    throw e;
+  }
+});
+
 // GET /avatar/evolution-history - 進化履歴取得
 const getHistoryRoute = createRoute({
   method: 'get',

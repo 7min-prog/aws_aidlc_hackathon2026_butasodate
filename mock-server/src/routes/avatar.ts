@@ -56,6 +56,18 @@ avatarRouter.post('/', authMiddleware, (req: Request, res: Response) => {
   res.status(201).json({ avatar: avatars[userId] });
 });
 
+// PUT /avatar/name - アバター名更新
+avatarRouter.put('/name', authMiddleware, (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const { name } = req.body;
+  if (!avatars[userId]) {
+    res.status(404).json({ error: 'Avatar not found' });
+    return;
+  }
+  if (name) { avatars[userId].name = name; avatars[userId].updatedAt = new Date().toISOString(); }
+  res.json({ avatar: avatars[userId] });
+});
+
 // GET /avatar
 avatarRouter.get('/', (req: Request, res: Response) => {
   const auth = req.headers.authorization;

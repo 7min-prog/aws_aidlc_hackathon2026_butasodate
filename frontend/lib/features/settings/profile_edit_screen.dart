@@ -7,6 +7,7 @@ import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/features/home/home_screen.dart';
 
 class ProfileEditScreen extends ConsumerStatefulWidget {
   const ProfileEditScreen({super.key});
@@ -36,9 +37,9 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       final avatar = avatarData['avatar'] as Map<String, dynamic>? ?? avatarData;
       if (mounted) {
         setState(() {
-        _nickCtrl.text = profile['nickname'] as String? ?? '';
-        _avatarCtrl.text = avatar['name'] as String? ?? '';
-      });
+          _nickCtrl.text = profile['nickname'] as String? ?? '';
+          _avatarCtrl.text = avatar['name'] as String? ?? '';
+        });
       }
     } catch (_) {}
   }
@@ -47,16 +48,28 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   void dispose() { _nickCtrl.dispose(); _avatarCtrl.dispose(); super.dispose(); }
 
   Future<void> _save() async {
+    final api = ref.read(apiClientProvider);
     try {
-      final api = ref.read(apiClientProvider);
       await api.put('/users/profile', data: {'nickname': _nickCtrl.text.trim()});
+      debugPrint('PUT /users/profile succeeded');
+    } catch (e) {
+      debugPrint('PUT /users/profile failed: $e');
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+      return;
+    }
+    try {
       if (_avatarCtrl.text.trim().isNotEmpty) {
         await api.put('/avatar/name', data: {'name': _avatarCtrl.text.trim()});
       }
-      if (mounted) await showPixelAlert(context, message: 'ほぞんしました！');
-      if (mounted) Navigator.pop(context);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('PUT /avatar/name failed: $e');
       if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+      return;
+    }
+    if (mounted) await showPixelAlert(context, message: 'ほぞんしました！');
+    if (mounted) {
+      ref.invalidate(homeDataProvider);
+      Navigator.pop(context);
     }
   }
 
