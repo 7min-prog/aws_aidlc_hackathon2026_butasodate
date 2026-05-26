@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/router.dart';
 import 'package:buta_app/shared/theme.dart';
 
@@ -36,7 +35,7 @@ class ButaApp extends ConsumerWidget {
       theme: butaTheme,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) => SafeArea(bottom: false, child: child ?? const SizedBox.shrink()),
+      builder: (context, child) => child ?? const SizedBox.shrink(),
     );
   }
 }

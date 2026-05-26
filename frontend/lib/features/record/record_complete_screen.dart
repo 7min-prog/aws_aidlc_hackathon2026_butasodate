@@ -41,14 +41,14 @@ class RecordCompleteScreen extends ConsumerWidget {
           child: Text('+${points}pt!', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 20, color: ButaColors.ink)),
         ))),
         // ホームへ戻るボタン
-        Positioned(top: 432 * sy, left: 55 * sx, right: 55 * sx, child: GestureDetector(
-          onTap: () { ref.invalidate(recordsProvider); ref.invalidate(homeDataProvider); context.go('/home'); },
-          child: Container(
-            height: 44 * sy,
-            decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
-            alignment: Alignment.center,
-            child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('ホームへ もどる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink))]),
+        Positioned(top: 432 * sy, left: 55 * sx, right: 55 * sx, child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ButaColors.yellow, foregroundColor: ButaColors.ink,
+            minimumSize: Size(double.infinity, 44 * sy),
+            shape: RoundedRectangleBorder(side: const BorderSide(color: ButaColors.ink, width: 2), borderRadius: BorderRadius.zero),
           ),
+          onPressed: () { ref.invalidate(recordsProvider); ref.invalidate(homeDataProvider); context.go('/recording'); },
+          child: const Text('もどる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16)),
         )),
       ]),
     );

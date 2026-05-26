@@ -31,7 +31,6 @@ import 'package:buta_app/features/account/battle_history_screen.dart';
 import 'package:buta_app/features/settings/profile_edit_screen.dart';
 import 'package:buta_app/features/settings/health_data_screen.dart';
 import 'package:buta_app/features/settings/notification_settings_screen.dart';
-import 'package:buta_app/features/settings/account_manage_screen.dart';
 import 'package:buta_app/features/start/system_screens.dart';
 
 /// レトロゲーム風フェードトランジション
@@ -92,11 +91,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/battle-fight',
-        pageBuilder: (context, state) => pixelFadePage(state: state, child: const BattleFightScreen()),
+        pageBuilder: (context, state) => pixelFadePage(state: state, child: BattleFightScreen(matchData: state.extra as Map<String, dynamic>?)),
       ),
       GoRoute(
         path: '/battle-result',
-        pageBuilder: (context, state) { final extra = state.extra as Map<String, dynamic>? ?? {}; return pixelFadePage(state: state, child: BattleResultScreen(win: extra['win'] as bool? ?? true)); },
+        pageBuilder: (context, state) { final extra = state.extra as Map<String, dynamic>? ?? {}; return pixelFadePage(state: state, child: BattleResultScreen(win: extra['win'] as bool? ?? true, myName: extra['myName'] as String? ?? '')); },
       ),
       GoRoute(
         path: '/settings',
@@ -137,10 +136,6 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/notification-settings',
         pageBuilder: (context, state) => pixelFadePage(state: state, child: const NotificationSettingsScreen()),
-      ),
-      GoRoute(
-        path: '/account-manage',
-        pageBuilder: (context, state) => pixelFadePage(state: state, child: const AccountManageScreen()),
       ),
       GoRoute(
         path: '/login',

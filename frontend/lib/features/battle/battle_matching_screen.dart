@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/audience_animation.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/ui/pixel_dialog.dart';
+import 'package:buta_app/shared/services/battle_ws_service.dart';
 
 class BattleMatchingScreen extends StatefulWidget {
   const BattleMatchingScreen({super.key});
@@ -16,29 +18,55 @@ class _BattleMatchingScreenState extends State<BattleMatchingScreen> {
   int _remaining = 30;
   late final Timer _timer;
   int _dotPhase = 0;
+  bool _matched = false;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+    _connectAndMatch();
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) async {
       if (!mounted) return;
       setState(() {
         _remaining--;
         _dotPhase = (_dotPhase + 1) % 4;
       });
-      if (_remaining <= 25) {
-        // デモ: 25秒残りでマッチ成立
+      if (_remaining <= 0) {
         _timer.cancel();
-        context.go('/battle-ready');
-      } else if (_remaining <= 0) {
-        _timer.cancel();
-        context.go('/battle'); // タイムアウト
+        BattleWsService.instance.send({'action': 'cancelMatch'});
+        BattleWsService.instance.close();
+        if (mounted) {
+          await showPixelAlert(context, title: 'ざんねん！', message: 'マッチあいてが\nみつかりませんでした');
+          if (mounted) context.go('/battle');
+        }
       }
     });
   }
 
+  Future<void> _connectAndMatch() async {
+    try {
+      await BattleWsService.instance.connect();
+      final ws = BattleWsService.instance;
+
+      ws.messages.listen((data) {
+        if (data['type'] == 'matchFound' && mounted && !_matched) {
+          _matched = true;
+          _timer.cancel();
+          ws.matchId = data['data']?['matchId'];
+          context.go('/battle-ready', extra: data['data']);
+        }
+      });
+
+      ws.send({'action': 'requestMatch', 'data': {'type': 'random', 'level': 1}});
+    } catch (_) {}
+  }
+
   @override
-  void dispose() { _timer.cancel(); super.dispose(); }
+  void dispose() {
+    _timer.cancel();
+    // マッチング中にdisposeされたらキャンセル（画面遷移以外）
+    if (!_matched) BattleWsService.instance.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +93,16 @@ class _BattleMatchingScreenState extends State<BattleMatchingScreen> {
         )),
         Positioned(top: 340 * sy, left: 145 * sx, child: Container(
           width: 100 * sx, height: 40 * sy,
-          decoration: BoxDecoration(color: ButaColors.black),
+          decoration: const BoxDecoration(color: ButaColors.black),
           alignment: Alignment.center,
           child: Text('$mm:$ss', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 14, color: ButaColors.yellow)),
         )),
         Positioned(top: 440 * sy, left: 95 * sx, child: GestureDetector(
-          onTap: () => context.go('/battle'),
+          onTap: () {
+            BattleWsService.instance.send({'action': 'cancelMatch'});
+            BattleWsService.instance.close();
+            context.go('/battle');
+          },
           child: Container(
             width: 200 * sx, height: 40 * sy,
             decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),

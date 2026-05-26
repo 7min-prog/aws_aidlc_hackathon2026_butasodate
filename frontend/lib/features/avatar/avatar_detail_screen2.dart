@@ -1,23 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/grass_animation.dart';
 
-class AvatarDetailScreen extends StatelessWidget {
+class AvatarDetailScreen extends StatefulWidget {
   const AvatarDetailScreen({super.key, this.avatar});
   final Map<String, dynamic>? avatar;
+  @override
+  State<AvatarDetailScreen> createState() => _AvatarDetailScreenState();
+}
+
+class _AvatarDetailScreenState extends State<AvatarDetailScreen> {
+  Map<String, dynamic>? _avatar;
+
+  @override
+  void initState() {
+    super.initState();
+    _avatar = widget.avatar;
+    if (_avatar == null || _avatar!.isEmpty) _fetchAvatar();
+  }
+
+  Future<void> _fetchAvatar() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('id_token') ?? '';
+      final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+      final res = await dio.get('${AppConfig.avatarApiBase}/avatar');
+      final data = res.data as Map<String, dynamic>? ?? {};
+      if (mounted) setState(() => _avatar = data['avatar'] as Map<String, dynamic>? ?? data);
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390, sy = size.height / 740;
-    final a = avatar ?? {'name': 'こぶた', 'level': 1, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}};
+    final a = _avatar ?? {'name': 'こぶた', 'level': 1, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}};
     final stats = a['stats'] as Map<String, dynamic>? ?? {};
-    final skills = ['にくあつプレス', 'ねむりこうげき', 'ぼうしょくタックル', 'ぼうぎょ'];
+    final skillList = (a['skills'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    final skills = skillList.isNotEmpty
+        ? skillList.map((s) => s['name'] as String? ?? s['skillId'] as String? ?? '???').toList()
+        : (a['skillIds'] as List?)?.cast<String>() ?? ['まだ スキルが ないよ'];
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
@@ -62,7 +92,7 @@ class AvatarDetailScreen extends StatelessWidget {
         // スキルタイトル
         Positioned(top: 337 * sy, left: 14 * sx, child: Text('スキル', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
         // スキルリスト
-        ...List.generate(4, (i) => Positioned(
+        ...List.generate(skills.length.clamp(0, 4), (i) => Positioned(
           top: (357 + i * 38) * sy, left: 14 * sx,
           child: Container(
             width: 362 * sx, height: 34 * sy,

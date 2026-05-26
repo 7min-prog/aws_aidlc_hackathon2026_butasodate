@@ -3,34 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
-import 'package:buta_app/shared/state/auth_state.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
-import 'package:buta_app/shared/repositories/avatar_repository.dart';
-import 'package:buta_app/shared/repositories/recording_repository.dart';
-import 'package:buta_app/shared/models/avatar.dart';
+import 'package:buta_app/shared/ui/pixel_loader.dart';
 
-final homeDataProvider = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+final homeDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   try {
-    await ref.watch(authStateProvider.future);
-    final avatarRepo = ref.read(avatarRepositoryProvider);
-    final recordingRepo = ref.read(recordingRepositoryProvider);
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('id_token') ?? '';
+    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
     final results = await Future.wait([
-      avatarRepo.getAvatar(),
-      recordingRepo.getActivities(),
+      dio.get('${AppConfig.avatarApiBase}/avatar'),
+      dio.get('${AppConfig.recordingApiBase}/activities'),
     ]);
-    final avatar = results[0] as Avatar?;
-    final activities = results[1] as Map<String, dynamic>;
+    final avatarData = results[0].data is Map<String, dynamic> ? results[0].data as Map<String, dynamic> : <String, dynamic>{};
+    final avatar = avatarData['avatar'] as Map<String, dynamic>? ?? avatarData;
+    final actData = results[1].data is Map<String, dynamic> ? results[1].data as Map<String, dynamic> : <String, dynamic>{};
     return {
-      'avatar': avatar != null ? avatar.toJson() : {'name': 'こぶた', 'level': 1, 'totalPoints': 0, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}, 'categoryPoints': {'FOOD': 0, 'LIFESTYLE': 0, 'MIXED': 0}},
-      'records': activities['records'] as List? ?? [],
-      'summary': activities['summary'] ?? {'todayCount': 0, 'todayPoints': 0},
+      'avatar': avatar.isNotEmpty ? avatar : {'name': 'こぶた', 'level': 1, 'totalPoints': 0},
+      'records': (actData['items'] ?? actData['records'] ?? []) as List,
+      'summary': actData['summary'] ?? {'todayCount': 0, 'todayPoints': 0},
     };
   } catch (_) {
     return {
-      'avatar': {'name': 'こぶた', 'level': 1, 'totalPoints': 0, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}, 'categoryPoints': {'FOOD': 0, 'LIFESTYLE': 0, 'MIXED': 0}},
+      'avatar': {'name': 'こぶた', 'level': 1, 'totalPoints': 0},
       'records': <dynamic>[],
       'summary': {'todayCount': 0, 'todayPoints': 0},
     };
@@ -135,7 +136,7 @@ class _SummaryCard extends StatelessWidget {
           final todayPts = summary?['todayPoints'] ?? 0;
           final now = DateTime.now();
           final todayRecords = records.where((r) {
-            final date = DateTime.tryParse(r['recordedAt'] ?? '') ?? DateTime(2000);
+            final date = (DateTime.tryParse(r['recordedAt'] ?? '') ?? DateTime(2000)).toLocal();
             return date.year == now.year && date.month == now.month && date.day == now.day;
           }).take(2).toList();
           return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -149,7 +150,7 @@ class _SummaryCard extends StatelessWidget {
             if (todayRecords.isNotEmpty) Text('きょうの合計: +${todayPts}pt', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: const Color(0xFFC46A85))),
           ]);
         },
-        loading: () => Center(child: Text('よみこみちゅう...', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+        loading: () => const Center(child: PixelLoader()),
         error: (_, __) => Center(child: Text('エラー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.red))),
       ),
     );
@@ -157,9 +158,9 @@ class _SummaryCard extends StatelessWidget {
 
   String _categoryName(String? id) {
     const names = {
-      'food-ramen': 'しんやラーメン', 'food-snack': '間食した', 'food-binge': '暴飲暴食',
-      'life-oversleep': '二度寝した', 'life-skip-exercise': '運動サボり', 'life-late-night': '夜更かし',
-      'life-gaming': 'ゲーム三昧', 'life-nap': '昼寝しすぎ',
+      'food_late_ramen': 'しんやラーメン', 'food_snack': 'かんしょく', 'food_binge': 'ぼういんぼうしょく',
+      'food_junkfood': 'ジャンクフード', 'life_stay_up': 'よふかし', 'life_oversleep': 'にどね',
+      'life_skip_exercise': 'うんどうサボり', 'life_binge_watch': 'いっきみ',
     };
     return names[id] ?? id ?? '???';
   }
@@ -249,7 +250,9 @@ class _AnimatedPigState extends State<_AnimatedPig> with SingleTickerProviderSta
       2.0 + rng.nextDouble() * 2.0,
       rng.nextDouble() < 0.4 ? 1.0 + rng.nextDouble() : 0.0,
     ]);
-    for (final p in _path) _totalDuration += p[2] + p[3];
+    for (final p in _path) {
+      _totalDuration += p[2] + p[3];
+    }
     _ctrl = AnimationController(vsync: this, duration: Duration(milliseconds: (_totalDuration * 1000).round()))..repeat();
   }
   @override
@@ -291,8 +294,8 @@ class _AnimatedPigState extends State<_AnimatedPig> with SingleTickerProviderSta
         acc += segDur;
       }
 
-      // 歩きバウンス
-      final bounce = walking ? ((_ctrl.value * _totalDuration * 3).floor() % 2 == 0 ? -1.0 : 1.0) * widget.sy : 0.0;
+      // 歩きバウンス（滑らかなsin波）
+      final bounce = walking ? math.sin(_ctrl.value * _totalDuration * 6 * math.pi) * 2.0 * widget.sy : 0.0;
 
       return Transform.translate(
         offset: Offset(dx * widget.sx, dy * widget.sy + bounce),
@@ -446,7 +449,7 @@ class _RecordButton extends StatelessWidget {
       onTap: () => GoRouter.of(context).push('/avatar-detail'),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Container(
-          width: 200 * sx, height: 48 * sy,
+          width: 200 * sx, height: 48,
           decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
           alignment: Alignment.center,
           child: Row(mainAxisSize: MainAxisSize.min, children: [SvgPicture.asset('assets/pixel-art/icons/play.svg', width: 14, height: 14), const SizedBox(width: 4), Text('ようすをみる', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: ButaColors.ink))]),

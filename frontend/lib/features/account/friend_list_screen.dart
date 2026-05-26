@@ -2,58 +2,155 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
-import 'package:buta_app/shared/services/api_client.dart';
-import 'package:buta_app/shared/ui/cloud_animation.dart';
-import 'package:buta_app/shared/ui/grass_animation.dart';
+import 'package:buta_app/shared/ui/pixel_dialog.dart';
+import 'package:buta_app/shared/ui/pixel_loader.dart';
 
-final friendsProvider = FutureProvider.autoDispose<List<dynamic>>((ref) async {
+Future<Dio> _getAuthDio() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
+  return Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
+    headers: {'Content-Type': 'application/json', 'Authorization': token},
+  ));
+}
+
+final friendListProvider = FutureProvider.autoDispose<Map<String, List<dynamic>>>((ref) async {
+  final dio = await _getAuthDio();
+  List<dynamic> friends = [];
+  List<dynamic> requests = [];
   try {
-    final api = ref.read(apiClientProvider);
-    final res = await api.get('/social/friends');
-    return (res.data['friends'] as List?) ?? [];
-  } catch (_) {
-    return [];
+    final res = await dio.get('${AppConfig.socialApiBase}/social/friends');
+    friends = (res.data['friends'] as List?) ?? [];
+  } catch (e) {
+    debugPrint('friends error: $e');
   }
+  try {
+    final res = await dio.get('${AppConfig.socialApiBase}/social/friends/requests');
+    requests = (res.data['requests'] as List?) ?? [];
+  } catch (e) {
+    debugPrint('requests error: $e');
+  }
+  return {'friends': friends, 'requests': requests};
 });
 
-class FriendListScreen extends ConsumerWidget {
+class FriendListScreen extends ConsumerStatefulWidget {
   const FriendListScreen({super.key});
+  @override
+  ConsumerState<FriendListScreen> createState() => _FriendListScreenState();
+}
+
+class _FriendListScreenState extends ConsumerState<FriendListScreen> {
+  List<dynamic> _friends = [];
+  List<dynamic> _requests = [];
+  bool _initialized = false;
+
+  Future<void> _deleteFriend(String friendId) async {
+    final confirmed = await showPixelConfirm(context, title: 'フレンドさくじょ', message: 'このフレンドを\nさくじょしますか？');
+    if (confirmed != true) return;
+    try {
+      final dio = await _getAuthDio();
+      await dio.delete('${AppConfig.socialApiBase}/social/friends/$friendId');
+      setState(() => _friends.removeWhere((f) => (f['friendId'] ?? f['userId']) == friendId));
+    } catch (e) {
+      final msg = e is DioException ? '${e.response?.statusCode}: ${e.response?.data}' : '$e';
+      if (mounted) showPixelAlert(context, message: msg);
+    }
+  }
+
+  Future<void> _respond(String requestId, bool accept) async {
+    try {
+      final dio = await _getAuthDio();
+      await dio.post('${AppConfig.socialApiBase}/social/friends/respond', data: {'requestId': requestId, 'accept': accept});
+      setState(() => _requests.removeWhere((r) => r['requestId'] == requestId));
+      if (accept) ref.invalidate(friendListProvider);
+      if (mounted) showPixelAlert(context, message: accept ? 'しょうにん しました！' : 'きょひ しました');
+    } catch (_) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+    }
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390, sy = size.height / 740;
-    final friendsAsync = ref.watch(friendsProvider);
+    final data = ref.watch(friendListProvider);
+
+    // Sync provider data to local state
+    data.whenData((d) {
+      if (!_initialized || _friends.isEmpty && d['friends']!.isNotEmpty) {
+        _friends = List.from(d['friends']!);
+        _requests = List.from(d['requests']!);
+        _initialized = true;
+      }
+    });
+
+    final loading = data.isLoading && !_initialized;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: ButaColors.blue,
       appBar: const PixelAppBar(title: 'フレンド'),
       bottomNavigationBar: SafeArea(child: PixelTabBar(sx: sx, sy: sy, activeIndex: 3)),
       body: Stack(children: [
-        Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover)),
-        const Positioned.fill(child: CloudAnimation()),
-        Positioned.fill(child: GrassAnimation(sx: sx, sy: sy)),
-        Positioned(top: 20 * sy, right: 14 * sx, child: GestureDetector(
-          onTap: () => context.push('/friend-search'),
-          child: Container(
-            width: 76 * sx, height: 32 * sy,
-            decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
-            alignment: Alignment.center,
-            child: Text('＋ ついか', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.ink)),
+        Positioned.fill(child: IgnorePointer(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-meadow.svg', fit: BoxFit.cover))),
+        // ＋ついかボタン
+        Positioned(top: 10 * sy, right: 14 * sx, child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: ButaColors.paper, foregroundColor: ButaColors.ink,
+            shape: RoundedRectangleBorder(side: const BorderSide(color: ButaColors.ink), borderRadius: BorderRadius.zero),
+            padding: EdgeInsets.symmetric(horizontal: 12 * sx),
+            minimumSize: Size(0, 32 * sy),
           ),
+          onPressed: () => context.push('/friend-search'),
+          child: const Text('＋ ついか', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10)),
         )),
-        Positioned(top: 70 * sy, left: 14 * sx, right: 14 * sx, bottom: 0, child: friendsAsync.when(
-          data: (friends) {
-            if (friends.isEmpty) return Center(child: Text('フレンドが いないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.gray)));
-            return ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: friends.length,
-              itemBuilder: (_, i) {
-                final f = friends[i];
-                return Container(
+        // コンテンツ
+        Positioned(top: 50 * sy, left: 14 * sx, right: 14 * sx, bottom: 0, child: loading
+          ? const Center(child: PixelLoader())
+          : ListView(padding: EdgeInsets.zero, children: [
+              // 申請セクション
+              if (_requests.isNotEmpty) ...[
+                Text('しんせい (${_requests.length})', style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.yellow)),
+                SizedBox(height: 4 * sy),
+                ..._requests.map((r) => Container(
+                  height: 52 * sy, margin: EdgeInsets.only(bottom: 4 * sy),
+                  padding: EdgeInsets.symmetric(horizontal: 10 * sx),
+                  decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.yellow, width: 2)),
+                  child: Row(children: [
+                    SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 24, height: 24),
+                    SizedBox(width: 8 * sx),
+                    Expanded(child: Text(r['fromNickname'] ?? r['fromUserId'] ?? r['from'] ?? '???', style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: ButaColors.green, minimumSize: Size(50 * sx, 28 * sy), padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(side: const BorderSide(color: ButaColors.ink), borderRadius: BorderRadius.zero)),
+                      onPressed: () => _respond(r['requestId'], true),
+                      child: const Text('OK', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper)),
+                    ),
+                    SizedBox(width: 4 * sx),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: ButaColors.gray, minimumSize: Size(50 * sx, 28 * sy), padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(side: const BorderSide(color: ButaColors.ink), borderRadius: BorderRadius.zero)),
+                      onPressed: () => _respond(r['requestId'], false),
+                      child: const Text('NG', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper)),
+                    ),
+                  ]),
+                )),
+                SizedBox(height: 12 * sy),
+              ],
+              // フレンドリスト
+              Text('フレンド (${_friends.length})', style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.gray)),
+              SizedBox(height: 4 * sy),
+              if (_friends.isEmpty)
+                Center(child: Padding(padding: EdgeInsets.only(top: 20 * sy), child: const Text('フレンドが いないよ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.gray))))
+              else
+                ..._friends.map((f) => Container(
                   height: 48 * sy, margin: EdgeInsets.only(bottom: 4 * sy),
                   padding: EdgeInsets.symmetric(horizontal: 12 * sx),
                   decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 1)),
@@ -61,19 +158,20 @@ class FriendListScreen extends ConsumerWidget {
                     SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 28, height: 28),
                     SizedBox(width: 10 * sx),
                     Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text(f['nickname'] ?? '', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink)),
-                      Text('LV.${f['level'] ?? 1}', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 9, color: ButaColors.gray)),
+                      Text(f['nickname'] ?? '', style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.ink)),
+                      Text('LV.${f['level'] ?? 1}', style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 9, color: ButaColors.gray)),
                     ]),
                     const Spacer(),
-                    if (f['online'] == true) Container(width: 8, height: 8, decoration: BoxDecoration(color: ButaColors.green, shape: BoxShape.circle)),
+                    if (f['online'] == true) Container(width: 8, height: 8, decoration: const BoxDecoration(color: ButaColors.green, shape: BoxShape.circle)),
+                    SizedBox(width: 8 * sx),
+                    GestureDetector(
+                      onTap: () => _deleteFriend(f['friendId'] ?? f['userId'] ?? ''),
+                      child: const Icon(Icons.close, size: 18, color: ButaColors.red),
+                    ),
                   ]),
-                );
-              },
-            );
-          },
-          loading: () => Center(child: Text('よみこみちゅう...', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
-          error: (_, __) => Center(child: Text('エラー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.red))),
-        )),
+                )),
+            ]),
+        ),
       ]),
     );
   }

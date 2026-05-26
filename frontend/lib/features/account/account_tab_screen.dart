@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
@@ -162,10 +165,18 @@ class AccountTabScreen extends ConsumerWidget {
               Positioned(left: 35, top: 75, right: 35, height: 3, child: Container(color: ButaColors.red)),
               Positioned(left: 45, top: 100, child: const Text('さくじょすると\nもとに もどせません！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.ink2, height: 1.6))),
               Positioned(left: 20, bottom: 30, child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(ctx);
-                  ProviderScope.containerOf(context).read(authStateProvider.notifier).logout();
-                  GoRouter.of(context).go('/login');
+                  final container = ProviderScope.containerOf(context);
+                  final router = GoRouter.of(context);
+                  try {
+                    final prefs = await SharedPreferences.getInstance();
+                    final token = prefs.getString('id_token') ?? prefs.getString('access_token') ?? '';
+                    final dio = Dio(BaseOptions(headers: {'Authorization': token}));
+                    await dio.delete('${AppConfig.authApiBase}/account');
+                  } catch (_) {}
+                  container.read(authStateProvider.notifier).logout();
+                  router.go('/login');
                 },
                 child: Container(
                   width: 120, height: 40,

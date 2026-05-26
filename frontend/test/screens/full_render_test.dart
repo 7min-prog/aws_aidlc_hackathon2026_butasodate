@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buta_app/shared/router.dart';
 import 'package:buta_app/shared/state/boot_state.dart';
-import 'package:buta_app/shared/state/auth_state.dart';
 
 import '../helpers/test_helpers.dart';
 

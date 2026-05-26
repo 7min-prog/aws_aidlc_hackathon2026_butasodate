@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
-import 'package:buta_app/shared/services/api_client.dart';
 
 class RecordConfirmScreen extends ConsumerStatefulWidget {
   const RecordConfirmScreen({super.key, required this.category});
@@ -42,11 +44,13 @@ class _RecordConfirmScreenState extends ConsumerState<RecordConfirmScreen> {
   Future<void> _submit() async {
     final cat = widget.category;
     try {
-      final api = ref.read(apiClientProvider);
-      final res = await api.post('/activities', data: {'records': [{'categoryId': cat['categoryId']}]});
-      if (mounted) context.go('/record-complete', extra: {'points': cat['points'], 'result': res.data});
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('id_token') ?? '';
+      final dio = Dio(BaseOptions(headers: {'Content-Type': 'application/json', 'Authorization': token}));
+      final res = await dio.post('${AppConfig.recordingApiBase}/activities', data: {'records': [{'categoryId': cat['categoryId']}]});
+      if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points'], 'result': res.data});
     } catch (_) {
-      if (mounted) context.go('/record-complete', extra: {'points': cat['points']});
+      if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points']});
     }
   }
 
@@ -54,9 +58,15 @@ class _RecordConfirmScreenState extends ConsumerState<RecordConfirmScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390, sy = size.height / 740;
-    final pts = widget.category['points'] ?? 0;
+    final pts = widget.category['basePoints'] ?? widget.category['points'] ?? 0;
     final name = widget.category['name'] ?? '';
-    final icon = widget.category['icon'] ?? '?';
+    final iconKey = widget.category['iconKey'] as String? ?? 'ramen';
+    const iconMap = {
+      'ramen': 'cat-ramen', 'snack': 'cat-snack', 'binge': 'cat-binge',
+      'junk': 'cat-binge', 'night': 'cat-late-night', 'sleep': 'cat-oversleep',
+      'couch': 'cat-skip-exercise', 'tv': 'cat-gaming', 'nap': 'cat-nap',
+    };
+    final iconPath = 'assets/pixel-art/icons/${iconMap[iconKey] ?? 'cat-ramen'}.svg';
 
     return Scaffold(
       appBar: const PixelAppBar(title: 'きろく かくにん', showBack: true),
@@ -70,7 +80,7 @@ class _RecordConfirmScreenState extends ConsumerState<RecordConfirmScreen> {
             Container(width: 362 * sx, height: 6 * sy, color: const Color(0xFF8A5A2B)),
             Expanded(child: Row(children: [
               SizedBox(width: 14 * sx),
-              Text(icon, style: const TextStyle(fontSize: 24)),
+              SvgPicture.asset(iconPath, width: 24, height: 24),
               SizedBox(width: 10 * sx),
               Text(name, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 16, color: ButaColors.ink)),
             ])),
