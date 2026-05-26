@@ -22,19 +22,31 @@ flutter build web -t lib/main_prod.dart
 ### ヘッドレス（CI向け）
 
 ```bash
+# Linux/Mac
 E2E_EMAIL="your@email.com" E2E_PASSWORD="yourpass" npx playwright test
+
+# PowerShell
+$env:E2E_EMAIL='your@email.com'; $env:E2E_PASSWORD='yourpass'; npx playwright test
 ```
 
 ### ヘッドフル（デバッグ向け）
 
 ```bash
+# Linux/Mac
 E2E_EMAIL="your@email.com" E2E_PASSWORD="yourpass" HEADED=true npx playwright test
+
+# PowerShell
+$env:E2E_EMAIL='your@email.com'; $env:E2E_PASSWORD='yourpass'; $env:HEADED='true'; npx playwright test
 ```
 
 ### UI モード
 
 ```bash
+# Linux/Mac
 E2E_EMAIL="your@email.com" E2E_PASSWORD="yourpass" npx playwright test --ui
+
+# PowerShell
+$env:E2E_EMAIL='your@email.com'; $env:E2E_PASSWORD='yourpass'; npx playwright test --ui
 ```
 
 ### 認証なしテストのみ
