@@ -38,10 +38,13 @@ authRouter.post('/resend-code', (req: Request, res: Response) => {
 // POST /auth/login
 authRouter.post('/login', (req: Request, res: Response) => {
   const { email, password } = req.body;
-  if (!email || !password) { res.status(401).json({ error: 'email and password required' }); return; }
+  console.log(`  🔑 LOGIN attempt: email="${email}" password="${password}"`);
+  if (!email || !password) { console.log('  ❌ LOGIN: missing fields'); res.status(401).json({ error: 'email and password required' }); return; }
   const user = users[email];
-  if (!user || user.password !== password) { res.status(401).json({ error: 'Invalid credentials' }); return; }
+  if (!user) { console.log(`  ❌ LOGIN: user not found for "${email}"`); res.status(401).json({ error: 'Invalid credentials' }); return; }
+  if (user.password !== password) { console.log(`  ❌ LOGIN: wrong password (expected="${user.password}" got="${password}")`); res.status(401).json({ error: 'Invalid credentials' }); return; }
   const userId = email.split('@')[0];
+  console.log(`  ✅ LOGIN OK: userId="${userId}" → token="mock-token-${userId}"`);
   res.json({
     accessToken: `mock-token-${userId}`,
     refreshToken: `mock-refresh-${userId}`,

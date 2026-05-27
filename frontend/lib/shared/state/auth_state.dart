@@ -5,6 +5,7 @@ import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/services/cache_service.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 /// テストでオーバーライド可能なDioプロバイダー
 final authDioProvider = Provider<Dio>((ref) => Dio(BaseOptions(baseUrl: AppConfig.authApiBase)));
@@ -32,7 +33,8 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     return AuthTokens(accessToken: accessToken, refreshToken: refreshToken);
   }
 
-  Future<bool> login(String email, String password) async {
+  /// ログイン。成功時null、失敗時エラー詳細文字列を返す。
+  Future<String?> login(String email, String password) async {
     try {
       final dio = ref.read(authDioProvider);
       final response = await dio.post('/auth/login', data: {
@@ -48,10 +50,10 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
 
       await _saveTokens(tokens);
       state = AsyncData(tokens);
-      return true;
+      return null;
     } on DioException catch (e) {
       state = AsyncError(e.response?.data?['error'] ?? 'Login failed', StackTrace.current);
-      return false;
+      return formatApiError(e);
     }
   }
 
@@ -61,29 +63,31 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     state = AsyncData(tokens);
   }
 
-  Future<bool> signup(String email, String password) async {
+  /// サインアップ。成功時null、失敗時エラー詳細文字列を返す。
+  Future<String?> signup(String email, String password) async {
     try {
       final dio = ref.read(authDioProvider);
       await dio.post('/auth/signup', data: {
         'email': email,
         'password': password,
       });
-      return true;
-    } on DioException {
-      return false;
+      return null;
+    } on DioException catch (e) {
+      return formatApiError(e);
     }
   }
 
-  Future<bool> confirmSignup(String email, String code) async {
+  /// メール確認。成功時null、失敗時エラー詳細文字列を返す。
+  Future<String?> confirmSignup(String email, String code) async {
     try {
       final dio = ref.read(authDioProvider);
       await dio.post('/auth/confirm', data: {
         'email': email,
         'code': code,
       });
-      return true;
-    } on DioException {
-      return false;
+      return null;
+    } on DioException catch (e) {
+      return formatApiError(e);
     }
   }
 
@@ -129,7 +133,7 @@ class AuthStateNotifier extends AsyncNotifier<AuthTokens?> {
     if (tokens == null) return false;
 
     final dio = ref.read(avatarDioProvider);
-    dio.options.headers['Authorization'] = tokens.idToken ?? tokens.accessToken;
+    dio.options.headers['Authorization'] = 'Bearer ${tokens.accessToken}';
 
     for (var i = 0; i < AppConstants.avatarCreateMaxRetries; i++) {
       try {

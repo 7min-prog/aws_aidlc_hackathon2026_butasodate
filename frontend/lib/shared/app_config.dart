@@ -9,7 +9,7 @@ class AppConfig {
   static bool get isDev => _flavor == Flavor.dev;
 
   /// dev環境でのAPI接続先（ログイン画面から変更可能）
-  static String devBaseUrl = 'http://192.168.11.18:3000';
+  static String devBaseUrl = 'http://localhost:3000';
 
   static String get authApiBase => isDev
       ? devBaseUrl

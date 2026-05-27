@@ -1,18 +1,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/starry_background.dart';
+import 'package:buta_app/features/home/home_screen.dart';
 
-class EvoAnimScreen extends StatefulWidget {
+class EvoAnimScreen extends ConsumerStatefulWidget {
   const EvoAnimScreen({super.key, this.newName = 'ぽっちゃり', this.newLevel = 3});
   final String newName;
   final int newLevel;
   @override
-  State<EvoAnimScreen> createState() => _EvoAnimScreenState();
+  ConsumerState<EvoAnimScreen> createState() => _EvoAnimScreenState();
 }
 
-class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateMixin {
+class _EvoAnimScreenState extends ConsumerState<EvoAnimScreen> with TickerProviderStateMixin {
   late final AnimationController _ctrl;
   // フェーズ: 0-3s 進化前表示+光集中, 3-5s フラッシュ+変身, 5-8s 進化後表示+パーティクル, 8-10s テキスト表示
   double get _phase => _ctrl.value * 10; // 0~10秒
@@ -96,7 +98,7 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
             if (t >= 8) Positioned(bottom: 40 * sy, left: 55 * sx, child: Opacity(
               opacity: ((t - 8) / 1).clamp(0, 1),
               child: GestureDetector(
-                onTap: () => context.go('/home'),
+                onTap: () { ref.invalidate(homeDataProvider); context.go('/home'); },
                 child: Container(
                   width: 280 * sx, height: 44 * sy,
                   decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
