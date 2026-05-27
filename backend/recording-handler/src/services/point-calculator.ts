@@ -1,4 +1,4 @@
-import { CategoryType, HealthCategory, HealthEvaluation, HealthSyncDataPoint } from '../types';
+import { CategoryType, HealthEvaluation, PointConfig, DEFAULT_POINT_CONFIG } from '../types';
 
 export interface PointResult {
   points: number;
@@ -6,33 +6,35 @@ export interface PointResult {
   label: string;
 }
 
-export function calculateManualPoints(categoryType: CategoryType): number {
-  return categoryType === CategoryType.FOOD ? 12 : 10;
+export function calculateManualPoints(categoryType: CategoryType, config: PointConfig = DEFAULT_POINT_CONFIG): number {
+  return categoryType === CategoryType.FOOD ? config.MANUAL_FOOD_POINTS : config.MANUAL_LIFESTYLE_POINTS;
 }
 
-export function calculateStepsPoints(steps: number, target = 8000): PointResult {
-  const lowerBound = target * 0.9;
-  const upperBound = target * 1.1;
+export function calculateStepsPoints(steps: number, config: PointConfig = DEFAULT_POINT_CONFIG): PointResult {
+  const target = config.STEPS_TARGET;
+  const lowerBound = target * (1 - config.STEPS_TOLERANCE);
+  const upperBound = target * (1 + config.STEPS_TOLERANCE);
 
   if (steps >= lowerBound && steps <= upperBound) {
     return { points: 0, evaluation: HealthEvaluation.NEUTRAL, label: '適正歩数' };
   }
 
   if (steps < lowerBound) {
-    const points = 12 - Math.floor((steps / lowerBound) * 7);
+    const points = config.STEPS_UNHEALTHY_BASE - Math.floor((steps / lowerBound) * config.STEPS_UNHEALTHY_SCALE);
     return { points, evaluation: HealthEvaluation.UNHEALTHY, label: '運動不足' };
   }
 
   // steps > upperBound
   const excess = steps - upperBound;
-  const points = -(3 + Math.floor((excess / 7000) * 5));
-  const clampedPoints = Math.max(points, -8);
+  const points = -(config.STEPS_HEALTHY_BASE + Math.floor((excess / config.STEPS_HEALTHY_DIVISOR) * config.STEPS_HEALTHY_SCALE));
+  const clampedPoints = Math.max(points, config.STEPS_HEALTHY_MIN);
   return { points: clampedPoints, evaluation: HealthEvaluation.HEALTHY, label: '十分な運動' };
 }
 
 export function calculateWeightPoints(
   currentWeight: number,
-  previousWeight: number | null
+  previousWeight: number | null,
+  config: PointConfig = DEFAULT_POINT_CONFIG,
 ): PointResult {
   if (previousWeight === null) {
     return { points: 0, evaluation: HealthEvaluation.NEUTRAL, label: '初回記録' };
@@ -41,12 +43,12 @@ export function calculateWeightPoints(
   const diff = currentWeight - previousWeight;
 
   if (diff >= 1.0) {
-    const points = 20 * Math.floor(diff);
+    const points = config.WEIGHT_GAIN_POINTS_PER_KG * Math.floor(diff);
     return { points, evaluation: HealthEvaluation.UNHEALTHY, label: '体重増加' };
   }
 
   if (diff <= -1.0) {
-    const points = -10 * Math.floor(Math.abs(diff));
+    const points = -(config.WEIGHT_LOSS_POINTS_PER_KG * Math.floor(Math.abs(diff)));
     return { points, evaluation: HealthEvaluation.HEALTHY, label: '体重減少' };
   }
 
@@ -54,21 +56,23 @@ export function calculateWeightPoints(
 }
 
 export function calculateSleepPoints(
-  bedtimeHour: number, // 18:00起点の経過時間 (e.g., 23:00=5, 翌1:00=7)
+  bedtimeHour: number,
   durationHours: number,
-  targetBedtimeHour = 5, // 23:00 = 18:00から5時間
-  targetDuration = 7
+  config: PointConfig = DEFAULT_POINT_CONFIG,
 ): PointResult {
+  const targetBedtimeHour = config.SLEEP_TARGET_BEDTIME_HOUR;
+  const targetDuration = config.SLEEP_TARGET_DURATION;
+
   // Bedtime points
   let bedtimePoints: number;
   let bedtimeLabel: string;
 
   if (bedtimeHour > targetBedtimeHour) {
     const excessHours = Math.floor((bedtimeHour - targetBedtimeHour) * 2) / 2;
-    bedtimePoints = 8 + 3 * excessHours;
+    bedtimePoints = config.SLEEP_LATE_BASE + config.SLEEP_LATE_SCALE * excessHours;
     bedtimeLabel = '夜更かし';
   } else {
-    bedtimePoints = -4;
+    bedtimePoints = config.SLEEP_EARLY_POINTS;
     bedtimeLabel = '早寝';
   }
 
@@ -78,27 +82,25 @@ export function calculateSleepPoints(
 
   if (durationHours < targetDuration) {
     const deficit = targetDuration - durationHours;
-    durationPoints = 6 + 2 * Math.floor(deficit);
+    durationPoints = config.SLEEP_SHORT_BASE + config.SLEEP_SHORT_SCALE * Math.floor(deficit);
     durationLabel = '睡眠不足';
-  } else if (durationHours < targetDuration + 2) {
-    durationPoints = -3;
+  } else if (durationHours < targetDuration + config.SLEEP_OVER_THRESHOLD) {
+    durationPoints = config.SLEEP_GOOD_POINTS;
     durationLabel = '適正睡眠';
   } else {
-    const excess = durationHours - (targetDuration + 2);
-    durationPoints = 4 + Math.floor(excess);
+    const excess = durationHours - (targetDuration + config.SLEEP_OVER_THRESHOLD);
+    durationPoints = config.SLEEP_OVER_BASE + config.SLEEP_OVER_SCALE * Math.floor(excess);
     durationLabel = '寝すぎ';
   }
 
   // Unified evaluation: pick the one with higher impact
   if (bedtimePoints > 0 && durationPoints > 0) {
-    // Both unhealthy: pick larger
     return bedtimePoints >= durationPoints
       ? { points: bedtimePoints, evaluation: HealthEvaluation.UNHEALTHY, label: bedtimeLabel }
       : { points: durationPoints, evaluation: HealthEvaluation.UNHEALTHY, label: durationLabel };
   }
 
   if (bedtimePoints < 0 && durationPoints < 0) {
-    // Both healthy: pick larger absolute
     return Math.abs(bedtimePoints) >= Math.abs(durationPoints)
       ? { points: bedtimePoints, evaluation: HealthEvaluation.HEALTHY, label: bedtimeLabel }
       : { points: durationPoints, evaluation: HealthEvaluation.HEALTHY, label: durationLabel };

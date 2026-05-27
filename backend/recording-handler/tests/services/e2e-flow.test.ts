@@ -8,6 +8,10 @@
 import { RecordingService } from '../../src/services/recording-service';
 import * as avatarConnector from '../../src/connectors/avatar-connector';
 
+jest.mock('../../src/services/point-config-cache', () => ({
+  getPointConfig: jest.fn().mockResolvedValue(require('../../src/types').DEFAULT_POINT_CONFIG),
+}));
+
 const mockSend = jest.fn();
 const mockClient = { send: mockSend } as any;
 

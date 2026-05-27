@@ -91,32 +91,32 @@ describe('calculateWeightPoints', () => {
 
 describe('calculateSleepPoints', () => {
   it('late bedtime (1:00AM = offset 7) is UNHEALTHY', () => {
-    const result = calculateSleepPoints(7, 6, 5, 7);
+    const result = calculateSleepPoints(7, 6);
     expect(result.evaluation).toBe(HealthEvaluation.UNHEALTHY);
     expect(result.points).toBeGreaterThan(0);
   });
 
   it('early bedtime with adequate sleep is HEALTHY', () => {
-    const result = calculateSleepPoints(4, 7.5, 5, 7);
+    const result = calculateSleepPoints(4, 7.5);
     expect(result.evaluation).toBe(HealthEvaluation.HEALTHY);
     expect(result.points).toBeLessThan(0);
   });
 
   it('oversleep (10h) is UNHEALTHY', () => {
-    const result = calculateSleepPoints(4, 10, 5, 7);
+    const result = calculateSleepPoints(4, 10);
     expect(result.evaluation).toBe(HealthEvaluation.UNHEALTHY);
     expect(result.label).toBe('寝すぎ');
   });
 
   it('sleep deficit (4h) is UNHEALTHY', () => {
-    const result = calculateSleepPoints(7, 4, 5, 7);
+    const result = calculateSleepPoints(7, 4);
     expect(result.evaluation).toBe(HealthEvaluation.UNHEALTHY);
     // Both bedtime(late) and duration(deficit) are unhealthy, picks max
     expect(result.points).toBeGreaterThan(0);
   });
 
   it('mixed: late bedtime (+) but adequate sleep (-) → unhealthy wins', () => {
-    const result = calculateSleepPoints(7, 7.5, 5, 7);
+    const result = calculateSleepPoints(7, 7.5);
     expect(result.evaluation).toBe(HealthEvaluation.UNHEALTHY);
     expect(result.points).toBeGreaterThan(0);
   });

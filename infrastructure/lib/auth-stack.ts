@@ -99,6 +99,22 @@ export class AuthStack extends cdk.Stack {
 
     const lambdaIntegration = new apigateway.LambdaIntegration(authHandler);
 
+    // Gateway Responses: 4XX/5XXにCORSヘッダーを付与
+    api.addGatewayResponse('Default4xx', {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
+    });
+    api.addGatewayResponse('Default5xx', {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
+    });
+
     // Cognito Authorizer
     const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'ButaAuthorizer', {
       cognitoUserPools: [userPool],

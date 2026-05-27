@@ -1,8 +1,12 @@
 import { HealthSyncService } from '../../src/services/health-sync-service';
-import { HealthCategory, HealthEvaluation } from '../../src/types';
+import { HealthCategory, HealthEvaluation, DEFAULT_POINT_CONFIG } from '../../src/types';
 
 jest.mock('../../src/connectors/avatar-connector', () => ({
   addPoints: jest.fn().mockResolvedValue({ totalPoints: 200, level: 3 }),
+}));
+
+jest.mock('../../src/services/point-config-cache', () => ({
+  getPointConfig: jest.fn().mockResolvedValue(require('../../src/types').DEFAULT_POINT_CONFIG),
 }));
 
 const mockSend = jest.fn();

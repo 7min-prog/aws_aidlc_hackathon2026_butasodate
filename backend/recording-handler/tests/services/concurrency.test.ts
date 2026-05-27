@@ -5,6 +5,10 @@ jest.mock('../../src/connectors/avatar-connector', () => ({
   deductPoints: jest.fn().mockResolvedValue({ avatarStatus: { totalPoints: 50, level: 1 }, devolutionOccurred: false }),
 }));
 
+jest.mock('../../src/services/point-config-cache', () => ({
+  getPointConfig: jest.fn().mockResolvedValue(require('../../src/types').DEFAULT_POINT_CONFIG),
+}));
+
 const mockSend = jest.fn();
 const mockClient = { send: mockSend } as any;
 

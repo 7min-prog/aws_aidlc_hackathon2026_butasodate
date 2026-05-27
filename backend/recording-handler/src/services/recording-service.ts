@@ -1,6 +1,7 @@
 import { DynamoDBDocumentClient, PutCommand, QueryCommand, GetCommand, UpdateCommand, TransactWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { ActivityRecord, CreateActivityRequest, RecordSource, CategoryType, PaginatedResponse, ActivitySummaryResponse } from '../types';
 import { calculateManualPoints } from './point-calculator';
+import { getPointConfig } from './point-config-cache';
 import { addPoints, deductPoints } from '../connectors/avatar-connector';
 import { randomUUID } from 'crypto';
 
@@ -15,7 +16,8 @@ export class RecordingService {
     const category = await this.getCategory(req.categoryId);
     if (!category) throw new Error('Category not found');
 
-    const points = calculateManualPoints(category.type as CategoryType);
+    const config = await getPointConfig();
+    const points = calculateManualPoints(category.type as CategoryType, config);
     const now = new Date().toISOString();
     const recordedAt = req.recordedAt || now;
 
@@ -50,6 +52,7 @@ export class RecordingService {
     const syncedRecords: ActivityRecord[] = [];
     const skippedIds: string[] = [];
     let totalPoints = 0;
+    const config = await getPointConfig();
 
     for (const req of requests) {
       const recordId = req.recordId || randomUUID();
@@ -62,7 +65,7 @@ export class RecordingService {
       const category = await this.getCategory(req.categoryId);
       if (!category) continue;
 
-      const points = calculateManualPoints(category.type as CategoryType);
+      const points = calculateManualPoints(category.type as CategoryType, config);
       const now = new Date().toISOString();
       const recordedAt = req.recordedAt || now;
 

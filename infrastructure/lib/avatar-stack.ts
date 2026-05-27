@@ -157,6 +157,22 @@ export class AvatarStack extends cdk.Stack {
       cognitoUserPools: [userPool as cognito.IUserPool],
     });
 
+    // Gateway Responses: 4XX/5XXにCORSヘッダーを付与（Authorizer 401対策）
+    api.addGatewayResponse('Default4xx', {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
+    });
+    api.addGatewayResponse('Default5xx', {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
+    });
+
     const authMethodOptions: apigateway.MethodOptions = {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
