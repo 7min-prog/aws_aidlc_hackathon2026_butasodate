@@ -5,6 +5,14 @@ on:
     branches: [main]
     paths: ['frontend/**']
   workflow_dispatch:
+    inputs:
+      flavor:
+        description: 'Build flavor'
+        type: choice
+        options:
+          - dev
+          - prod
+        default: dev
 
 permissions:
   contents: read
@@ -27,9 +35,9 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Build Flutter web (prod)
+      - name: Build Flutter web (${{ inputs.flavor || 'dev' }})
         working-directory: frontend
-        run: flutter build web -t lib/main_prod.dart --base-href /aws_aidlc_hackathon/
+        run: flutter build web -t lib/main_${{ inputs.flavor || 'dev' }}.dart --base-href /aws_aidlc_hackathon/
 
       - uses: actions/upload-pages-artifact@v3
         with:
