@@ -47,13 +47,13 @@ class _BattleReadyScreenState extends State<BattleReadyScreen> with SingleTicker
         )),
         // 自分のぶた
         Positioned(top: 200 * sy, left: 50 * sx, child: SizedBox(
-          width: 120 * sx, height: 120 * sy,
-          child: CustomPaint(painter: _BattlePigPainter(color: const Color(0xFFFF9BB3))),
+          width: 150 * sx, height: 150 * sy,
+          child: Image.asset('assets/pig_default.png', fit: BoxFit.contain),
         )),
         // 相手のぶた
         Positioned(top: 200 * sy, left: 220 * sx, child: SizedBox(
-          width: 120 * sx, height: 120 * sy,
-          child: CustomPaint(painter: _BattlePigPainter(color: const Color(0xFF5A8ED1))),
+          width: 150 * sx, height: 150 * sy,
+          child: Image.asset('assets/pig_utouto.png', fit: BoxFit.contain),
         )),
         // 自分の名前
         Positioned(top: 330 * sy, left: 60 * sx, child: Text('じぶん LV.3', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.paper))),

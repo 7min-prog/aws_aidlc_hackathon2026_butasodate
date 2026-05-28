@@ -17,7 +17,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).login('t@t.com', 'p');
-      expect(result, isTrue);
+      expect(result, isNull);
       expect(c.read(authStateProvider).value?.accessToken, 'a');
     });
 
@@ -30,7 +30,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).login('b@b.com', 'x');
-      expect(result, isFalse);
+      expect(result, isNotNull);
     });
   });
 
@@ -44,7 +44,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).signup('n@n.com', 'p');
-      expect(result, isTrue);
+      expect(result, isNull);
     });
 
     test('returns false on error', () async {
@@ -56,7 +56,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).signup('d@d.com', 'p');
-      expect(result, isFalse);
+      expect(result, isNotNull);
     });
   });
 
@@ -70,7 +70,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).confirmSignup('t@t.com', '123456');
-      expect(result, isTrue);
+      expect(result, isNull);
     });
 
     test('returns false on error', () async {
@@ -82,7 +82,7 @@ void main() {
       final c = ProviderContainer(overrides: [authDioProvider.overrideWithValue(dio)]);
       addTearDown(c.dispose);
       final result = await c.read(authStateProvider.notifier).confirmSignup('t@t.com', 'bad');
-      expect(result, isFalse);
+      expect(result, isNotNull);
     });
   });
 

@@ -27,7 +27,7 @@ class AvatarDetailScreen extends StatelessWidget {
                 color: ButaColors.bgDeep,
                 border: Border.all(color: ButaColors.ink, width: 3),
               ),
-              child: Center(child: SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 80.0, height: 80.0)),
+              child: Center(child: Image.asset('assets/pig_ramen.png', width: 180, height: 180, fit: BoxFit.contain)),
             ),
             const SizedBox(height: 16),
 

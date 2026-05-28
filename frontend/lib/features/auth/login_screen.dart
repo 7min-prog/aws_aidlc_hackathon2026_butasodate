@@ -30,9 +30,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _login() async {
     if (AppConfig.isDev) AppConfig.devBaseUrl = _hostCtrl.text;
-    final ok = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
+    final error = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
     if (!mounted) return;
-    if (ok) {
+    if (error == null) {
       // ニックネーム設定済みか確認
       try {
         final api = ref.read(apiClientProvider);
@@ -48,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (mounted) context.go('/nickname');
       }
     } else {
-      showPixelAlert(context, message: 'ログインに しっぱい\nしました。');
+      showPixelAlert(context, message: 'ログインに しっぱい\nしました。\n\n$error');
     }
   }
 

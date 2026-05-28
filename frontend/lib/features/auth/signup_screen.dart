@@ -28,12 +28,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       showPixelAlert(context, message: 'パスワードが\nあっていません。');
       return;
     }
-    final ok = await ref.read(authStateProvider.notifier).signup(_emailCtrl.text, _pwCtrl.text);
+    final error = await ref.read(authStateProvider.notifier).signup(_emailCtrl.text, _pwCtrl.text);
     if (!mounted) return;
-    if (ok) {
+    if (error == null) {
       context.push('/confirm', extra: _emailCtrl.text);
     } else {
-      showPixelAlert(context, message: 'アカウントの さくせいに\nしっぱい しました。');
+      showPixelAlert(context, message: 'アカウントの さくせいに\nしっぱい しました。\n\n$error');
     }
   }
 

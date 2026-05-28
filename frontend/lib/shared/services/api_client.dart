@@ -47,6 +47,8 @@ class ApiClient {
       return '${AppConfig.recordingApiBase}$path';
     } else if (path.startsWith('/avatar')) {
       return '${AppConfig.avatarApiBase}$path';
+    } else if (path.startsWith('/health-sync')) {
+      return '${AppConfig.recordingApiBase}$path';
     } else if (path.startsWith('/social/') || path.startsWith('/rankings') || path.startsWith('/battles/')) {
       return '${AppConfig.socialApiBase}$path';
     } else if (path.startsWith('/admin')) {

@@ -32,6 +32,7 @@ import 'package:buta_app/features/settings/profile_edit_screen.dart';
 import 'package:buta_app/features/settings/health_data_screen.dart';
 import 'package:buta_app/features/settings/notification_settings_screen.dart';
 import 'package:buta_app/features/start/system_screens.dart';
+import 'package:buta_app/shared/services/bgm_service.dart';
 
 /// レトロゲーム風フェードトランジション
 CustomTransitionPage<void> pixelFadePage({required Widget child, required GoRouterState state}) {
@@ -50,7 +51,8 @@ final initialRouteProvider = Provider<String>((ref) => '/start');
 
 final routerProvider = Provider<GoRouter>((ref) {
   final initialRoute = ref.watch(initialRouteProvider);
-  return GoRouter(
+  final bgm = ref.read(bgmServiceProvider);
+  final router = GoRouter(
     initialLocation: initialRoute,
     routes: [
       GoRoute(
@@ -209,6 +211,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+  router.routerDelegate.addListener(() {
+    final config = router.routerDelegate.currentConfiguration;
+    if (config.matches.isEmpty) return;
+    final path = config.last.matchedLocation;
+    bgm.play(BgmService.trackForRoute(path));
+  });
+  return router;
 });
 
 

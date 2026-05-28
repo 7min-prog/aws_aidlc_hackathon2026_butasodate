@@ -17,9 +17,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
   int _page = 0;
 
   static const _pages = [
-    _TutorialPage(accentColor: ButaColors.yellow, pigColor: ButaColors.pink, emoji: '^_^', title: 'ダメなじぶんを\nきろくしよう！', body: 'しんやラーメン、よふかし、\nうんどうサボり...\nぜんぶ きろくするだけ！', btnLabel: 'つぎへ', btnColor: ButaColors.blue),
-    _TutorialPage(accentColor: ButaColors.green, pigColor: ButaColors.red, emoji: '>w<', title: 'ぶたが どんどん\nそだっていく！', body: 'きろくするほど ぶたが\nまるまると せいちょう！\nスキルも おぼえるよ', btnLabel: 'つぎへ', btnColor: ButaColors.blue),
-    _TutorialPage(accentColor: ButaColors.red, pigColor: ButaColors.blue, emoji: '!!', title: 'そだてた ぶたで\nバトルだ！', body: 'フレンドの ぶたと たいせん！\nダメなほど つよくなる\nさいきょうの ぶたを めざせ', btnLabel: 'はじめる！', btnColor: ButaColors.red),
+    _TutorialPage(accentColor: ButaColors.yellow, image: 'assets/tutorial/tutorial_1_record.png', title: 'ダメなじぶんを\nきろくしよう！', body: 'しんやラーメン、よふかし、\nうんどうサボり...\nぜんぶ きろくするだけ！', btnLabel: 'つぎへ', btnColor: ButaColors.blue),
+    _TutorialPage(accentColor: ButaColors.green, image: 'assets/tutorial/tutorial_2_grow.png', title: 'ぶたが どんどん\nそだっていく！', body: 'きろくするほど ぶたが\nまるまると せいちょう！\nスキルも おぼえるよ', btnLabel: 'つぎへ', btnColor: ButaColors.blue),
+    _TutorialPage(accentColor: ButaColors.red, image: 'assets/tutorial/tutorial_3_battle.png', title: 'そだてた ぶたで\nバトルだ！', body: 'フレンドの ぶたと たいせん！\nダメなほど つよくなる\nさいきょうの ぶたを めざせ', btnLabel: 'はじめる！', btnColor: ButaColors.red),
   ];
 
   Future<void> _completeTutorial() async {
@@ -54,7 +54,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
             options: CarouselOptions(height: size.height, viewportFraction: 1.0, enableInfiniteScroll: false, onPageChanged: (i, _) => setState(() => _page = i)),
             itemBuilder: (context, i, _) => _buildPage(_pages[i], i, sx, sy, size),
           ),
-          // ドットインジケーター（タップ可能）
+          // ドットインジケーター
           Positioned(
             top: 560 * sy, left: 0, right: 0,
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: List.generate(3, (i) => GestureDetector(
@@ -88,27 +88,24 @@ class _TutorialScreenState extends State<TutorialScreen> {
   Widget _buildPage(_TutorialPage p, int index, double sx, double sy, Size size) {
     return Stack(
       children: [
-        Positioned(top: 80 * sy, left: 0, right: 0, child: Text('${index + 1} / 3', textAlign: TextAlign.center, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.gray))),
+        Positioned(top: 40 * sy, left: 0, right: 0, child: Text('${index + 1} / 3', textAlign: TextAlign.center, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.gray))),
+        // チュートリアル画像
         Positioned(
-          top: 120 * sy, left: (size.width - 200 * sx) / 2,
-          child: Container(
-            width: 200 * sx, height: 180 * sy,
-            decoration: BoxDecoration(color: ButaColors.ink, border: Border.all(color: p.accentColor, width: 3)),
-            child: Stack(alignment: Alignment.center, children: [
-              Container(width: 80 * sx, height: 70 * sy, decoration: BoxDecoration(color: p.pigColor, border: Border.all(color: ButaColors.ink2, width: 2))),
-              Positioned(top: 10 * sy, child: Text(p.emoji, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: p.accentColor))),
-            ]),
+          top: 70 * sy, left: (size.width - 260 * sx) / 2,
+          child: SizedBox(
+            width: 260 * sx, height: 260 * sy,
+            child: Image.asset(p.image, fit: BoxFit.contain),
           ),
         ),
-        Positioned(top: 350 * sy, left: 0, right: 0, child: Text(p.title, textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: p.accentColor))),
-        Positioned(top: 430 * sy, left: 0, right: 0, child: Text(p.body, textAlign: TextAlign.center, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.bg))),
+        Positioned(top: 345 * sy, left: 0, right: 0, child: Text(p.title, textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 18, color: p.accentColor))),
+        Positioned(top: 415 * sy, left: 0, right: 0, child: Text(p.body, textAlign: TextAlign.center, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.bg))),
       ],
     );
   }
 }
 
 class _TutorialPage {
-  final Color accentColor, pigColor, btnColor;
-  final String emoji, title, body, btnLabel;
-  const _TutorialPage({required this.accentColor, required this.pigColor, required this.emoji, required this.title, required this.body, required this.btnLabel, required this.btnColor});
+  final Color accentColor, btnColor;
+  final String image, title, body, btnLabel;
+  const _TutorialPage({required this.accentColor, required this.image, required this.title, required this.body, required this.btnLabel, required this.btnColor});
 }

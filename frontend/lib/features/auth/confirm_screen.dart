@@ -20,13 +20,13 @@ class _ConfirmScreenState extends ConsumerState<ConfirmScreen> {
   final _codeCtrl = TextEditingController();
 
   Future<void> _confirm() async {
-    final ok = await ref.read(authStateProvider.notifier).confirmSignup(widget.email, _codeCtrl.text);
+    final error = await ref.read(authStateProvider.notifier).confirmSignup(widget.email, _codeCtrl.text);
     if (!mounted) return;
-    if (ok) {
+    if (error == null) {
       await showPixelAlert(context, title: 'かんりょう', message: 'メールを かくにん しました！\nログインして ください。');
       if (mounted) context.go('/login');
     } else {
-      showPixelAlert(context, message: 'コードが ちがいます。');
+      showPixelAlert(context, message: 'コードが ちがいます。\n\n$error');
     }
   }
 

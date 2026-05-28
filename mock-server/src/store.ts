@@ -12,11 +12,21 @@ export const evolutionPaths = [
 ];
 
 export const skills = [
-  { skillId: 'skill-1', name: 'ラーメンスプラッシュ', type: 'ATTACK', power: 30, cooldown: 2, evolutionPathId: 'food-path', requiredLevel: 3, spriteAnimationKey: 'ramen-splash' },
-  { skillId: 'skill-2', name: 'もちもちガード', type: 'DEFENSE', power: 20, cooldown: 3, evolutionPathId: 'food-path', requiredLevel: 5, spriteAnimationKey: 'mochi-guard' },
-  { skillId: 'skill-3', name: '二度寝バリア', type: 'DEFENSE', power: 25, cooldown: 3, evolutionPathId: 'lifestyle-path', requiredLevel: 3, spriteAnimationKey: 'sleep-barrier' },
-  { skillId: 'skill-4', name: 'だらだらビーム', type: 'ATTACK', power: 35, cooldown: 2, evolutionPathId: 'lifestyle-path', requiredLevel: 5, spriteAnimationKey: 'lazy-beam' },
-  { skillId: 'skill-5', name: 'ヒーリングスナック', type: 'HEAL', power: 40, cooldown: 4, evolutionPathId: 'mixed-path', requiredLevel: 4, spriteAnimationKey: 'heal-snack' },
+  // グルメロード (food-path)
+  { skillId: 'skill-1', name: 'ラーメンスプラッシュ', type: 'ATTACK', targetStat: 'hp', multiplier: 1.5, duration: null, cooldown: 2, speciesId: null, evolutionPathId: 'food-path', requiredLevel: 3, spriteAnimationKey: 'ramen-splash' },
+  { skillId: 'skill-2', name: 'もちもちガード', type: 'DEFENSE', targetStat: 'defense', multiplier: 0.4, duration: 2, cooldown: 3, speciesId: null, evolutionPathId: 'food-path', requiredLevel: 5, spriteAnimationKey: 'mochi-guard' },
+  { skillId: 'skill-3', name: '暴食プレス', type: 'ATTACK', targetStat: 'hp', multiplier: 2.0, duration: null, cooldown: 4, speciesId: null, evolutionPathId: 'food-path', requiredLevel: 10, spriteAnimationKey: 'binge-press' },
+  { skillId: 'skill-4', name: 'カロリーボム', type: 'ATTACK', targetStat: 'hp', multiplier: 2.5, duration: null, cooldown: 5, speciesId: null, evolutionPathId: 'food-path', requiredLevel: 15, spriteAnimationKey: 'calorie-bomb' },
+  // ぐうたらロード (lifestyle-path)
+  { skillId: 'skill-5', name: '二度寝バリア', type: 'DEFENSE', targetStat: 'defense', multiplier: 0.3, duration: 2, cooldown: 3, speciesId: null, evolutionPathId: 'lifestyle-path', requiredLevel: 3, spriteAnimationKey: 'sleep-barrier' },
+  { skillId: 'skill-6', name: 'だらだらビーム', type: 'ATTACK', targetStat: 'hp', multiplier: 1.5, duration: null, cooldown: 2, speciesId: null, evolutionPathId: 'lifestyle-path', requiredLevel: 5, spriteAnimationKey: 'lazy-beam' },
+  { skillId: 'skill-7', name: 'サボりスロー', type: 'DEBUFF', targetStat: 'speed', multiplier: 0.3, duration: 3, cooldown: 4, speciesId: null, evolutionPathId: 'lifestyle-path', requiredLevel: 10, spriteAnimationKey: 'skip-slow' },
+  { skillId: 'skill-8', name: '夜更かしカース', type: 'DEBUFF', targetStat: 'attack', multiplier: 0.25, duration: 2, cooldown: 4, speciesId: null, evolutionPathId: 'lifestyle-path', requiredLevel: 15, spriteAnimationKey: 'stayup-curse' },
+  // バランスロード (mixed-path)
+  { skillId: 'skill-9', name: 'ヒーリングスナック', type: 'HEAL', targetStat: 'hp', multiplier: 0.3, duration: null, cooldown: 4, speciesId: null, evolutionPathId: 'mixed-path', requiredLevel: 4, spriteAnimationKey: 'heal-snack' },
+  { skillId: 'skill-10', name: 'ぐーたらスマッシュ', type: 'ATTACK', targetStat: 'hp', multiplier: 1.8, duration: null, cooldown: 3, speciesId: null, evolutionPathId: 'mixed-path', requiredLevel: 8, spriteAnimationKey: 'lazy-smash' },
+  { skillId: 'skill-11', name: 'ダメダメオーラ', type: 'DEBUFF', targetStat: 'defense', multiplier: 0.35, duration: 2, cooldown: 4, speciesId: null, evolutionPathId: 'mixed-path', requiredLevel: 12, spriteAnimationKey: 'dame-aura' },
+  { skillId: 'skill-12', name: 'ぜんぶのせ', type: 'ATTACK', targetStat: 'hp', multiplier: 3.0, duration: null, cooldown: 6, speciesId: null, evolutionPathId: 'mixed-path', requiredLevel: 15, spriteAnimationKey: 'zenbu-nose' },
 ];
 
 export const avatars: Record<string, any> = {
@@ -26,7 +36,7 @@ export const avatars: Record<string, any> = {
     categoryPoints: { FOOD: 250, LIFESTYLE: 149, MIXED: 0 },
     subCategoryPoints: { 'food_late_ramen': 96, 'food_binge': 84, 'food_snack': 70, 'life_stay_up': 50, 'life_oversleep': 50, 'life_binge_watch': 49 },
     stats: { hp: 100, attack: 40, defense: 45, speed: 35 },
-    skillIds: ['skill-1', 'skill-2', 'skill-3', 'skill-4', 'skill-5'],
+    skillIds: ['skill-1', 'skill-2', 'skill-5', 'skill-6', 'skill-9'],
     spriteSheetKey: 'kobuta-normal',
     createdAt: '2026-05-20T10:00:00Z', updatedAt: new Date().toISOString(),
   },

@@ -7,6 +7,7 @@ import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 import 'package:buta_app/features/home/home_screen.dart';
 
 class ProfileEditScreen extends ConsumerStatefulWidget {
@@ -54,7 +55,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       debugPrint('PUT /users/profile succeeded');
     } catch (e) {
       debugPrint('PUT /users/profile failed: $e');
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
       return;
     }
     try {
@@ -63,7 +64,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
       }
     } catch (e) {
       debugPrint('PUT /avatar/name failed: $e');
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
       return;
     }
     if (mounted) await showPixelAlert(context, message: 'ほぞんしました！');
