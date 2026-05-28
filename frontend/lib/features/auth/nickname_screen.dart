@@ -7,6 +7,7 @@ import 'package:buta_app/shared/services/api_client.dart';
 import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 class NicknameScreen extends ConsumerStatefulWidget {
   const NicknameScreen({super.key});
@@ -27,8 +28,8 @@ class _NicknameScreenState extends ConsumerState<NicknameScreen> {
       await api.post('/users/profile', data: {'nickname': nickname});
       await api.post('/avatar', data: {'name': pigName});
       if (mounted) context.go('/home');
-    } catch (_) {
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+    } catch (e) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
     }
   }
 

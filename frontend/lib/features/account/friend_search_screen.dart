@@ -7,6 +7,7 @@ import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_input.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 /// 検索結果プロバイダー（クエリをfamilyパラメータとして受け取る）
 final friendSearchResultsProvider = FutureProvider.autoDispose.family<List<Map<String, dynamic>>, String>((ref, query) async {
@@ -39,8 +40,8 @@ class _FriendSearchScreenState extends ConsumerState<FriendSearchScreen> {
       await api.post('/social/friends/request', data: {'targetUserId': targetUserId});
       setState(() => _requested.add(targetUserId));
       if (mounted) showPixelAlert(context, title: 'おくりました', message: 'フレンドしんせいを\nおくりました！');
-    } catch (_) {
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+    } catch (e) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
     }
   }
 

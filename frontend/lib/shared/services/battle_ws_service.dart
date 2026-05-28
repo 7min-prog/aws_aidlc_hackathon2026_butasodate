@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:buta_app/shared/app_config.dart';
 
 /// バトル用WebSocket接続をアプリ全体で共有するシングルトン
 class BattleWsService {
@@ -30,7 +31,9 @@ class BattleWsService {
       }
     } catch (_) {}
 
-    final wsUrl = 'wss://cd3lmmh06a.execute-api.ap-northeast-1.amazonaws.com/dev?token=$token&userId=$userId';
+    final wsUrl = AppConfig.isDev
+        ? 'ws://${Uri.parse(AppConfig.authApiBase).host}:${Uri.parse(AppConfig.authApiBase).port}/ws?token=$token&userId=$userId'
+        : 'wss://cd3lmmh06a.execute-api.ap-northeast-1.amazonaws.com/dev?token=$token&userId=$userId';
     channel = WebSocketChannel.connect(Uri.parse(wsUrl));
     channel!.stream.listen((message) {
       if (!_controller.isClosed) {

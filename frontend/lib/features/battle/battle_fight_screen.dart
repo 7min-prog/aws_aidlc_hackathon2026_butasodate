@@ -268,7 +268,7 @@ class _BattleFightScreenState extends ConsumerState<BattleFightScreen> with Tick
             final offset = _oppShake ? sin(_shakeCtrl.value * pi * 6) * 6 : 0.0;
             return Transform.translate(offset: Offset(offset, 0), child: child);
           },
-          child: SizedBox(width: 90 * sx, height: 90 * sx, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFF5A8ED1)))),
+          child: SizedBox(width: 130 * sx, height: 130 * sx, child: Image.asset('assets/pig_utouto.png', fit: BoxFit.contain)),
         )),
         // 自分名前+HP
         Positioned(top: 220 * sy, left: 20 * sx, child: Text(_myName, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 11, color: ButaColors.ink))),
@@ -280,7 +280,7 @@ class _BattleFightScreenState extends ConsumerState<BattleFightScreen> with Tick
             final offset = _myShake ? sin(_shakeCtrl.value * pi * 6) * 6 : 0.0;
             return Transform.translate(offset: Offset(offset, 0), child: child);
           },
-          child: SizedBox(width: 90 * sx, height: 90 * sx, child: CustomPaint(painter: _FightPigPainter(color: const Color(0xFFFF9BB3)))),
+          child: SizedBox(width: 130 * sx, height: 130 * sx, child: Image.asset('assets/pig_default.png', fit: BoxFit.contain)),
         )),
         // ダメージ数字
         if (_showDamage) Positioned(

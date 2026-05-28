@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 class RecordConfirmScreen extends ConsumerStatefulWidget {
   const RecordConfirmScreen({super.key, required this.category});
@@ -44,9 +45,16 @@ class _RecordConfirmScreenState extends ConsumerState<RecordConfirmScreen> {
     try {
       final api = ref.read(apiClientProvider);
       final res = await api.post('/activities', data: {'records': [{'categoryId': cat['categoryId']}]});
-      if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points'], 'result': res.data});
-    } catch (_) {
-      if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points']});
+      if (!mounted) return;
+      final data = res.data as Map<String, dynamic>?;
+      if (data?['evolved'] == true) {
+        final avatar = data?['avatar'] as Map<String, dynamic>? ?? {};
+        context.go('/evo-anim', extra: {'name': avatar['name'] ?? 'ぽっちゃり', 'level': avatar['level'] ?? 5});
+      } else {
+        context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points'], 'result': data});
+      }
+    } catch (e) {
+      if (mounted) context.go('/record-complete', extra: {'points': cat['basePoints'] ?? cat['points'], 'error': formatApiError(e)});
     }
   }
 

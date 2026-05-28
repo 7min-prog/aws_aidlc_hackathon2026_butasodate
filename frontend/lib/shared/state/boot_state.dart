@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/constants.dart';
 import 'package:buta_app/shared/models/models.dart';
 import 'package:buta_app/shared/services/image_cache_service.dart';
 import 'package:buta_app/shared/state/auth_state.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 enum AppBootStatus { checking, loadingData, done, error }
 
@@ -16,6 +18,7 @@ class BootResult {
   final RecordSummary? summary;
   final int pendingRequestCount;
   final String? avatarImagePath;
+  final String? errorDetail;
 
   BootResult({
     required this.destination,
@@ -24,6 +27,7 @@ class BootResult {
     this.summary,
     this.pendingRequestCount = 0,
     this.avatarImagePath,
+    this.errorDetail,
   });
 }
 
@@ -31,7 +35,7 @@ class BootResult {
 final bootDioFactoryProvider = Provider<Dio Function(String baseUrl, String token)>((ref) {
   return (baseUrl, token) => Dio(BaseOptions(
     baseUrl: baseUrl,
-    headers: {'Authorization': token},
+    headers: {'Authorization': 'Bearer $token'},
   ));
 });
 
@@ -52,14 +56,14 @@ class BootNotifier extends AsyncNotifier<BootResult> {
 
     // トークン検証 + プロフィール取得
     try {
-      final profile = await _fetchProfile(tokens.idToken ?? tokens.accessToken);
+      final profile = await _fetchProfile(tokens.accessToken);
       if (profile == null || !profile.hasNickname) {
         await _waitMinDuration(startTime);
         return BootResult(destination: BootDestination.nickname, profile: profile);
       }
 
       // 初期データ並列取得
-      final results = await _fetchInitialData(tokens.idToken ?? tokens.accessToken, profile);
+      final results = await _fetchInitialData(tokens.accessToken, profile);
       await _waitMinDuration(startTime);
       return results;
     } on DioException catch (e) {
@@ -67,22 +71,22 @@ class BootNotifier extends AsyncNotifier<BootResult> {
         final refreshed = await ref.read(authStateProvider.notifier).refreshToken();
         if (!refreshed) {
           await _waitMinDuration(startTime);
-          return BootResult(destination: BootDestination.login);
+          return BootResult(destination: BootDestination.login, errorDetail: formatApiError(e));
         }
         return _executeBoot();
       }
       // ネットワークエラー → ログインに戻す
       await _waitMinDuration(startTime);
-      return BootResult(destination: BootDestination.login);
-    } catch (_) {
+      return BootResult(destination: BootDestination.login, errorDetail: formatApiError(e));
+    } catch (e) {
       await _waitMinDuration(startTime);
-      return BootResult(destination: BootDestination.login);
+      return BootResult(destination: BootDestination.login, errorDetail: e.toString());
     }
   }
 
   Future<UserProfile?> _fetchProfile(String accessToken) async {
     final dioFactory = ref.read(bootDioFactoryProvider);
-    final dio = dioFactory(AppConstants.authApiBase, accessToken);
+    final dio = dioFactory(AppConfig.authApiBase, accessToken);
     try {
       final res = await dio.get('/users/me');
       return UserProfile.fromJson(res.data as Map<String, dynamic>);
@@ -96,9 +100,9 @@ class BootNotifier extends AsyncNotifier<BootResult> {
     final imageCache = ref.read(imageCacheServiceProvider);
     final dioFactory = ref.read(bootDioFactoryProvider);
 
-    final avatarDio = dioFactory(AppConstants.avatarApiBase, accessToken);
-    final recordingDio = dioFactory(AppConstants.recordingApiBase, accessToken);
-    final socialDio = dioFactory(AppConstants.socialApiBase, accessToken);
+    final avatarDio = dioFactory(AppConfig.avatarApiBase, accessToken);
+    final recordingDio = dioFactory(AppConfig.recordingApiBase, accessToken);
+    final socialDio = dioFactory(AppConfig.socialApiBase, accessToken);
 
     // 並列実行
     final results = await Future.wait([

@@ -53,8 +53,11 @@ class StartScreen extends StatelessWidget {
 
               // PigSprite
               Positioned(
-                top: 370 * sy, left: (size.width - 160 * sx) / 2,
-                child: Container(width: 160 * sx, height: 140 * sy, decoration: BoxDecoration(color: ButaColors.pink, border: Border.all(color: ButaColors.ink, width: 2)), child: Center(child: SvgPicture.asset('assets/pixel-art/icons/pig.svg', width: 64, height: 64))),
+                top: 360 * sy, left: (size.width - 180 * sx) / 2,
+                child: SizedBox(
+                  width: 180 * sx, height: 180 * sy,
+                  child: Image.asset('assets/pig_default.png', fit: BoxFit.contain),
+                ),
               ),
 
               // PRESS START (点滅)

@@ -8,6 +8,7 @@ import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 
 final friendListProvider = FutureProvider.autoDispose<Map<String, List<dynamic>>>((ref) async {
   final api = ref.read(apiClientProvider);
@@ -42,8 +43,8 @@ class _FriendListScreenState extends ConsumerState<FriendListScreen> {
       final api = ref.read(apiClientProvider);
       await api.delete('/social/friends/$friendId');
       setState(() => _friends.removeWhere((f) => (f['friendId'] ?? f['userId']) == friendId));
-    } catch (_) {
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+    } catch (e) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
     }
   }
 
@@ -54,8 +55,8 @@ class _FriendListScreenState extends ConsumerState<FriendListScreen> {
       setState(() => _requests.removeWhere((r) => r['requestId'] == requestId));
       if (accept) ref.invalidate(friendListProvider);
       if (mounted) showPixelAlert(context, message: accept ? 'しょうにん しました！' : 'きょひ しました');
-    } catch (_) {
-      if (mounted) showPixelAlert(context, message: 'エラーが おきました');
+    } catch (e) {
+      if (mounted) showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
     }
   }
 

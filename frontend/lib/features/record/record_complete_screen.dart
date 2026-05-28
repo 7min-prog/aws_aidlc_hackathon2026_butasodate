@@ -25,7 +25,7 @@ class RecordCompleteScreen extends ConsumerWidget {
         Positioned(top: 52 * sy, left: 0, right: 0, child: Center(child: Container(
           width: 150 * sx, height: 150 * sy,
           decoration: BoxDecoration(color: const Color(0xFFFFF8E6), border: Border.all(color: ButaColors.ink, width: 2), borderRadius: BorderRadius.circular(8)),
-          child: CustomPaint(painter: _HappyPigPainter()),
+          child: Image.asset('assets/pig_happy.png', fit: BoxFit.contain),
         ))),
         // リアクション
         Positioned(top: 222 * sy, left: 0, right: 0, child: Center(child: Container(

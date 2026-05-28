@@ -18,6 +18,7 @@ class AvatarDetailScreen extends ConsumerStatefulWidget {
 
 class _AvatarDetailScreenState extends ConsumerState<AvatarDetailScreen> {
   Map<String, dynamic>? _avatar;
+  List<Map<String, dynamic>> _skills = [];
 
   @override
   void initState() {
@@ -31,7 +32,12 @@ class _AvatarDetailScreenState extends ConsumerState<AvatarDetailScreen> {
       final api = ref.read(apiClientProvider);
       final res = await api.get('/avatar');
       final data = res.data as Map<String, dynamic>? ?? {};
-      if (mounted) setState(() => _avatar = data['avatar'] as Map<String, dynamic>? ?? data);
+      if (mounted) {
+        setState(() {
+          _avatar = data['avatar'] as Map<String, dynamic>? ?? data;
+          _skills = (data['skills'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+        });
+      }
     } catch (_) {}
   }
 
@@ -41,10 +47,10 @@ class _AvatarDetailScreenState extends ConsumerState<AvatarDetailScreen> {
     final sx = size.width / 390, sy = size.height / 740;
     final a = _avatar ?? {'name': 'こぶた', 'level': 1, 'stats': {'hp': 100, 'attack': 10, 'defense': 10, 'speed': 10}};
     final stats = a['stats'] as Map<String, dynamic>? ?? {};
-    final skillList = (a['skills'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    final skillList = _skills.isNotEmpty ? _skills : (a['skills'] as List?)?.cast<Map<String, dynamic>>() ?? [];
     final skills = skillList.isNotEmpty
         ? skillList.map((s) => s['name'] as String? ?? s['skillId'] as String? ?? '???').toList()
-        : (a['skillIds'] as List?)?.cast<String>() ?? ['まだ スキルが ないよ'];
+        : ['まだ スキルが ないよ'];
 
     return Scaffold(
       backgroundColor: ButaColors.blue,
@@ -57,7 +63,7 @@ class _AvatarDetailScreenState extends ConsumerState<AvatarDetailScreen> {
         // アバター背景 + SVG
         Positioned(top: 12 * sy, left: 120 * sx, child: SizedBox(
           width: 150 * sx, height: 150 * sx,
-          child: Center(child: SizedBox(width: 100, height: 100, child: CustomPaint(painter: _DetailPigPainter()))),
+          child: Center(child: Image.asset((a['level'] ?? 1) >= 5 ? 'assets/pig_ramen.png' : 'assets/pig_default.png', width: 180, height: 180, fit: BoxFit.contain)),
         )),
         // 名前
         Positioned(top: 172 * sy, left: 14 * sx, width: 362 * sx, child: Text(

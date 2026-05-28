@@ -1,19 +1,24 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/starry_background.dart';
+import 'package:buta_app/features/home/home_screen.dart';
 
-class EvoAnimScreen extends StatefulWidget {
-  const EvoAnimScreen({super.key, this.newName = 'ぽっちゃり', this.newLevel = 3});
+class EvoAnimScreen extends ConsumerStatefulWidget {
+  const EvoAnimScreen({super.key, this.oldName = 'こぶた', this.newName = 'ラーメンぶた', this.newLevel = 3});
+  final String oldName;
   final String newName;
   final int newLevel;
   @override
-  State<EvoAnimScreen> createState() => _EvoAnimScreenState();
+  ConsumerState<EvoAnimScreen> createState() => _EvoAnimScreenState();
 }
 
-class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateMixin {
+class _EvoAnimScreenState extends ConsumerState<EvoAnimScreen> with TickerProviderStateMixin {
   late final AnimationController _ctrl;
+  final AudioPlayer _sePlayer = AudioPlayer();
   // フェーズ: 0-3s 進化前表示+光集中, 3-5s フラッシュ+変身, 5-8s 進化後表示+パーティクル, 8-10s テキスト表示
   double get _phase => _ctrl.value * 10; // 0~10秒
 
@@ -21,10 +26,11 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(seconds: 10))..forward();
+    _sePlayer.play(AssetSource('bgm/evolution.wav'));
   }
 
   @override
-  void dispose() { _ctrl.dispose(); super.dispose(); }
+  void dispose() { _sePlayer.dispose(); _ctrl.dispose(); super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +57,17 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
               top: 280 * sy, left: 130 * sx,
               child: Opacity(
                 opacity: t < 3 ? 1.0 : (4 - t).clamp(0, 1),
-                child: SizedBox(width: 130 * sx, height: 130 * sy, child: CustomPaint(painter: _OldPigPainter())),
+                child: SizedBox(width: 130 * sx, height: 130 * sy, child: Image.asset('assets/pig_default.png', fit: BoxFit.contain)),
               ),
             ),
             // 進化後のぶた (4s~)
             if (t >= 4) Positioned(
-              top: 280 * sy, left: 130 * sx,
+              top: 250 * sy, left: (size.width - 160 * sx) / 2,
               child: Opacity(
                 opacity: t < 5 ? (t - 4).clamp(0, 1) : 1.0,
                 child: Transform.scale(
                   scale: t < 6 ? 0.5 + (t - 4) * 0.25 : 1.0,
-                  child: SizedBox(width: 130 * sx, height: 130 * sy, child: CustomPaint(painter: _NewPigPainter())),
+                  child: SizedBox(width: 160 * sx, height: 160 * sy, child: Image.asset('assets/pig_ramen.png', fit: BoxFit.contain)),
                 ),
               ),
             ),
@@ -85,10 +91,10 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
                 decoration: BoxDecoration(color: ButaColors.paper, border: Border.all(color: ButaColors.ink, width: 2)),
                 padding: EdgeInsets.all(12 * sx),
                 child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('しんかした！ ${widget.newName} LV.${widget.newLevel}', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.ink)),
+                  Text('${widget.oldName} は ${widget.newName} に しんかした！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 13, color: ButaColors.ink)),
                   SizedBox(height: 6 * sy),
-                  Text('★ あたらしい スキルを おぼえた！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.ink)),
-                  Text('★ ステータスが アップした！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.ink)),
+                  Text('★ ラーメンパワーを てにいれた！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.ink)),
+                  Text('★ ぜんステータスが アップした！', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.ink)),
                 ]),
               ),
             )),
@@ -96,7 +102,7 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
             if (t >= 8) Positioned(bottom: 40 * sy, left: 55 * sx, child: Opacity(
               opacity: ((t - 8) / 1).clamp(0, 1),
               child: GestureDetector(
-                onTap: () => context.go('/home'),
+                onTap: () { ref.invalidate(homeDataProvider); context.go('/home'); },
                 child: Container(
                   width: 280 * sx, height: 44 * sy,
                   decoration: BoxDecoration(color: ButaColors.yellow, border: Border.all(color: ButaColors.ink, width: 2)),
@@ -109,7 +115,7 @@ class _EvoAnimScreenState extends State<EvoAnimScreen> with TickerProviderStateM
             if (t >= 6) Positioned(top: 250 * sy, left: 0, right: 0, child: Opacity(
               opacity: ((t - 6) / 1).clamp(0, 1),
               child: Text(
-                'こぶた の ぶたは…',
+                '${widget.oldName} の ぶたは…',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper),
               ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'package:buta_app/shared/theme.dart';
 import 'package:buta_app/shared/ui/widgets.dart';
 import 'package:buta_app/shared/ui/pixel_dialog.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/shared/utils/error_helper.dart';
 import 'package:buta_app/features/record/record_tab_screen.dart';
 
 class RecordDetailScreen extends ConsumerWidget {
@@ -96,8 +96,7 @@ class RecordDetailScreen extends ConsumerWidget {
       ref.invalidate(recordsProvider);
     } catch (e) {
       if (context.mounted) {
-        final msg = e is DioException ? '${e.response?.statusCode}: ${e.response?.data}' : '$e';
-        showPixelAlert(context, message: msg);
+        showPixelAlert(context, message: 'エラーが おきました\n\n${formatApiError(e)}');
         return;
       }
     }

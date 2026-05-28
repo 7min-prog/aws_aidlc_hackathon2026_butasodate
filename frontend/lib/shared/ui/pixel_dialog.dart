@@ -21,7 +21,8 @@ class _PixelAlertDialog extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Container(
-        width: 280, height: 150,
+        width: 280,
+        constraints: const BoxConstraints(minHeight: 150, maxHeight: 320),
         decoration: BoxDecoration(
           color: ButaColors.paper,
           border: Border.all(color: ButaColors.ink, width: 3),
@@ -35,6 +36,7 @@ class _PixelAlertDialog extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // タイトルバー（赤）
@@ -44,10 +46,12 @@ class _PixelAlertDialog extends StatelessWidget {
                       child: Text(title, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)),
                     ),
                     // メッセージ
-                    Expanded(
+                    Flexible(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(11, 10, 11, 0),
-                        child: Text(message, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink)),
+                        child: SingleChildScrollView(
+                          child: Text(message, style: const TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.ink)),
+                        ),
                       ),
                     ),
                     // OKボタン

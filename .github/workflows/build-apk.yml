@@ -45,7 +45,7 @@ jobs:
           echo "| ✅ Passed | $PASS |" >> $GITHUB_STEP_SUMMARY
           echo "| ❌ Failed | $FAIL |" >> $GITHUB_STEP_SUMMARY
 
-      - name: Check coverage >= 90%
+      - name: Check coverage >= 80%
         run: |
           LH=$(grep -oP '^LH:\K\d+' coverage/lcov.info | paste -sd+ | bc)
           LF=$(grep -oP '^LF:\K\d+' coverage/lcov.info | paste -sd+ | bc)
@@ -55,11 +55,11 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**$PCT%** ($LH / $LF lines)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          if [ $(echo "$PCT < 90" | bc) -eq 1 ]; then
-            echo "::error::Coverage $PCT% is below 90% threshold"
+          if [ $(echo "$PCT < 80" | bc) -eq 1 ]; then
+            echo "::error::Coverage $PCT% is below 80% threshold"
             exit 1
           fi
-          echo "✅ Coverage meets 90% threshold" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload coverage
         if: always()

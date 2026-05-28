@@ -9,6 +9,7 @@ import 'package:buta_app/shared/ui/cloud_animation.dart';
 import 'package:buta_app/shared/ui/pixel_tab_bar.dart';
 import 'package:buta_app/shared/ui/pixel_loader.dart';
 import 'package:buta_app/shared/services/api_client.dart';
+import 'package:buta_app/features/home/health_sync_result_dialog.dart';
 
 final homeDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   try {
@@ -34,11 +35,53 @@ final homeDataProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   }
 });
 
-class HomeScreen extends ConsumerWidget {
+/// アプリプロセス単位で1回だけヘルスデータ同期結果を表示するためのフラグ
+bool _healthSyncShown = false;
+
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkHealthSync());
+  }
+
+  Future<void> _checkHealthSync() async {
+    if (_healthSyncShown) return;
+    _healthSyncShown = true;
+    try {
+      final api = ref.read(apiClientProvider);
+      final results = await Future.wait([
+        api.get('/health-sync/result'),
+        api.get('/avatar'),
+      ]);
+      final data = results[0].data as Map<String, dynamic>?;
+      if (data != null && data['hasResults'] == true && mounted) {
+        final items = (data['items'] as List).cast<Map<String, dynamic>>();
+        final totalPoints = data['totalPoints'] as int;
+        final avatarData = results[1].data is Map<String, dynamic> ? results[1].data as Map<String, dynamic> : <String, dynamic>{};
+        final avatar = avatarData['avatar'] as Map<String, dynamic>? ?? avatarData;
+        final avatarName = avatar['name'] as String? ?? 'ぶた';
+        showDialog(
+          context: context,
+          barrierColor: ButaColors.ink.withValues(alpha: 0.6),
+          builder: (_) => HealthSyncResultDialog(items: items, totalPoints: totalPoints, avatarName: avatarName),
+        );
+      }
+    } catch (_) {
+      // ヘルスデータ取得失敗は無視
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final size = MediaQuery.sizeOf(context);
     final sx = size.width / 390;
     final sy = size.height / 740;
@@ -68,7 +111,7 @@ class HomeScreen extends ConsumerWidget {
             onTap: () => context.push('/avatar-detail', extra: homeData.value?['avatar']),
             child: SizedBox(
               height: 200 * sx,
-              child: Center(child: _AnimatedPig(sx: sx, sy: sx)),
+              child: Center(child: _AnimatedPig(sx: sx, sy: sx, level: homeData.value?['avatar']?['level'] ?? 1)),
             ),
           )),
           // レベル + 名前
@@ -223,8 +266,9 @@ class _StatPanel extends StatelessWidget {
 }
 
 class _AnimatedPig extends StatefulWidget {
-  const _AnimatedPig({required this.sx, required this.sy});
+  const _AnimatedPig({required this.sx, required this.sy, required this.level});
   final double sx, sy;
+  final int level;
   @override
   State<_AnimatedPig> createState() => _AnimatedPigState();
 }
@@ -295,7 +339,7 @@ class _AnimatedPigState extends State<_AnimatedPig> with SingleTickerProviderSta
 
       return Transform.translate(
         offset: Offset(dx * widget.sx, dy * widget.sy + bounce),
-        child: CustomPaint(size: const Size(80, 80), painter: _PigPainter()),
+        child: Image.asset(widget.level >= 5 ? 'assets/pig_ramen.png' : 'assets/pig_default.png', width: 120 * widget.sx, height: 120 * widget.sx, fit: BoxFit.contain),
       );
     });
   }
