@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { PutCommand, DeleteCommand, QueryCommand, GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { PutCommand, DeleteCommand, QueryCommand, GetCommand, ScanCommand, BatchGetCommand } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { successResponse, errorResponse } from './utils/response';
@@ -10,10 +10,24 @@ const FRIENDS_TABLE = process.env.FRIENDS_TABLE || 'buta-friends-dev';
 const FRIEND_REQUESTS_TABLE = process.env.FRIEND_REQUESTS_TABLE || 'buta-friend-requests-dev';
 const RANKINGS_TABLE = process.env.RANKINGS_TABLE || 'buta-rankings-dev';
 const BATTLE_HISTORY_TABLE = process.env.BATTLE_HISTORY_TABLE || 'buta-battle-history-dev';
-const USERS_TABLE = process.env.USERS_TABLE || 'buta-users-dev';
+const USER_PROFILES_TABLE = process.env.USER_PROFILES_TABLE || 'butasodate-user-profiles';
 
 function getUserId(event: APIGatewayProxyEvent): string | null {
   return event.requestContext.authorizer?.claims?.sub || null;
+}
+
+async function fetchNicknames(userIds: string[]): Promise<Record<string, string>> {
+  if (userIds.length === 0) return {};
+  const result = await client.send(new BatchGetCommand({
+    RequestItems: {
+      [USER_PROFILES_TABLE]: { Keys: userIds.map(id => ({ userId: id })) },
+    },
+  }));
+  const map: Record<string, string> = {};
+  for (const item of result.Responses?.[USER_PROFILES_TABLE] || []) {
+    map[item.userId] = item.nickname || '';
+  }
+  return map;
 }
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -49,21 +63,27 @@ async function getFriends(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':uid': userId },
   }));
 
-  return successResponse(200, { friends: result.Items || [] });
+  const friends = result.Items || [];
+  const nicknames = await fetchNicknames(friends.map(f => f.friendId));
+  const enriched = friends.map(f => ({ ...f, nickname: nicknames[f.friendId] || '' }));
+
+  return successResponse(200, { friends: enriched });
 }
 
 async function searchUsers(event: APIGatewayProxyEvent) {
+  const userId = getUserId(event);
   const { query } = JSON.parse(event.body || '{}');
   if (!query) return errorResponse(400, 'query is required');
 
   const result = await client.send(new QueryCommand({
-    TableName: USERS_TABLE,
+    TableName: USER_PROFILES_TABLE,
     IndexName: 'nickname-index',
     KeyConditionExpression: 'nickname = :n',
     ExpressionAttributeValues: { ':n': query },
   }));
 
-  return successResponse(200, { users: result.Items || [] });
+  const users = (result.Items || []).filter(u => u.userId !== userId);
+  return successResponse(200, { users });
 }
 
 async function sendFriendRequest(event: APIGatewayProxyEvent) {
@@ -106,11 +126,11 @@ async function respondFriendRequest(event: APIGatewayProxyEvent) {
     const now = new Date().toISOString();
     await client.send(new PutCommand({
       TableName: FRIENDS_TABLE,
-      Item: { odataId: `${userId}#${req.Item.fromUserId}`, userId, friendId: req.Item.fromUserId, createdAt: now },
+      Item: { compositeId: `${userId}#${req.Item.fromUserId}`, userId, friendId: req.Item.fromUserId, createdAt: now },
     }));
     await client.send(new PutCommand({
       TableName: FRIENDS_TABLE,
-      Item: { odataId: `${req.Item.fromUserId}#${userId}`, userId: req.Item.fromUserId, friendId: userId, createdAt: now },
+      Item: { compositeId: `${req.Item.fromUserId}#${userId}`, userId: req.Item.fromUserId, friendId: userId, createdAt: now },
     }));
   }
 
@@ -119,9 +139,9 @@ async function respondFriendRequest(event: APIGatewayProxyEvent) {
   await client.send(new UpdateCommand({
     TableName: FRIEND_REQUESTS_TABLE,
     Key: { requestId },
-    UpdateExpression: 'SET #s = :status',
+    UpdateExpression: 'SET #s = :status, updatedAt = :now',
     ExpressionAttributeNames: { '#s': 'status' },
-    ExpressionAttributeValues: { ':status': accept ? 'ACCEPTED' : 'REJECTED' },
+    ExpressionAttributeValues: { ':status': accept ? 'ACCEPTED' : 'DECLINED', ':now': new Date().toISOString() },
   }));
 
   return successResponse(200, { message: accept ? 'Friend added' : 'Request rejected' });
@@ -131,11 +151,11 @@ async function removeFriend(event: APIGatewayProxyEvent) {
   const userId = getUserId(event);
   if (!userId) return errorResponse(401, 'Unauthorized');
 
-  const friendId = event.pathParameters?.id;
+  const friendId = event.pathParameters?.friendId;
   if (!friendId) return errorResponse(400, 'friendId is required');
 
-  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { odataId: `${userId}#${friendId}` } }));
-  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { odataId: `${friendId}#${userId}` } }));
+  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { compositeId: `${userId}#${friendId}` } }));
+  await client.send(new DeleteCommand({ TableName: FRIENDS_TABLE, Key: { compositeId: `${friendId}#${userId}` } }));
 
   return successResponse(200, { message: 'Friend removed' });
 }
@@ -153,7 +173,11 @@ async function getPendingRequests(event: APIGatewayProxyEvent) {
     ExpressionAttributeValues: { ':uid': userId, ':pending': 'PENDING' },
   }));
 
-  return successResponse(200, { requests: result.Items || [] });
+  const requests = result.Items || [];
+  const nicknames = await fetchNicknames(requests.map(r => r.fromUserId));
+  const enriched = requests.map(r => ({ ...r, fromNickname: nicknames[r.fromUserId] || '' }));
+
+  return successResponse(200, { requests: enriched });
 }
 
 async function getRankings(_event: APIGatewayProxyEvent) {
@@ -163,7 +187,10 @@ async function getRankings(_event: APIGatewayProxyEvent) {
   }));
 
   const sorted = (result.Items || []).sort((a, b) => (b.points || 0) - (a.points || 0));
-  return successResponse(200, { rankings: sorted });
+  const userIds = sorted.map(r => r.userId).filter(Boolean) as string[];
+  const nicknames = await fetchNicknames(userIds);
+  const rankings = sorted.map(r => ({ ...r, nickname: nicknames[r.userId] || '' }));
+  return successResponse(200, { rankings });
 }
 
 async function getMyRanking(event: APIGatewayProxyEvent) {
@@ -185,13 +212,18 @@ async function getBattleHistory(event: APIGatewayProxyEvent) {
   const result = await client.send(new QueryCommand({
     TableName: BATTLE_HISTORY_TABLE,
     IndexName: 'userId-index',
-    KeyConditionExpression: 'odataUserId = :uid',
+    KeyConditionExpression: 'userId = :uid',
     ScanIndexForward: false,
     Limit: 50,
     ExpressionAttributeValues: { ':uid': userId },
   }));
 
-  return successResponse(200, { history: result.Items || [] });
+  const items = result.Items || [];
+  const opponentIds = [...new Set(items.map(i => i.opponentId).filter(Boolean))] as string[];
+  const nicknames = await fetchNicknames(opponentIds);
+  const history = items.map(i => ({ ...i, opponentName: nicknames[i.opponentId] || '' }));
+
+  return successResponse(200, { history });
 }
 
 async function getBattleDetail(event: APIGatewayProxyEvent) {
@@ -203,7 +235,7 @@ async function getBattleDetail(event: APIGatewayProxyEvent) {
 
   const result = await client.send(new GetCommand({
     TableName: BATTLE_HISTORY_TABLE,
-    Key: { odataId: `${userId}#${matchId}` },
+    Key: { compositeId: `${userId}#${matchId}` },
   }));
 
   if (!result.Item) return errorResponse(404, 'Battle not found');

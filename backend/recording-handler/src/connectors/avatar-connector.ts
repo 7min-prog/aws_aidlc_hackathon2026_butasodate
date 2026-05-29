@@ -1,23 +1,21 @@
+import { addPoints as avatarAddPoints, deductPoints as avatarDeductPoints, AvatarPointsResult } from '../services/avatar-points-service';
 import { AvatarStatus } from '../types';
 
-/**
- * Stub for Unit 3 (Avatar) integration.
- * Replace with actual implementation when Unit 3 is complete.
- */
 export async function addPoints(
   userId: string,
   points: number,
-  categoryType: string
+  categoryType: string,
+  subCategoryId?: string,
 ): Promise<AvatarStatus> {
-  console.log(`[STUB] addPoints: user=${userId}, points=${points}, type=${categoryType}`);
-  return { totalPoints: points, level: 1 };
+  const result = await avatarAddPoints(userId, points, categoryType, subCategoryId);
+  return { totalPoints: result.totalPoints, level: result.level };
 }
 
 export async function deductPoints(
   userId: string,
   points: number,
-  categoryId: string
+  categoryId: string,
 ): Promise<{ avatarStatus: AvatarStatus; devolutionOccurred: boolean }> {
-  console.log(`[STUB] deductPoints: user=${userId}, points=${points}, category=${categoryId}`);
-  return { avatarStatus: { totalPoints: 0, level: 1 }, devolutionOccurred: false };
+  const result = await avatarDeductPoints(userId, points, 'FOOD', categoryId);
+  return { avatarStatus: { totalPoints: result.totalPoints, level: result.level }, devolutionOccurred: result.devolved };
 }

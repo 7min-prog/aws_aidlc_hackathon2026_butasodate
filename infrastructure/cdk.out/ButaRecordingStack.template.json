@@ -1,0 +1,2449 @@
+{
+ "Resources": {
+  "ActivityRecordTableD85DDE08": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "sk",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "gsi1sk",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "category-index",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "gsi1sk",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "sk",
+      "KeyType": "RANGE"
+     }
+    ],
+    "TableName": "butasodate-activity-records"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ActivityRecordTable/Resource"
+   }
+  },
+  "ActivityCategoryTableCE2401EC": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "categoryId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "categoryId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-activity-categories"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ActivityCategoryTable/Resource"
+   }
+  },
+  "RecordingFunctionServiceRoleD0CD0C8E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/RecordingFunction/ServiceRole/Resource"
+   }
+  },
+  "RecordingFunctionServiceRoleDefaultPolicyFE341003": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityRecordTableD85DDE08",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ActivityRecordTableD85DDE08",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityRecordTableD85DDE08",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ActivityRecordTableD85DDE08",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityCategoryTableCE2401EC",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityCategoryTableCE2401EC",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-avatars",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-evolution-history",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-pig-species",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-evolution-routes",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-skills",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-game-config"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "RecordingFunctionServiceRoleDefaultPolicyFE341003",
+    "Roles": [
+     {
+      "Ref": "RecordingFunctionServiceRoleD0CD0C8E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/RecordingFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "RecordingFunction98949BF3": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "56721e2cf3e9cabe39e7032e8aa4e4efe38d08e9ce6a5d1fee704df9b4fad8dc.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ACTIVITY_RECORD_TABLE": {
+       "Ref": "ActivityRecordTableD85DDE08"
+      },
+      "ACTIVITY_CATEGORY_TABLE": {
+       "Ref": "ActivityCategoryTableCE2401EC"
+      },
+      "AVATAR_TABLE_NAME": "butasodate-avatars",
+      "EVOLUTION_HISTORY_TABLE_NAME": "butasodate-evolution-history",
+      "PIG_SPECIES_TABLE_NAME": "butasodate-pig-species",
+      "EVOLUTION_ROUTE_TABLE_NAME": "butasodate-evolution-routes",
+      "SKILL_TABLE_NAME": "butasodate-skills",
+      "GAME_CONFIG_TABLE_NAME": "butasodate-game-config"
+     }
+    },
+    "FunctionName": "buta-recording-handler",
+    "Handler": "dist/handlers/recording.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "RecordingFunctionServiceRoleD0CD0C8E",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "RecordingFunctionServiceRoleDefaultPolicyFE341003",
+    "RecordingFunctionServiceRoleD0CD0C8E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/RecordingFunction/Resource",
+    "aws:asset:path": "asset.56721e2cf3e9cabe39e7032e8aa4e4efe38d08e9ce6a5d1fee704df9b4fad8dc",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CategoriesFunctionServiceRole84FF484F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/CategoriesFunction/ServiceRole/Resource"
+   }
+  },
+  "CategoriesFunctionServiceRoleDefaultPolicy80E384F7": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityCategoryTableCE2401EC",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ActivityCategoryTableCE2401EC",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CategoriesFunctionServiceRoleDefaultPolicy80E384F7",
+    "Roles": [
+     {
+      "Ref": "CategoriesFunctionServiceRole84FF484F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/CategoriesFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CategoriesFunction73C9F3E8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "56721e2cf3e9cabe39e7032e8aa4e4efe38d08e9ce6a5d1fee704df9b4fad8dc.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ACTIVITY_RECORD_TABLE": {
+       "Ref": "ActivityRecordTableD85DDE08"
+      },
+      "ACTIVITY_CATEGORY_TABLE": {
+       "Ref": "ActivityCategoryTableCE2401EC"
+      },
+      "AVATAR_TABLE_NAME": "butasodate-avatars",
+      "EVOLUTION_HISTORY_TABLE_NAME": "butasodate-evolution-history",
+      "PIG_SPECIES_TABLE_NAME": "butasodate-pig-species",
+      "EVOLUTION_ROUTE_TABLE_NAME": "butasodate-evolution-routes",
+      "SKILL_TABLE_NAME": "butasodate-skills",
+      "GAME_CONFIG_TABLE_NAME": "butasodate-game-config"
+     }
+    },
+    "FunctionName": "buta-categories-handler",
+    "Handler": "dist/handlers/categories.handler",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "CategoriesFunctionServiceRole84FF484F",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 5
+   },
+   "DependsOn": [
+    "CategoriesFunctionServiceRoleDefaultPolicy80E384F7",
+    "CategoriesFunctionServiceRole84FF484F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/CategoriesFunction/Resource",
+    "aws:asset:path": "asset.56721e2cf3e9cabe39e7032e8aa4e4efe38d08e9ce6a5d1fee704df9b4fad8dc",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ButaRecordingApi0C73E145": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "buta-recording-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Resource"
+   }
+  },
+  "ButaRecordingApiCloudWatchRoleBBA3E2D3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/CloudWatchRole/Resource"
+   }
+  },
+  "ButaRecordingApiAccount92A4C028": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ButaRecordingApiCloudWatchRoleBBA3E2D3",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ButaRecordingApi0C73E145"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Account"
+   }
+  },
+  "ButaRecordingApiDeployment0C8B23603fb033f1a5aa375562d394aa9a2ac1d6": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "DependsOn": [
+    "ButaRecordingApiactivitiesrecordIdDELETE1454331E",
+    "ButaRecordingApiactivitiesrecordIdOPTIONS3BCE44A3",
+    "ButaRecordingApiactivitiesrecordId725DD76A",
+    "ButaRecordingApiactivitiesbatchOPTIONS87EED06E",
+    "ButaRecordingApiactivitiesbatchPOSTD2A88C87",
+    "ButaRecordingApiactivitiesbatch5D0BB373",
+    "ButaRecordingApiactivitiesGET5F627407",
+    "ButaRecordingApiactivitiesOPTIONSC00856CC",
+    "ButaRecordingApiactivitiesPOST24CF2041",
+    "ButaRecordingApiactivities5D7B2E5A",
+    "ButaRecordingApiactivitiessummaryGETBCA9FABB",
+    "ButaRecordingApiactivitiessummaryOPTIONS3B15CC41",
+    "ButaRecordingApiactivitiessummary50FCC374",
+    "ButaRecordingApicategoriesGETCCEDAB5F",
+    "ButaRecordingApicategoriesOPTIONS8C54378B",
+    "ButaRecordingApicategoriesB9335107",
+    "ButaRecordingApicategoriesversionGET7E7C3006",
+    "ButaRecordingApicategoriesversionOPTIONS592DE1B7",
+    "ButaRecordingApicategoriesversion99EC6627",
+    "ButaRecordingApiOPTIONS282669FC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ButaRecordingApiDeploymentStagedev3790CD90": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ButaRecordingApiDeployment0C8B23603fb033f1a5aa375562d394aa9a2ac1d6"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    },
+    "StageName": "dev"
+   },
+   "DependsOn": [
+    "ButaRecordingApiAccount92A4C028"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "ButaRecordingApiOPTIONS282669FC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "ButaRecordingApi0C73E145",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApiactivities5D7B2E5A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ButaRecordingApi0C73E145",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "activities",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesOPTIONSC00856CC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesPOSTApiPermissionButaRecordingStackButaRecordingApi73D8ADDDPOSTactivities61F47383": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/POST/activities"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/POST/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities"
+   }
+  },
+  "ButaRecordingApiactivitiesPOSTApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDPOSTactivities12FFF569": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/POST/activities"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/POST/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities"
+   }
+  },
+  "ButaRecordingApiactivitiesPOST24CF2041": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "RecordingFunction98949BF3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/POST/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETactivitiesA3BBE74A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/GET/activities"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities"
+   }
+  },
+  "ButaRecordingApiactivitiesGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETactivities2A0AA2BC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/GET/activities"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities"
+   }
+  },
+  "ButaRecordingApiactivitiesGET5F627407": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "RecordingFunction98949BF3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/GET/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesbatch5D0BB373": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "PathPart": "batch",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/batch/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesbatchOPTIONS87EED06E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiesbatch5D0BB373"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/batch/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesbatchPOSTApiPermissionButaRecordingStackButaRecordingApi73D8ADDDPOSTactivitiesbatchC5C3E168": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/POST/activities/batch"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities.batch"
+   }
+  },
+  "ButaRecordingApiactivitiesbatchPOSTApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDPOSTactivitiesbatchF607D65E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/POST/activities/batch"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities.batch"
+   }
+  },
+  "ButaRecordingApiactivitiesbatchPOSTD2A88C87": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "RecordingFunction98949BF3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiesbatch5D0BB373"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiessummary50FCC374": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "PathPart": "summary",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/summary/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiessummaryOPTIONS3B15CC41": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiessummary50FCC374"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/summary/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiessummaryGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETactivitiessummary4FC76192": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/GET/activities/summary"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities.summary"
+   }
+  },
+  "ButaRecordingApiactivitiessummaryGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETactivitiessummary0ECA6E8A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/GET/activities/summary"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities.summary"
+   }
+  },
+  "ButaRecordingApiactivitiessummaryGETBCA9FABB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "RecordingFunction98949BF3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiessummary50FCC374"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesrecordId725DD76A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    "PathPart": "{recordId}",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesrecordIdOPTIONS3BCE44A3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiesrecordId725DD76A"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApiactivitiesrecordIdDELETEApiPermissionButaRecordingStackButaRecordingApi73D8ADDDDELETEactivitiesrecordId02AE5845": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/DELETE/activities/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.DELETE..activities.{recordId}"
+   }
+  },
+  "ButaRecordingApiactivitiesrecordIdDELETEApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDDELETEactivitiesrecordIdF75A80BE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "RecordingFunction98949BF3",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/DELETE/activities/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.DELETE..activities.{recordId}"
+   }
+  },
+  "ButaRecordingApiactivitiesrecordIdDELETE1454331E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "RecordingFunction98949BF3",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApiactivitiesrecordId725DD76A"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesB9335107": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ButaRecordingApi0C73E145",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "categories",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesOPTIONS8C54378B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApicategoriesB9335107"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesB2E78E9E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CategoriesFunction73C9F3E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/GET/categories"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories"
+   }
+  },
+  "ButaRecordingApicategoriesGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesAC67B359": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CategoriesFunction73C9F3E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/GET/categories"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories"
+   }
+  },
+  "ButaRecordingApicategoriesGETCCEDAB5F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "CategoriesFunction73C9F3E8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApicategoriesB9335107"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/GET/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesversion99EC6627": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaRecordingApicategoriesB9335107"
+    },
+    "PathPart": "version",
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/version/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesversionOPTIONS592DE1B7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaRecordingApicategoriesversion99EC6627"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/version/OPTIONS/Resource"
+   }
+  },
+  "ButaRecordingApicategoriesversionGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesversion6782BCB8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CategoriesFunction73C9F3E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/",
+       {
+        "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+       },
+       "/GET/categories/version"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories.version"
+   }
+  },
+  "ButaRecordingApicategoriesversionGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesversionEA374EAF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "CategoriesFunction73C9F3E8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaRecordingApi0C73E145"
+       },
+       "/test-invoke-stage/GET/categories/version"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories.version"
+   }
+  },
+  "ButaRecordingApicategoriesversionGET7E7C3006": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "RecordingAuthorizerFD1915F7"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "CategoriesFunction73C9F3E8",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaRecordingApicategoriesversion99EC6627"
+    },
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/Resource"
+   }
+  },
+  "RecordingAuthorizerFD1915F7": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "ButaRecordingStackRecordingAuthorizer693E648C",
+    "ProviderARNs": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":cognito-idp:ap-northeast-1:718100330221:userpool/",
+        {
+         "Fn::ImportValue": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+        }
+       ]
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ButaRecordingApi0C73E145"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/RecordingAuthorizer/Resource"
+   }
+  },
+  "SeedfoodlateramenE2D8D6E4": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"food_late_ramen\"},\"name\":{\"S\":\"深夜ラーメン\"},\"type\":{\"S\":\"FOOD\"},\"basePoints\":{\"N\":\"12\"},\"iconKey\":{\"S\":\"ramen\"},\"sortOrder\":{\"N\":\"1\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-food_late_ramen\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedfoodlateramenCustomResourcePolicyFC1625FA"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_late_ramen/Resource/Default"
+   }
+  },
+  "SeedfoodlateramenCustomResourcePolicyFC1625FA": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedfoodlateramenCustomResourcePolicyFC1625FA",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_late_ramen/CustomResourcePolicy/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd22872D164C4C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "56f7467bbde8a5efebcf57ae9e460027607099bab9f844669dcf5d800172ee5a.zip"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/AWS679f53fac002430cb0da5b7982bd2287/Resource",
+    "aws:asset:path": "asset.56f7467bbde8a5efebcf57ae9e460027607099bab9f844669dcf5d800172ee5a",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SeedfoodbingeCE46E938": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"food_binge\"},\"name\":{\"S\":\"暴飲暴食\"},\"type\":{\"S\":\"FOOD\"},\"basePoints\":{\"N\":\"12\"},\"iconKey\":{\"S\":\"binge\"},\"sortOrder\":{\"N\":\"2\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-food_binge\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedfoodbingeCustomResourcePolicyC5B48335"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_binge/Resource/Default"
+   }
+  },
+  "SeedfoodbingeCustomResourcePolicyC5B48335": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedfoodbingeCustomResourcePolicyC5B48335",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_binge/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedfoodsnack5081611C": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"food_snack\"},\"name\":{\"S\":\"間食\"},\"type\":{\"S\":\"FOOD\"},\"basePoints\":{\"N\":\"12\"},\"iconKey\":{\"S\":\"snack\"},\"sortOrder\":{\"N\":\"3\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-food_snack\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedfoodsnackCustomResourcePolicy7A413A90"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_snack/Resource/Default"
+   }
+  },
+  "SeedfoodsnackCustomResourcePolicy7A413A90": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedfoodsnackCustomResourcePolicy7A413A90",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_snack/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedfoodjunkfood6E1BAA0D": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"food_junkfood\"},\"name\":{\"S\":\"ジャンクフード\"},\"type\":{\"S\":\"FOOD\"},\"basePoints\":{\"N\":\"12\"},\"iconKey\":{\"S\":\"junk\"},\"sortOrder\":{\"N\":\"4\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-food_junkfood\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedfoodjunkfoodCustomResourcePolicy63A2FDEE"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_junkfood/Resource/Default"
+   }
+  },
+  "SeedfoodjunkfoodCustomResourcePolicy63A2FDEE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedfoodjunkfoodCustomResourcePolicy63A2FDEE",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-food_junkfood/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedlifestayup07FE609D": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"life_stay_up\"},\"name\":{\"S\":\"夜更かし\"},\"type\":{\"S\":\"LIFESTYLE\"},\"basePoints\":{\"N\":\"10\"},\"iconKey\":{\"S\":\"night\"},\"sortOrder\":{\"N\":\"5\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-life_stay_up\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedlifestayupCustomResourcePolicyD50083CB"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_stay_up/Resource/Default"
+   }
+  },
+  "SeedlifestayupCustomResourcePolicyD50083CB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedlifestayupCustomResourcePolicyD50083CB",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_stay_up/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedlifeoversleep50A3DE79": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"life_oversleep\"},\"name\":{\"S\":\"二度寝\"},\"type\":{\"S\":\"LIFESTYLE\"},\"basePoints\":{\"N\":\"10\"},\"iconKey\":{\"S\":\"sleep\"},\"sortOrder\":{\"N\":\"6\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-life_oversleep\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedlifeoversleepCustomResourcePolicy2104EBC1"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_oversleep/Resource/Default"
+   }
+  },
+  "SeedlifeoversleepCustomResourcePolicy2104EBC1": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedlifeoversleepCustomResourcePolicy2104EBC1",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_oversleep/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedlifeskipexercise5F28D848": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"life_skip_exercise\"},\"name\":{\"S\":\"運動サボり\"},\"type\":{\"S\":\"LIFESTYLE\"},\"basePoints\":{\"N\":\"10\"},\"iconKey\":{\"S\":\"couch\"},\"sortOrder\":{\"N\":\"7\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-life_skip_exercise\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedlifeskipexerciseCustomResourcePolicy6F79E057"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_skip_exercise/Resource/Default"
+   }
+  },
+  "SeedlifeskipexerciseCustomResourcePolicy6F79E057": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedlifeskipexerciseCustomResourcePolicy6F79E057",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_skip_exercise/CustomResourcePolicy/Resource"
+   }
+  },
+  "Seedlifebingewatch1E7AE02E": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"life_binge_watch\"},\"name\":{\"S\":\"だらだら動画視聴\"},\"type\":{\"S\":\"LIFESTYLE\"},\"basePoints\":{\"N\":\"10\"},\"iconKey\":{\"S\":\"tv\"},\"sortOrder\":{\"N\":\"8\"},\"isActive\":{\"BOOL\":true},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-life_binge_watch\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedlifebingewatchCustomResourcePolicy81D9B1D2"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_binge_watch/Resource/Default"
+   }
+  },
+  "SeedlifebingewatchCustomResourcePolicy81D9B1D2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedlifebingewatchCustomResourcePolicy81D9B1D2",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-life_binge_watch/CustomResourcePolicy/Resource"
+   }
+  },
+  "SeedmetaAB5DAAEB": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"DynamoDB\",\"action\":\"putItem\",\"parameters\":{\"TableName\":\"",
+       {
+        "Ref": "ActivityCategoryTableCE2401EC"
+       },
+       "\",\"Item\":{\"categoryId\":{\"S\":\"_meta\"},\"name\":{\"S\":\"_meta\"},\"type\":{\"S\":\"SYSTEM\"},\"basePoints\":{\"N\":\"0\"},\"iconKey\":{\"S\":\"\"},\"sortOrder\":{\"N\":\"0\"},\"isActive\":{\"BOOL\":false},\"version\":{\"N\":\"1\"}},\"ConditionExpression\":\"attribute_not_exists(categoryId)\"},\"physicalResourceId\":{\"id\":\"seed-_meta\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "SeedmetaCustomResourcePolicy99608120"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-_meta/Resource/Default"
+   }
+  },
+  "SeedmetaCustomResourcePolicy99608120": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:PutItem",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ActivityCategoryTableCE2401EC",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SeedmetaCustomResourcePolicy99608120",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/Seed-_meta/CustomResourcePolicy/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/11QQU7DMBB8S++uKakQ57SIG6JK4Vw5zpK6tb2Rd00Uovwd2SltxWlmduSZXReyeHqWq4Xqaamb89KaWo57VvosKiCMQYNQPR3GZvDKYVPL8UPVFsT2y2cyCatc3Sg5vkav2aBP1j3fQXCGKKm98a0Fxqs/CaOcHCucEzPu0Bo95JeZTYLWB0UETLJMIGgtN1GfgTeKQKjOtIqhV4McKyAuO5OzbrTUGqNn8QKdxcGB5zS9U3tWbV5gJn+X5/g34CM2ybyw67/MJReOrTeMnwRhh2ipjHzEYH4g5AWuappEviEVGd8m8z1yF1noSIzuEC6JJMuetnl2K/knb/2T8NiAPNHDd1HI4lGuFicyZhmiZ+NAVjP+AitHv4ruAQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaRecordingStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ButaRecordingApiEndpoint3372D51E": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ButaRecordingApi0C73E145"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "RecordingApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ButaRecordingApi0C73E145"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ButaRecordingApiDeploymentStagedev3790CD90"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
