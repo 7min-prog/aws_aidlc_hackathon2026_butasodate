@@ -12,7 +12,7 @@ import { ScanCommand, GetCommand, PutCommand, DeleteCommand, QueryCommand } from
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { cognitoClient, USER_POOL_ID } from './utils/cognito-client';
-import { docClient, AVATAR_TABLE, EVOLUTION_PATH_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, RECORDING_TABLE } from './utils/dynamo-client';
+import { docClient, AVATAR_TABLE, PIG_SPECIES_TABLE, EVOLUTION_ROUTE_TABLE, SKILL_TABLE, AUDIT_LOG_TABLE, GAME_CONFIG_TABLE, ACTIVITY_RECORD_TABLE, USER_PROFILES_TABLE } from './utils/dynamo-client';
 import { authMiddleware, validateBasicAuth, generateToken } from './utils/auth';
 import { writeAuditLog } from './utils/audit-log';
 
@@ -126,6 +126,54 @@ app.openapi(updateAvatarRoute, async (c) => {
   return c.json({ message: 'Avatar updated' }, 200);
 });
 
+// --- プロフィール+ゲームデータ修正 (OpenAPI準拠) ---
+const updateProfileRoute = createRoute({
+  method: 'put', path: '/admin/users/{username}/profile', tags: ['GameData'], summary: 'アバター情報更新',
+  request: { params: z.object({ username: z.string() }), body: { content: { 'application/json': { schema: z.object({
+    nickname: z.string().optional(), email: z.string().optional(),
+    totalPoints: z.number().optional(), level: z.number().optional(),
+    evolutionStage: z.number().optional(), evolutionPathId: z.string().optional(),
+  }) } } } },
+  responses: {
+    200: { description: '更新成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } },
+    404: { description: '未発見', content: { 'application/json': { schema: z.object({ error: z.string() }) } } },
+  },
+});
+app.openapi(updateProfileRoute, async (c) => {
+  const { username } = c.req.valid('param');
+  const body = c.req.valid('json');
+
+  // Update avatar game data if provided
+  const gameFields: Record<string, any> = {};
+  if (body.totalPoints !== undefined) gameFields.totalPoints = body.totalPoints;
+  if (body.level !== undefined) gameFields.level = body.level;
+  if (body.evolutionStage !== undefined) gameFields.evolutionStage = body.evolutionStage;
+  if (body.evolutionPathId !== undefined) gameFields.currentSpeciesId = body.evolutionPathId;
+
+  if (Object.keys(gameFields).length > 0) {
+    const existing = await docClient.send(new GetCommand({ TableName: AVATAR_TABLE, Key: { userId: username } }));
+    if (!existing.Item) return c.json({ error: 'Avatar not found' }, 404);
+    await docClient.send(new PutCommand({ TableName: AVATAR_TABLE, Item: { ...existing.Item, ...gameFields, updatedAt: new Date().toISOString() } }));
+  }
+
+  // Update profile (nickname/email) in user-profiles table
+  if (body.nickname || body.email) {
+    const { UpdateCommand } = await import('@aws-sdk/lib-dynamodb');
+    const exprs: string[] = [];
+    const values: Record<string, any> = {};
+    if (body.nickname) { exprs.push('nickname = :n'); values[':n'] = body.nickname; }
+    if (body.email) { exprs.push('email = :e'); values[':e'] = body.email; }
+    exprs.push('updatedAt = :now'); values[':now'] = new Date().toISOString();
+    await docClient.send(new UpdateCommand({
+      TableName: USER_PROFILES_TABLE, Key: { userId: username },
+      UpdateExpression: `SET ${exprs.join(', ')}`, ExpressionAttributeValues: values,
+    }));
+  }
+
+  await writeAuditLog(c.get('operator'), 'UPDATE', `profile:${username}`, body);
+  return c.json({ message: 'Profile updated' }, 200);
+});
+
 // --- ヘルスデータ手動入力 ---
 const healthDataRoute = createRoute({
   method: 'post', path: '/admin/users/{username}/health-data', tags: ['GameData'], summary: 'ヘルスデータ手動入力',
@@ -143,7 +191,7 @@ app.openapi(healthDataRoute, async (c) => {
   const { username } = c.req.valid('param');
   const body = c.req.valid('json');
   await docClient.send(new PutCommand({
-    TableName: RECORDING_TABLE,
+    TableName: ACTIVITY_RECORD_TABLE,
     Item: { userId: username, recordedAt: body.date, type: 'HEALTH_MANUAL', data: body, source: 'admin' },
   }));
   await writeAuditLog(c.get('operator'), 'CREATE', `health-data:${username}`, body);
@@ -156,7 +204,7 @@ const listPathsRoute = createRoute({
   responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ paths: z.array(z.any()) }) } } } },
 });
 app.openapi(listPathsRoute, async (c) => {
-  const res = await docClient.send(new ScanCommand({ TableName: EVOLUTION_PATH_TABLE }));
+  const res = await docClient.send(new ScanCommand({ TableName: PIG_SPECIES_TABLE }));
   return c.json({ paths: res.Items || [] }, 200);
 });
 
@@ -167,9 +215,9 @@ const createPathRoute = createRoute({
 });
 app.openapi(createPathRoute, async (c) => {
   const body = await c.req.json();
-  await docClient.send(new PutCommand({ TableName: EVOLUTION_PATH_TABLE, Item: body }));
-  await writeAuditLog(c.get('operator'), 'CREATE', `evolution-path:${body.pathId}`, body);
-  return c.json({ message: 'Path created' }, 201);
+  await docClient.send(new PutCommand({ TableName: PIG_SPECIES_TABLE, Item: body }));
+  await writeAuditLog(c.get('operator'), 'CREATE', `pig-species:${body.speciesId}`, body);
+  return c.json({ message: 'Species created' }, 201);
 });
 
 const updatePathRoute = createRoute({
@@ -180,9 +228,9 @@ const updatePathRoute = createRoute({
 app.openapi(updatePathRoute, async (c) => {
   const { pathId } = c.req.valid('param');
   const body = await c.req.json();
-  await docClient.send(new PutCommand({ TableName: EVOLUTION_PATH_TABLE, Item: { ...body, pathId } }));
-  await writeAuditLog(c.get('operator'), 'UPDATE', `evolution-path:${pathId}`, body);
-  return c.json({ message: 'Path updated' }, 200);
+  await docClient.send(new PutCommand({ TableName: PIG_SPECIES_TABLE, Item: { ...body, speciesId: pathId } }));
+  await writeAuditLog(c.get('operator'), 'UPDATE', `pig-species:${pathId}`, body);
+  return c.json({ message: 'Species updated' }, 200);
 });
 
 const deletePathRoute = createRoute({
@@ -192,9 +240,56 @@ const deletePathRoute = createRoute({
 });
 app.openapi(deletePathRoute, async (c) => {
   const { pathId } = c.req.valid('param');
-  await docClient.send(new DeleteCommand({ TableName: EVOLUTION_PATH_TABLE, Key: { pathId } }));
-  await writeAuditLog(c.get('operator'), 'DELETE', `evolution-path:${pathId}`);
-  return c.json({ message: 'Path deleted' }, 200);
+  await docClient.send(new DeleteCommand({ TableName: PIG_SPECIES_TABLE, Key: { speciesId: pathId } }));
+  await writeAuditLog(c.get('operator'), 'DELETE', `pig-species:${pathId}`);
+  return c.json({ message: 'Species deleted' }, 200);
+});
+
+// --- マスターデータ: 進化ルート ---
+const listRoutesRoute = createRoute({
+  method: 'get', path: '/admin/evolution-routes', tags: ['MasterData'], summary: '進化ルート一覧',
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ routes: z.array(z.any()) }) } } } },
+});
+app.openapi(listRoutesRoute, async (c) => {
+  const res = await docClient.send(new ScanCommand({ TableName: EVOLUTION_ROUTE_TABLE }));
+  return c.json({ routes: res.Items || [] }, 200);
+});
+
+const createRouteRoute = createRoute({
+  method: 'post', path: '/admin/evolution-routes', tags: ['MasterData'], summary: '進化ルート作成',
+  request: { body: { content: { 'application/json': { schema: z.any() } } } },
+  responses: { 201: { description: '作成成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(createRouteRoute, async (c) => {
+  const body = await c.req.json();
+  await docClient.send(new PutCommand({ TableName: EVOLUTION_ROUTE_TABLE, Item: body }));
+  await writeAuditLog(c.get('operator'), 'CREATE', `evolution-route:${body.routeId}`, body);
+  return c.json({ message: 'Route created' }, 201);
+});
+
+const updateRouteRoute = createRoute({
+  method: 'put', path: '/admin/evolution-routes/{routeId}', tags: ['MasterData'], summary: '進化ルート更新',
+  request: { params: z.object({ routeId: z.string() }), body: { content: { 'application/json': { schema: z.any() } } } },
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(updateRouteRoute, async (c) => {
+  const { routeId } = c.req.valid('param');
+  const body = await c.req.json();
+  await docClient.send(new PutCommand({ TableName: EVOLUTION_ROUTE_TABLE, Item: { ...body, routeId } }));
+  await writeAuditLog(c.get('operator'), 'UPDATE', `evolution-route:${routeId}`, body);
+  return c.json({ message: 'Route updated' }, 200);
+});
+
+const deleteRouteRoute = createRoute({
+  method: 'delete', path: '/admin/evolution-routes/{routeId}', tags: ['MasterData'], summary: '進化ルート削除',
+  request: { params: z.object({ routeId: z.string() }) },
+  responses: { 200: { description: '成功', content: { 'application/json': { schema: z.object({ message: z.string() }) } } } },
+});
+app.openapi(deleteRouteRoute, async (c) => {
+  const { routeId } = c.req.valid('param');
+  await docClient.send(new DeleteCommand({ TableName: EVOLUTION_ROUTE_TABLE, Key: { routeId } }));
+  await writeAuditLog(c.get('operator'), 'DELETE', `evolution-route:${routeId}`);
+  return c.json({ message: 'Route deleted' }, 200);
 });
 
 // --- マスターデータ: スキル ---

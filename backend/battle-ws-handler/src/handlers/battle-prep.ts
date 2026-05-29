@@ -6,6 +6,8 @@ import { getUserIdFromConnection } from '../utils/auth';
 import { getConnectionByUserId } from './connection';
 import { successResponse } from '../utils/response';
 
+const AVATAR_TABLE = process.env.AVATAR_TABLE || 'butasodate-avatars';
+
 export const handleRespondInvite = async (
   connectionId: string,
   data: { matchId: string; accept: boolean }
@@ -75,16 +77,31 @@ export const handleSetReady = async (
   // Check if both ready
   const updated = await getMatch(data.matchId);
   if (updated?.player1Ready && updated?.player2Ready) {
+    // Fetch avatar stats from DB
+    const [p1Avatar, p2Avatar] = await Promise.all([
+      dynamoClient.send(new GetCommand({ TableName: AVATAR_TABLE, Key: { userId: updated.player1Id } })),
+      dynamoClient.send(new GetCommand({ TableName: AVATAR_TABLE, Key: { userId: updated.player2Id } })),
+    ]);
+
+    const p1Stats = p1Avatar.Item?.stats || { hp: 50, attack: 10, defense: 10, speed: 10 };
+    const p2Stats = p2Avatar.Item?.stats || { hp: 50, attack: 10, defense: 10, speed: 10 };
+
+    const battleState = {
+      player1: { maxHp: p1Stats.hp, currentHp: p1Stats.hp, attack: p1Stats.attack, defense: p1Stats.defense, speed: p1Stats.speed, buffs: [] },
+      player2: { maxHp: p2Stats.hp, currentHp: p2Stats.hp, attack: p2Stats.attack, defense: p2Stats.defense, speed: p2Stats.speed, buffs: [] },
+    };
+
     // Start battle
     await dynamoClient.send(new UpdateCommand({
       TableName: MATCHES_TABLE,
       Key: { matchId: data.matchId },
-      UpdateExpression: 'SET #s = :status, currentTurn = :turn, startedAt = :now, turnStartedAt = :now',
+      UpdateExpression: 'SET #s = :status, currentTurn = :turn, startedAt = :now, turnStartedAt = :now, battleState = :state',
       ExpressionAttributeNames: { '#s': 'status' },
       ExpressionAttributeValues: {
         ':status': 'IN_PROGRESS',
         ':turn': 1,
         ':now': new Date().toISOString(),
+        ':state': battleState,
       },
     }));
 

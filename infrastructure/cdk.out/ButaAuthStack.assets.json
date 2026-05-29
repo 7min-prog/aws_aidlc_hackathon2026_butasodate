@@ -1,0 +1,36 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "13031e91da98eca515c7e138872c44d13281782d56d5b841b86548e85e4788ab": {
+      "displayName": "AuthHandler/Code",
+      "source": {
+        "path": "asset.13031e91da98eca515c7e138872c44d13281782d56d5b841b86548e85e4788ab",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-e22e44b9": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "13031e91da98eca515c7e138872c44d13281782d56d5b841b86548e85e4788ab.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    },
+    "6b7741a0e09d4147d6843b17f43147349162660a47f482a794aaf80651e558be": {
+      "displayName": "ButaAuthStack Template",
+      "source": {
+        "path": "ButaAuthStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-4b1e0554": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "6b7741a0e09d4147d6843b17f43147349162660a47f482a794aaf80651e558be.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

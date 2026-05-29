@@ -1,0 +1,1088 @@
+{
+  "/ButaAuthStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/UserProfilesTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "UserProfilesTableF49D814C"
+      }
+    }
+  ],
+  "/ButaAuthStack/ApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:133:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/UserPoolId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:134:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/UserPoolClientId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolClientId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:135:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaUserPool/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaUserPool7A16C750"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new UserPool2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:16:22)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaUserPoolClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaUserPoolClient3D34AA00"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new UserPoolClient2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:34:28)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/UserProfilesTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserProfilesTableF49D814C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:47:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/AuthHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AuthHandler9DC767B7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:60:25)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiAA0DF39F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiAccount29839203"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiEndpointB0E6DF3F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthorizer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthorizerE74C94FE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new CognitoUserPoolsAuthorizer2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:103:24)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/Exports/Output{\"Ref\":\"ButaUserPool7A16C750\"}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExportsOutputRefButaUserPool7A16C750A698D51C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/AuthHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AuthHandlerServiceRoleD970A3A9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:60:25)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiCloudWatchRole5862492F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiDeployment89F7F2788516e4c0b975b36aa2335a37d5f2391c"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/DeploymentStage.dev/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiDeploymentStagedevB8D28D9D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/AuthHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AuthHandlerServiceRoleDefaultPolicy77B239DC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiOPTIONSECA825BC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:86:17)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthFE77A426"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:113:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusers858E3DF5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:122:28)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/account/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiaccount68990FB8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:130:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthOPTIONS2373A136"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:113:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/signup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthsignup3EBC0034"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:114:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/confirm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthconfirm1C3B546F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:115:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/resend-code/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthresendcode0D696F69"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:116:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/login/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogin5C061936"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:117:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/logout/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogout6CA5D336"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:118:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/refresh/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthrefresh959DE806"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:119:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersOPTIONS536BE044"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:122:28)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/me/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersmeBDE06503"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:123:11)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofile39B5CEA4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:125:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/account/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiaccountOPTIONS820217AE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:130:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/account/DELETE/ApiPermission.ButaAuthStackButaAuthApi523EE589.DELETE..account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiaccountDELETEApiPermissionButaAuthStackButaAuthApi523EE589DELETEaccount23F66104"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:130:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/account/DELETE/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.DELETE..account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiaccountDELETEApiPermissionTestButaAuthStackButaAuthApi523EE589DELETEaccount98A418C9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:130:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/account/DELETE/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiaccountDELETE00840E12"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:130:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/signup/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthsignupOPTIONSDF6415F5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:114:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.signup": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthsignupPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthsignupD4D0421E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:114:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.signup": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthsignupPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthsignupC9DE296B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:114:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthsignupPOST7CFDADF3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:114:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/confirm/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthconfirmOPTIONS026BDA95"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:115:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.confirm": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthconfirmPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthconfirm1C7B7B2D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:115:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.confirm": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthconfirmPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthconfirm4D218CD0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:115:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthconfirmPOST1CDA34EC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:115:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/resend-code/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthresendcodeOPTIONS5065D682"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:116:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.resend-code": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthresendcodePOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthresendcode34248B66"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:116:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.resend-code": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthresendcodePOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthresendcode9E72953D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:116:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthresendcodePOST2F6A3B2D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:116:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/login/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthloginOPTIONSC97566D8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:117:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/login/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.login": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthloginPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthlogin34269094"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:117:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/login/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.login": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthloginPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthlogin99928B87"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:117:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/login/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthloginPOST3ABD18DC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:117:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/logout/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogoutOPTIONS835FBF56"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:118:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.logout": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogoutPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthlogout3920F93C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:118:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.logout": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogoutPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthlogout4394C420"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:118:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthlogoutPOSTCF6FF3B3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:118:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/refresh/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthrefreshOPTIONSE14A272D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:119:10)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.refresh": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthrefreshPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthrefresh8DF7FF9F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:119:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.refresh": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthrefreshPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthrefreshE876F211"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:119:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiauthrefreshPOST3A9FED56"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:119:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/me/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersmeOPTIONS158DDFFA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:123:11)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/me/GET/ApiPermission.ButaAuthStackButaAuthApi523EE589.GET..users.me": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersmeGETApiPermissionButaAuthStackButaAuthApi523EE589GETusersme1C384AC4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:123:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/me/GET/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.GET..users.me": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersmeGETApiPermissionTestButaAuthStackButaAuthApi523EE589GETusersmeA2B569B8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:123:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/me/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersmeGET5307AC8A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:123:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofileOPTIONSE56F6752"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:125:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)"
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..users.profile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTusersprofileFD0F8F84"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:126:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..users.profile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTusersprofileE57A2295"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:126:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePOSTC6DCC4A2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:126:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/ApiPermission.ButaAuthStackButaAuthApi523EE589.PUT..users.profile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePUTApiPermissionButaAuthStackButaAuthApi523EE589PUTusersprofileACBBFB35"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:127:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.PUT..users.profile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePUTApiPermissionTestButaAuthStackButaAuthApi523EE589PUTusersprofile67DCD29E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:127:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaAuthApiusersprofilePUT0E05029B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AuthStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\auth-stack.ts:127:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:17:19)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ]
+}

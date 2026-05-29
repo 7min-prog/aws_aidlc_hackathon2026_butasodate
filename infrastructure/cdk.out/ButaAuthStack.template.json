@@ -1,0 +1,2359 @@
+{
+ "Resources": {
+  "ButaUserPool7A16C750": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_email",
+       "Priority": 1
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": false
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "Policies": {
+     "PasswordPolicy": {
+      "MinimumLength": 8,
+      "RequireLowercase": true,
+      "RequireNumbers": true,
+      "RequireSymbols": true,
+      "RequireUppercase": true
+     }
+    },
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UserPoolName": "buta-user-pool-dev",
+    "UsernameAttributes": [
+     "email"
+    ],
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaUserPool/Resource"
+   }
+  },
+  "ButaUserPoolClient3D34AA00": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "AccessTokenValidity": 60,
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "ClientName": "buta-app-client-dev",
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_PASSWORD_AUTH",
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "GenerateSecret": false,
+    "RefreshTokenValidity": 43200,
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ],
+    "TokenValidityUnits": {
+     "AccessToken": "minutes",
+     "RefreshToken": "minutes"
+    },
+    "UserPoolId": {
+     "Ref": "ButaUserPool7A16C750"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaUserPoolClient/Resource"
+   }
+  },
+  "UserProfilesTableF49D814C": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "nickname",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "nickname-index",
+      "KeySchema": [
+       {
+        "AttributeName": "nickname",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-user-profiles"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/UserProfilesTable/Resource"
+   }
+  },
+  "AuthHandlerServiceRoleD970A3A9": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/AuthHandler/ServiceRole/Resource"
+   }
+  },
+  "AuthHandlerServiceRoleDefaultPolicy77B239DC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "UserProfilesTableF49D814C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "UserProfilesTableF49D814C",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "UserProfilesTableF49D814C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "UserProfilesTableF49D814C",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "cognito-idp:AdminGetUser",
+        "cognito-idp:AdminUpdateUserAttributes",
+        "cognito-idp:AdminDeleteUser"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ButaUserPool7A16C750",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AuthHandlerServiceRoleDefaultPolicy77B239DC",
+    "Roles": [
+     {
+      "Ref": "AuthHandlerServiceRoleD970A3A9"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/AuthHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AuthHandler9DC767B7": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "13031e91da98eca515c7e138872c44d13281782d56d5b841b86548e85e4788ab.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "COGNITO_USER_POOL_ID": {
+       "Ref": "ButaUserPool7A16C750"
+      },
+      "COGNITO_CLIENT_ID": {
+       "Ref": "ButaUserPoolClient3D34AA00"
+      },
+      "USER_PROFILES_TABLE_NAME": {
+       "Ref": "UserProfilesTableF49D814C"
+      }
+     }
+    },
+    "FunctionName": "buta-auth-handler-dev",
+    "Handler": "dist/index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "AuthHandlerServiceRoleD970A3A9",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "AuthHandlerServiceRoleDefaultPolicy77B239DC",
+    "AuthHandlerServiceRoleD970A3A9"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/AuthHandler/Resource",
+    "aws:asset:path": "asset.13031e91da98eca515c7e138872c44d13281782d56d5b841b86548e85e4788ab",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ButaAuthApiAA0DF39F": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "buta-auth-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Resource"
+   }
+  },
+  "ButaAuthApiCloudWatchRole5862492F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/CloudWatchRole/Resource"
+   }
+  },
+  "ButaAuthApiAccount29839203": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ButaAuthApiCloudWatchRole5862492F",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ButaAuthApiAA0DF39F"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Account"
+   }
+  },
+  "ButaAuthApiDeployment89F7F2788516e4c0b975b36aa2335a37d5f2391c": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "DependsOn": [
+    "ButaAuthApiaccountDELETE00840E12",
+    "ButaAuthApiaccountOPTIONS820217AE",
+    "ButaAuthApiaccount68990FB8",
+    "ButaAuthApiauthconfirmOPTIONS026BDA95",
+    "ButaAuthApiauthconfirmPOST1CDA34EC",
+    "ButaAuthApiauthconfirm1C3B546F",
+    "ButaAuthApiauthloginOPTIONSC97566D8",
+    "ButaAuthApiauthloginPOST3ABD18DC",
+    "ButaAuthApiauthlogin5C061936",
+    "ButaAuthApiauthlogoutOPTIONS835FBF56",
+    "ButaAuthApiauthlogoutPOSTCF6FF3B3",
+    "ButaAuthApiauthlogout6CA5D336",
+    "ButaAuthApiauthOPTIONS2373A136",
+    "ButaAuthApiauthrefreshOPTIONSE14A272D",
+    "ButaAuthApiauthrefreshPOST3A9FED56",
+    "ButaAuthApiauthrefresh959DE806",
+    "ButaAuthApiauthresendcodeOPTIONS5065D682",
+    "ButaAuthApiauthresendcodePOST2F6A3B2D",
+    "ButaAuthApiauthresendcode0D696F69",
+    "ButaAuthApiauthFE77A426",
+    "ButaAuthApiauthsignupOPTIONSDF6415F5",
+    "ButaAuthApiauthsignupPOST7CFDADF3",
+    "ButaAuthApiauthsignup3EBC0034",
+    "ButaAuthApiOPTIONSECA825BC",
+    "ButaAuthApiusersmeGET5307AC8A",
+    "ButaAuthApiusersmeOPTIONS158DDFFA",
+    "ButaAuthApiusersmeBDE06503",
+    "ButaAuthApiusersOPTIONS536BE044",
+    "ButaAuthApiusersprofileOPTIONSE56F6752",
+    "ButaAuthApiusersprofilePOSTC6DCC4A2",
+    "ButaAuthApiusersprofilePUT0E05029B",
+    "ButaAuthApiusersprofile39B5CEA4",
+    "ButaAuthApiusers858E3DF5"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ButaAuthApiDeploymentStagedevB8D28D9D": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "ButaAuthApiDeployment89F7F2788516e4c0b975b36aa2335a37d5f2391c"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "ResourcePath": "/*",
+      "ThrottlingBurstLimit": 50,
+      "ThrottlingRateLimit": 100
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    },
+    "StageName": "dev"
+   },
+   "DependsOn": [
+    "ButaAuthApiAccount29839203"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "ButaAuthApiOPTIONSECA825BC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "ButaAuthApiAA0DF39F",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthFE77A426": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ButaAuthApiAA0DF39F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "auth",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/Resource"
+   }
+  },
+  "ButaAuthApiauthOPTIONS2373A136": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthsignup3EBC0034": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "signup",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/signup/Resource"
+   }
+  },
+  "ButaAuthApiauthsignupOPTIONSDF6415F5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthsignup3EBC0034"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/signup/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthsignupPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthsignupD4D0421E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/signup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.signup"
+   }
+  },
+  "ButaAuthApiauthsignupPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthsignupC9DE296B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/signup"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.signup"
+   }
+  },
+  "ButaAuthApiauthsignupPOST7CFDADF3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthsignup3EBC0034"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/signup/POST/Resource"
+   }
+  },
+  "ButaAuthApiauthconfirm1C3B546F": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "confirm",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/confirm/Resource"
+   }
+  },
+  "ButaAuthApiauthconfirmOPTIONS026BDA95": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthconfirm1C3B546F"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/confirm/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthconfirmPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthconfirm1C7B7B2D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/confirm"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.confirm"
+   }
+  },
+  "ButaAuthApiauthconfirmPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthconfirm4D218CD0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/confirm"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.confirm"
+   }
+  },
+  "ButaAuthApiauthconfirmPOST1CDA34EC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthconfirm1C3B546F"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/confirm/POST/Resource"
+   }
+  },
+  "ButaAuthApiauthresendcode0D696F69": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "resend-code",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/resend-code/Resource"
+   }
+  },
+  "ButaAuthApiauthresendcodeOPTIONS5065D682": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthresendcode0D696F69"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/resend-code/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthresendcodePOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthresendcode34248B66": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/resend-code"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.resend-code"
+   }
+  },
+  "ButaAuthApiauthresendcodePOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthresendcode9E72953D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/resend-code"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.resend-code"
+   }
+  },
+  "ButaAuthApiauthresendcodePOST2F6A3B2D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthresendcode0D696F69"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/resend-code/POST/Resource"
+   }
+  },
+  "ButaAuthApiauthlogin5C061936": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "login",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/login/Resource"
+   }
+  },
+  "ButaAuthApiauthloginOPTIONSC97566D8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthlogin5C061936"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/login/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthloginPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthlogin34269094": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/login/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.login"
+   }
+  },
+  "ButaAuthApiauthloginPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthlogin99928B87": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/login"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/login/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.login"
+   }
+  },
+  "ButaAuthApiauthloginPOST3ABD18DC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthlogin5C061936"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/login/POST/Resource"
+   }
+  },
+  "ButaAuthApiauthlogout6CA5D336": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "logout",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/logout/Resource"
+   }
+  },
+  "ButaAuthApiauthlogoutOPTIONS835FBF56": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthlogout6CA5D336"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/logout/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthlogoutPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthlogout3920F93C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/logout"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.logout"
+   }
+  },
+  "ButaAuthApiauthlogoutPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthlogout4394C420": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/logout"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.logout"
+   }
+  },
+  "ButaAuthApiauthlogoutPOSTCF6FF3B3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "ButaAuthorizerE74C94FE"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthlogout6CA5D336"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/logout/POST/Resource"
+   }
+  },
+  "ButaAuthApiauthrefresh959DE806": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiauthFE77A426"
+    },
+    "PathPart": "refresh",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/refresh/Resource"
+   }
+  },
+  "ButaAuthApiauthrefreshOPTIONSE14A272D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthrefresh959DE806"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/refresh/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiauthrefreshPOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTauthrefresh8DF7FF9F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/auth/refresh"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..auth.refresh"
+   }
+  },
+  "ButaAuthApiauthrefreshPOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTauthrefreshE876F211": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/auth/refresh"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..auth.refresh"
+   }
+  },
+  "ButaAuthApiauthrefreshPOST3A9FED56": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiauthrefresh959DE806"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/auth/refresh/POST/Resource"
+   }
+  },
+  "ButaAuthApiusers858E3DF5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ButaAuthApiAA0DF39F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "users",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/Resource"
+   }
+  },
+  "ButaAuthApiusersOPTIONS536BE044": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiusers858E3DF5"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiusersmeBDE06503": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiusers858E3DF5"
+    },
+    "PathPart": "me",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/me/Resource"
+   }
+  },
+  "ButaAuthApiusersmeOPTIONS158DDFFA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiusersmeBDE06503"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/me/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiusersmeGETApiPermissionButaAuthStackButaAuthApi523EE589GETusersme1C384AC4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/GET/users/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/me/GET/ApiPermission.ButaAuthStackButaAuthApi523EE589.GET..users.me"
+   }
+  },
+  "ButaAuthApiusersmeGETApiPermissionTestButaAuthStackButaAuthApi523EE589GETusersmeA2B569B8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/GET/users/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/me/GET/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.GET..users.me"
+   }
+  },
+  "ButaAuthApiusersmeGET5307AC8A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "ButaAuthorizerE74C94FE"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiusersmeBDE06503"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/me/GET/Resource"
+   }
+  },
+  "ButaAuthApiusersprofile39B5CEA4": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ButaAuthApiusers858E3DF5"
+    },
+    "PathPart": "profile",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/Resource"
+   }
+  },
+  "ButaAuthApiusersprofileOPTIONSE56F6752": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiusersprofile39B5CEA4"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiusersprofilePOSTApiPermissionButaAuthStackButaAuthApi523EE589POSTusersprofileFD0F8F84": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/POST/users/profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/POST/ApiPermission.ButaAuthStackButaAuthApi523EE589.POST..users.profile"
+   }
+  },
+  "ButaAuthApiusersprofilePOSTApiPermissionTestButaAuthStackButaAuthApi523EE589POSTusersprofileE57A2295": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/POST/users/profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/POST/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.POST..users.profile"
+   }
+  },
+  "ButaAuthApiusersprofilePOSTC6DCC4A2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "ButaAuthorizerE74C94FE"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiusersprofile39B5CEA4"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/POST/Resource"
+   }
+  },
+  "ButaAuthApiusersprofilePUTApiPermissionButaAuthStackButaAuthApi523EE589PUTusersprofileACBBFB35": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/PUT/users/profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/ApiPermission.ButaAuthStackButaAuthApi523EE589.PUT..users.profile"
+   }
+  },
+  "ButaAuthApiusersprofilePUTApiPermissionTestButaAuthStackButaAuthApi523EE589PUTusersprofile67DCD29E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/PUT/users/profile"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.PUT..users.profile"
+   }
+  },
+  "ButaAuthApiusersprofilePUT0E05029B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "ButaAuthorizerE74C94FE"
+    },
+    "HttpMethod": "PUT",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiusersprofile39B5CEA4"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/users/profile/PUT/Resource"
+   }
+  },
+  "ButaAuthApiaccount68990FB8": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ButaAuthApiAA0DF39F",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "account",
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/account/Resource"
+   }
+  },
+  "ButaAuthApiaccountOPTIONS820217AE": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ButaAuthApiaccount68990FB8"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/account/OPTIONS/Resource"
+   }
+  },
+  "ButaAuthApiaccountDELETEApiPermissionButaAuthStackButaAuthApi523EE589DELETEaccount23F66104": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/",
+       {
+        "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+       },
+       "/DELETE/account"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/account/DELETE/ApiPermission.ButaAuthStackButaAuthApi523EE589.DELETE..account"
+   }
+  },
+  "ButaAuthApiaccountDELETEApiPermissionTestButaAuthStackButaAuthApi523EE589DELETEaccount98A418C9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AuthHandler9DC767B7",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "ButaAuthApiAA0DF39F"
+       },
+       "/test-invoke-stage/DELETE/account"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/account/DELETE/ApiPermission.Test.ButaAuthStackButaAuthApi523EE589.DELETE..account"
+   }
+  },
+  "ButaAuthApiaccountDELETE00840E12": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "ButaAuthorizerE74C94FE"
+    },
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AuthHandler9DC767B7",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ButaAuthApiaccount68990FB8"
+    },
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthApi/Default/account/DELETE/Resource"
+   }
+  },
+  "ButaAuthorizerE74C94FE": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "ButaAuthStackButaAuthorizer09ACD519",
+    "ProviderARNs": [
+     {
+      "Fn::GetAtt": [
+       "ButaUserPool7A16C750",
+       "Arn"
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "ButaAuthApiAA0DF39F"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/ButaAuthorizer/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QTW/CMAyGfwv3kLGiaefCtNs0VLYzSlOvGNq4qp2hLsp/n5qWj5Mf+/V3prOXV71amAsvbXVeNljqsBdjz8pc+BAs1Q6FdPhm6HdEjdr+uBtfYdsgOHmUpkhU1eBMS1Wpw5cpGxhTEkTVmLasjA7v3llBcqP0yDvoW2RGclGhaXUoaKpPdkcN2iHlJYqK1wfDDMI6H43itd54ewbZGAZlOqyNwMUMOhTAkneYet0xt5a8E/UGXUNDO9/z4O3F1GmBCQpg8r2F1P4D5EjVKM50VechM0/PvP6Icy9H6vEP+rTAzYvxXp+OGSeiq8esTy+dl6gcVaBP/PSbZTp71qvFiRGXvXeCLehisv9NdMCY3gEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAuthStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ButaAuthApiEndpointB0E6DF3F": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ButaAuthApiAA0DF39F"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ButaAuthApiAA0DF39F"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ButaAuthApiDeploymentStagedevB8D28D9D"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "UserPoolId": {
+   "Value": {
+    "Ref": "ButaUserPool7A16C750"
+   }
+  },
+  "UserPoolClientId": {
+   "Value": {
+    "Ref": "ButaUserPoolClient3D34AA00"
+   }
+  },
+  "ExportsOutputRefButaUserPool7A16C750A698D51C": {
+   "Value": {
+    "Ref": "ButaUserPool7A16C750"
+   },
+   "Export": {
+    "Name": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

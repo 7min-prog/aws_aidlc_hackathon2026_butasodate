@@ -6,4 +6,4 @@ const client = new DynamoDBClient({
 });
 
 export const dynamoClient = DynamoDBDocumentClient.from(client);
-export const USERS_TABLE = process.env.USERS_TABLE_NAME || 'buta-users-dev';
+export const USERS_TABLE = process.env.USER_PROFILES_TABLE_NAME || 'butasodate-user-profiles';

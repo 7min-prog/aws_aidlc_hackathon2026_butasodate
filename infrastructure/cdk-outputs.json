@@ -1,0 +1,30 @@
+{
+  "ButaAuthStack": {
+    "UserPoolClientId": "2dr80q7rhbij90i244le76su26",
+    "ApiUrl": "https://ubw8w4wnp7.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "UserPoolId": "ap-northeast-1_a9yJHt07e",
+    "ExportsOutputRefButaUserPool7A16C750A698D51C": "ap-northeast-1_a9yJHt07e",
+    "ButaAuthApiEndpointB0E6DF3F": "https://ubw8w4wnp7.execute-api.ap-northeast-1.amazonaws.com/dev/"
+  },
+  "ButaRecordingStack": {
+    "ButaRecordingApiEndpoint3372D51E": "https://tlw1w8knh7.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "RecordingApiUrl": "https://tlw1w8knh7.execute-api.ap-northeast-1.amazonaws.com/dev/"
+  },
+  "ButaAvatarStack": {
+    "AvatarApiEndpoint65FA3F00": "https://dgjfsg2e9b.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43": "butasodate-assets-718100330221-dev",
+    "AvatarApiUrl": "https://dgjfsg2e9b.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "AssetsBucketName": "butasodate-assets-718100330221-dev"
+  },
+  "ButaBattleSocialStack": {
+    "SocialApiUrl": "https://jn5w6ubvk5.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "WebSocketUrl": "wss://cd3lmmh06a.execute-api.ap-northeast-1.amazonaws.com/dev",
+    "SocialApiEndpoint6AA0161B": "https://jn5w6ubvk5.execute-api.ap-northeast-1.amazonaws.com/dev/"
+  },
+  "ButaAdminStack": {
+    "AdminApiUrl": "https://0serzza7ba.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "AdminSpaBucketName": "butasodate-admin-spa-718100330221-dev",
+    "AdminApiEndpointACFD5967": "https://0serzza7ba.execute-api.ap-northeast-1.amazonaws.com/dev/",
+    "AdminSpaUrl": "https://d1fh9h8zlxewen.cloudfront.net"
+  }
+}

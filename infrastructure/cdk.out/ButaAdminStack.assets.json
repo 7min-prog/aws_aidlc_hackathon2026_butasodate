@@ -1,0 +1,51 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "2868eddfd5facafaae3ee995197cf18b222addcc23876b4ebb453d1f1877b5d1": {
+      "displayName": "AdminHandler/Code",
+      "source": {
+        "path": "asset.2868eddfd5facafaae3ee995197cf18b222addcc23876b4ebb453d1f1877b5d1",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-4620ebb6": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "2868eddfd5facafaae3ee995197cf18b222addcc23876b4ebb453d1f1877b5d1.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    },
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "ButaAdminStack/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-e840efc2": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    },
+    "0fb7ff1b4a4c21fd9f441e11b38a29e7081a4338d18f718cc733053193e17b0f": {
+      "displayName": "ButaAdminStack Template",
+      "source": {
+        "path": "ButaAdminStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "718100330221-ap-northeast-1-62e011a0": {
+          "bucketName": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+          "objectKey": "0fb7ff1b4a4c21fd9f441e11b38a29e7081a4338d18f718cc733053193e17b0f.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::718100330221:role/cdk-hnb659fds-file-publishing-role-718100330221-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

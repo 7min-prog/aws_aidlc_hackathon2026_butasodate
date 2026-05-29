@@ -4,13 +4,20 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as apigatewayv2Integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as path from 'path';
 import { Construct } from 'constructs';
 
+interface BattleSocialStackProps extends cdk.StackProps {
+  userPoolId: string;
+}
+
 export class BattleSocialStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: BattleSocialStackProps) {
     super(scope, id, props);
+
+    const userPool = cognito.UserPool.fromUserPoolId(this, 'ImportedUserPool', props.userPoolId);
 
     // ===== DynamoDB Tables =====
 
@@ -41,19 +48,19 @@ export class BattleSocialStack extends cdk.Stack {
 
     const battleHistoryTable = new dynamodb.Table(this, 'BattleHistoryTable', {
       tableName: 'buta-battle-history-dev',
-      partitionKey: { name: 'odataId', type: dynamodb.AttributeType.STRING },
+      partitionKey: { name: 'compositeId', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     battleHistoryTable.addGlobalSecondaryIndex({
       indexName: 'userId-index',
-      partitionKey: { name: 'odataUserId', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'finishedAt', type: dynamodb.AttributeType.STRING },
+      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'playedAt', type: dynamodb.AttributeType.STRING },
     });
 
     const friendsTable = new dynamodb.Table(this, 'FriendsTable', {
       tableName: 'buta-friends-dev',
-      partitionKey: { name: 'odataId', type: dynamodb.AttributeType.STRING },
+      partitionKey: { name: 'compositeId', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
@@ -79,15 +86,22 @@ export class BattleSocialStack extends cdk.Stack {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+    rankingsTable.addGlobalSecondaryIndex({
+      indexName: 'rank-index',
+      partitionKey: { name: 'partition', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'points', type: dynamodb.AttributeType.NUMBER },
+    });
 
     // ===== WebSocket API + Lambda =====
 
     const battleWsHandler = new lambda.Function(this, 'BattleWsHandler', {
       functionName: 'buta-battle-ws-handler-dev',
-      runtime: lambda.Runtime.NODEJS_LATEST,
+      runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/battle-ws-handler/dist')),
+      handler: 'dist/index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/battle-ws-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {
@@ -124,21 +138,22 @@ export class BattleSocialStack extends cdk.Stack {
       autoDeploy: true,
     });
 
-    // Grant ManageConnections permission
     battleWsHandler.addEnvironment('WEBSOCKET_ENDPOINT', wsStage.callbackUrl);
     battleWsHandler.addToRolePolicy(new iam.PolicyStatement({
       actions: ['execute-api:ManageConnections'],
       resources: [`arn:aws:execute-api:${this.region}:${this.account}:${webSocketApi.apiId}/dev/*`],
     }));
 
-    // ===== Social REST Lambda =====
+    // ===== Social REST API =====
 
     const socialHandler = new lambda.Function(this, 'SocialHandler', {
       functionName: 'buta-social-handler-dev',
-      runtime: lambda.Runtime.NODEJS_LATEST,
+      runtime: lambda.Runtime.NODEJS_20_X,
       architecture: lambda.Architecture.ARM_64,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/social-handler/dist')),
+      handler: 'dist/index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/social-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
       environment: {
@@ -146,7 +161,7 @@ export class BattleSocialStack extends cdk.Stack {
         FRIEND_REQUESTS_TABLE: friendRequestsTable.tableName,
         RANKINGS_TABLE: rankingsTable.tableName,
         BATTLE_HISTORY_TABLE: battleHistoryTable.tableName,
-        USERS_TABLE: 'buta-users-dev',
+        USER_PROFILES_TABLE: 'butasodate-user-profiles',
       },
     });
 
@@ -155,9 +170,60 @@ export class BattleSocialStack extends cdk.Stack {
     rankingsTable.grantReadData(socialHandler);
     battleHistoryTable.grantReadData(socialHandler);
 
-    // ===== Outputs =====
+    // user-profiles read access for nickname lookup
+    socialHandler.addToRolePolicy(new iam.PolicyStatement({
+      actions: ['dynamodb:GetItem', 'dynamodb:Query'],
+      resources: [
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-user-profiles`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-user-profiles/index/*`,
+      ],
+    }));
 
+    // REST API Gateway (OpenAPI準拠ルート)
+    const api = new apigateway.RestApi(this, 'SocialApi', {
+      restApiName: 'buta-social-api-dev',
+      deployOptions: { stageName: 'dev' },
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ['Content-Type', 'Authorization'],
+      },
+    });
+
+    const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'SocialAuthorizer', {
+      cognitoUserPools: [userPool as cognito.IUserPool],
+    });
+
+    const authMethodOptions: apigateway.MethodOptions = {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+    };
+
+    const socialIntegration = new apigateway.LambdaIntegration(socialHandler);
+
+    // /social/friends/*
+    const social = api.root.addResource('social');
+    const friends = social.addResource('friends');
+    friends.addMethod('GET', socialIntegration, authMethodOptions);
+    friends.addResource('search').addMethod('POST', socialIntegration, authMethodOptions);
+    friends.addResource('request').addMethod('POST', socialIntegration, authMethodOptions);
+    friends.addResource('respond').addMethod('POST', socialIntegration, authMethodOptions);
+    friends.addResource('requests').addMethod('GET', socialIntegration, authMethodOptions);
+    friends.addResource('{friendId}').addMethod('DELETE', socialIntegration, authMethodOptions);
+
+    // /rankings/*
+    const rankings = api.root.addResource('rankings');
+    rankings.addMethod('GET', socialIntegration, authMethodOptions);
+    rankings.addResource('me').addMethod('GET', socialIntegration, authMethodOptions);
+
+    // /battles/history/*
+    const battles = api.root.addResource('battles');
+    const history = battles.addResource('history');
+    history.addMethod('GET', socialIntegration, authMethodOptions);
+    history.addResource('{matchId}').addMethod('GET', socialIntegration, authMethodOptions);
+
+    // ===== Outputs =====
     new cdk.CfnOutput(this, 'WebSocketUrl', { value: wsStage.url });
-    new cdk.CfnOutput(this, 'WebSocketCallbackUrl', { value: wsStage.callbackUrl });
+    new cdk.CfnOutput(this, 'SocialApiUrl', { value: api.url });
   }
 }
