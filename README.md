@@ -95,6 +95,12 @@ npx cdk deploy --all
 - Node.js >= 18
 - AWS CDK CLI
 
+## 注意事項
+
+本リポジトリはドキュメント提出用です。CI/CD パイプラインは動作しません。
+
+開発用リポジトリ: https://github.com/furanobo/aws_aidlc_hackathon
+
 ## ライセンス
 
 MIT License
