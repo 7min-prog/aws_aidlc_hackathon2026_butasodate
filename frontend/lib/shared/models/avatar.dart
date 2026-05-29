@@ -23,9 +23,10 @@ class Avatar {
   final int totalPoints;
   final int level;
   final int evolutionStage;
-  final String? currentSpeciesId;
+  final String? evolutionPathId;
   final AvatarStats stats;
   final List<String> skillIds;
+  final String spriteSheetKey;
 
   Avatar({
     required this.avatarId,
@@ -34,9 +35,10 @@ class Avatar {
     required this.totalPoints,
     required this.level,
     required this.evolutionStage,
-    this.currentSpeciesId,
+    this.evolutionPathId,
     required this.stats,
     required this.skillIds,
+    required this.spriteSheetKey,
   });
 
   factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
@@ -46,9 +48,10 @@ class Avatar {
         totalPoints: json['totalPoints'] as int? ?? 0,
         level: json['level'] as int? ?? 1,
         evolutionStage: json['evolutionStage'] as int? ?? 1,
-        currentSpeciesId: json['currentSpeciesId'] as String?,
+        evolutionPathId: json['evolutionPathId'] as String?,
         stats: AvatarStats.fromJson(json['stats'] as Map<String, dynamic>? ?? {}),
         skillIds: (json['skillIds'] as List<dynamic>?)?.cast<String>() ?? [],
+        spriteSheetKey: json['spriteSheetKey'] as String? ?? 'sprites/stage1/default',
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,8 +61,9 @@ class Avatar {
         'totalPoints': totalPoints,
         'level': level,
         'evolutionStage': evolutionStage,
-        'currentSpeciesId': currentSpeciesId,
+        'evolutionPathId': evolutionPathId,
         'stats': stats.toJson(),
         'skillIds': skillIds,
+        'spriteSheetKey': spriteSheetKey,
       };
 }
