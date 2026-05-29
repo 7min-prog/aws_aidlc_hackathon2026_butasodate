@@ -1,109 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:buta_app/shared/auth_state.dart';
+import 'package:buta_app/shared/app_config.dart';
 import 'package:buta_app/shared/theme.dart';
+import 'package:buta_app/shared/ui/cloud_animation.dart';
+import 'package:buta_app/shared/state/auth_state.dart';
+import 'package:buta_app/shared/ui/pixel_dialog.dart';
+import 'package:buta_app/shared/ui/pixel_input.dart';
+import 'package:buta_app/shared/services/api_client.dart';
 
+/// A-01 ログイン画面
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
-
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isLoading = false;
-  String? _errorMessage;
+  final _emailCtrl = TextEditingController();
+  final _pwCtrl = TextEditingController();
+  late final TextEditingController _hostCtrl;
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _hostCtrl = TextEditingController(text: AppConfig.devBaseUrl);
   }
 
-  Future<void> _handleLogin() async {
-    setState(() { _isLoading = true; _errorMessage = null; });
-
-    final success = await ref.read(authStateProvider.notifier).login(
-      _emailController.text.trim(),
-      _passwordController.text,
-    );
-
-    setState(() { _isLoading = false; });
-
-    if (!success && mounted) {
-      setState(() { _errorMessage = 'メールアドレスまたはパスワードが正しくありません'; });
+  Future<void> _login() async {
+    if (AppConfig.isDev) AppConfig.devBaseUrl = _hostCtrl.text;
+    final error = await ref.read(authStateProvider.notifier).login(_emailCtrl.text, _pwCtrl.text);
+    if (!mounted) return;
+    if (error == null) {
+      // ニックネーム設定済みか確認
+      try {
+        final api = ref.read(apiClientProvider);
+        final res = await api.get('/users/me');
+        final nickname = res.data['nickname'] as String?;
+        if (!mounted) return;
+        if (nickname == null || nickname.isEmpty) {
+          context.go('/nickname');
+        } else {
+          context.go('/home');
+        }
+      } catch (_) {
+        if (mounted) context.go('/nickname');
+      }
+    } else {
+      showPixelAlert(context, message: 'ログインに しっぱい\nしました。\n\n$error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final sx = size.width / 390;
+    final sy = size.height / 740;
+
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: ButaColors.blue,
+      body: Stack(
+        children: [
+          Positioned.fill(child: SvgPicture.asset('assets/pixel-art/backgrounds/bg-barn.svg', fit: BoxFit.cover)),
+          const Positioned.fill(child: CloudAnimation()),
+          Positioned.fill(child: SafeArea(top: false, child: Stack(children: [
+          if (AppConfig.isDev) Positioned(top: 8, right: 12, child: GestureDetector(
+            onTap: () async {
+              final router = GoRouter.of(context);
+              await ref.read(authStateProvider.notifier).devLogin();
+              if (!mounted) return;
+              router.go('/home');
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(color: ButaColors.red, borderRadius: BorderRadius.circular(2)),
+              child: const Text('DEV', style: TextStyle(fontFamily: kFontPressStart2P, fontSize: 8, color: ButaColors.paper)),
+            ),
+          )),
+          Positioned(top: 140 * sy, left: 0, right: 0, child: const Text('ログイン', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 20, color: ButaColors.paper))),
+          if (AppConfig.isDev) Positioned(top: 185 * sy, left: 55 * sx, child: PixelInput(controller: _hostCtrl, sx: sx, sy: sy, hintText: 'http://IP:PORT')),
+          Positioned(top: 240 * sy, left: 0, right: 0, child: const Text('メールアドレス', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+          Positioned(top: 258 * sy, left: 55 * sx, child: PixelInput(controller: _emailCtrl, sx: sx, sy: sy, hintText: 'mail@example.com')),
+          Positioned(top: 310 * sy, left: 0, right: 0, child: const Text('パスワード', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+          Positioned(top: 328 * sy, left: 55 * sx, child: PixelInput(controller: _pwCtrl, sx: sx, sy: sy, obscure: true, hintText: 'パスワード')),
+          Positioned(top: 390 * sy, left: 55 * sx, child: ListenableBuilder(
+            listenable: Listenable.merge([_emailCtrl, _pwCtrl]),
+            builder: (_, __) {
+              final enabled = _emailCtrl.text.isNotEmpty && _pwCtrl.text.isNotEmpty;
+              return PixelActionButton(width: 280 * sx, height: 44 * sy, label: 'ログイン', icon: 'assets/pixel-art/icons/play.svg', enabled: enabled, onTap: _login);
+            },
+          )),
+          Positioned(top: 455 * sy, left: 0, right: 0, child: const Text('── または ──', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 12, color: ButaColors.gray))),
+          Positioned(top: 490 * sy, left: 55 * sx, child: PixelActionButton(width: 280 * sx, height: 40 * sy, label: 'Google で ログイン', fontSize: 14, color: ButaColors.paper, onTap: () {})),
+          Positioned(top: 545 * sy, left: 55 * sx, child: PixelActionButton(width: 280 * sx, height: 40 * sy, label: 'X で ログイン', fontSize: 14, color: ButaColors.paper, onTap: () {})),
+          Positioned(bottom: 50, left: 0, right: 0, child: GestureDetector(onTap: () => context.push('/signup'), child: const Text('アカウントを つくる →', textAlign: TextAlign.center, style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 14, color: ButaColors.paper)))),
+          Positioned(bottom: 20, left: 0, right: 0, child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('🐷', style: TextStyle(fontSize: 64)),
-              const SizedBox(height: 8),
-              Text('ぶたそだて',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: ButaColors.primary,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: ButaColors.surface,
-                  border: Border.all(color: ButaColors.border, width: 4),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: Column(
-                  children: [
-                    TextField(
-                      key: const Key('login-email-input'),
-                      controller: _emailController,
-                      decoration: const InputDecoration(labelText: 'メールアドレス'),
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      key: const Key('login-password-input'),
-                      controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'パスワード'),
-                      obscureText: true,
-                      style: const TextStyle(fontFamily: 'DotGothic16', color: ButaColors.textPrimary),
-                    ),
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 12),
-                      Text(_errorMessage!, style: const TextStyle(color: ButaColors.error, fontSize: 12)),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                key: const Key('login-submit-button'),
-                onPressed: _isLoading ? null : _handleLogin,
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: ButaColors.textPrimary)
-                    : const Text('▶ ログイン'),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                key: const Key('login-to-signup-button'),
-                onPressed: () => context.go('/signup'),
-                child: const Text('▶ アカウントを作成する'),
-              ),
+              GestureDetector(onTap: () => context.push('/terms', extra: false), child: const Text('利用規約', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper, decoration: TextDecoration.underline, decorationColor: ButaColors.paper))),
+              const Text(' ｜ ', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper)),
+              GestureDetector(onTap: () => context.push('/privacy', extra: false), child: const Text('プライバシーポリシー', style: TextStyle(fontFamily: kFontDotGothic16, fontSize: 10, color: ButaColors.paper, decoration: TextDecoration.underline, decorationColor: ButaColors.paper))),
             ],
-          ),
-        ),
+          )),
+        ]))),
+        ],
       ),
     );
   }

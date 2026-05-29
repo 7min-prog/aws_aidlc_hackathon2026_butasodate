@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.7.0 <4.0.0'
+  sdk: '>=3.9.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -19,13 +19,60 @@ dependencies:
   path_provider: ^2.1.5
   connectivity_plus: ^6.1.4
   cached_network_image: ^3.4.1
+  flutter_native_splash: ^2.4.6
+  carousel_slider: ^5.0.0
+  flutter_svg: ^2.0.17
+  web_socket_channel: ^3.0.2
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  test: ^1.25.0
   flutter_lints: ^5.0.0
-  riverpod_generator: ^4.0.0
-  build_runner: ^2.4.9
+  golden_toolkit: ^0.15.0
+  http_mock_adapter: ^0.6.1
+  flutter_launcher_icons: ^0.14.3
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/pixel-art/backgrounds/
+    - assets/pixel-art/icons/
+    - assets/tutorial/
+    - assets/bgm/
+    - assets/splash2.png
+    - assets/pig_default.png
+    - assets/pig_happy.png
+    - assets/pig_ramen.png
+    - assets/pig_utouto.png
+  fonts:
+    - family: DotGothic16
+      fonts:
+        - asset: assets/fonts/DotGothic16-Regular.ttf
+    - family: PressStart2P
+      fonts:
+        - asset: assets/fonts/PressStart2P-Regular.ttf
+
+flutter_native_splash:
+  color: "#1a1228"
+  image: assets/splash_icon.png
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: "#1a1228"
+    image: assets/splash_icon.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/app_icon.png"
+    background_color: "#1A1228"
+    theme_color: "#1A1228"
+  adaptive_icon_background: "#1A1228"
+  adaptive_icon_foreground: "assets/app_icon.png"

@@ -91,10 +91,11 @@ td{background:var(--paper);}
 
 <h3>メインタブ（MAIN）</h3>
 <div class="screen-grid">
-<div class="screen-card"><div class="id">M-01</div><div class="name">ホーム画面</div><div class="desc">ぶたアバター表示（中央）、LV/EXPバー、スコア、行動記録ボタン、今日の記録サマリー</div><span class="tag tag-home">HOME</span></div>
-<div class="screen-card"><div class="id">M-02</div><div class="name">記録タブ画面</div><div class="desc">記録履歴一覧（日別）、カレンダー表示切替、統計サマリー</div><span class="tag tag-record">RECORD</span></div>
+<div class="screen-card"><div class="id">M-01</div><div class="name">ホーム画面</div><div class="desc">ぶたアバター表示（中央）、LV/EXPバー、スコア、「ようすをみる」ボタン→V-01、今日の記録サマリー</div><span class="tag tag-home">HOME</span></div>
+<div class="screen-card"><div class="id">M-02</div><div class="name">記録タブ画面</div><div class="desc">記録履歴一覧（日別）、カレンダー表示切替、統計サマリー、「きろくする」ボタン→R-01</div><span class="tag tag-record">RECORD</span></div>
 <div class="screen-card"><div class="id">M-03</div><div class="name">バトルタブ画面</div><div class="desc">ランダムマッチボタン、フレンド対戦ボタン、バトル履歴、ランキング</div><span class="tag tag-battle">BATTLE</span></div>
-<div class="screen-card"><div class="id">M-04</div><div class="name">アカウントタブ画面</div><div class="desc">プロフィール、ヘルスデータ連携、通知設定、アカウント管理</div><span class="tag tag-settings">ACCOUNT</span></div>
+<div class="screen-card"><div class="id">M-04</div><div class="name">フレンドタブ画面</div><div class="desc">フレンドリスト、オンライン状態表示、フレンド追加ボタン</div><span class="tag tag-social">SOCIAL</span></div>
+<div class="screen-card"><div class="id">M-05</div><div class="name">せっていタブ画面</div><div class="desc">バトル履歴、プロフィール、通知設定、アカウント管理</div><span class="tag tag-settings">ACCOUNT</span></div>
 </div>
 
 <h3>記録フロー（RECORD）</h3>
@@ -195,34 +196,32 @@ flowchart TD
 <h3>メインタブ遷移</h3>
 <div class="mermaid">
 flowchart TD
-  TAB[タブバー] --> M01[M-01 ホーム]
+  TAB[タブバー 5タブ] --> M01[M-01 ホーム]
   TAB --> M02[M-02 記録タブ]
   TAB --> M03[M-03 バトルタブ]
-  TAB --> M04[M-04 アカウントタブ]
+  TAB --> S01[S-01 フレンド一覧]
+  TAB --> M04[M-04 せっていタブ]
 
-  M01 --> V01[V-01 アバター詳細]
-  M01 --> V03[V-03 進化図鑑]
-  M01 --> R01[R-01 カテゴリ選択]
+  M01 -->|ようすをみる| V01[V-01 アバター詳細]
+  M01 -->|アバタータップ| V01
+  V01 --> V03[V-03 進化図鑑]
+
+  M02 -->|きろくする| R01[R-01 カテゴリ選択]
 
   M03 --> B01[B-01 マッチング待機]
-  M03 --> S01[S-01 フレンド一覧]
-  M03 --> S03[S-03 バトル履歴]
   S01 --> S02[S-02 フレンド検索]
 
-  M04 --> T01[T-01 プロフィール編集]
-  M04 --> T02[T-02 ヘルスデータ連携]
-  M04 --> T03[T-03 通知設定]
-  M04 --> T04[T-04 アカウント管理]
+  M04 --> S03[S-03 バトル履歴]
 </div>
 
 <h3>記録フロー（3タップ以内）</h3>
 <div class="mermaid">
 flowchart TD
-  M01[M-01 ホーム] -->|1. きろくボタン| R01[R-01 カテゴリ選択]
+  M02[M-02 記録タブ] -->|1. きろくするボタン| R01[R-01 カテゴリ選択]
   R01 -->|2. カテゴリ選択| R02[R-02 記録確認]
   R02 -->|3. きろくする| R03[R-03 記録完了<br/>ぶた喜び +50pt!]
   R03 -->|レベルアップ| V02[V-02 進化演出]
-  R03 -->|通常| M01
+  R03 -->|通常| M01[M-01 ホーム]
   V02 --> M01
 </div>
 
@@ -269,8 +268,8 @@ flowchart TD
 <tr><td>A-02 サインアップ</td><td>A-03 メール確認</td><td>サインアップ成功</td></tr>
 <tr><td>A-03 メール確認</td><td>A-04 ニックネーム</td><td>確認コード認証成功</td></tr>
 <tr><td>A-04 ニックネーム</td><td>M-01 ホーム</td><td>ニックネーム設定完了</td></tr>
-<tr><td>M-01 ホーム</td><td>R-01 カテゴリ選択</td><td>「きろく」ボタン</td></tr>
-<tr><td>M-01 ホーム</td><td>V-01 アバター詳細</td><td>アバタータップ</td></tr>
+<tr><td>M-01 ホーム</td><td>V-01 アバター詳細</td><td>「ようすをみる」ボタン / アバタータップ</td></tr>
+<tr><td>M-02 記録タブ</td><td>R-01 カテゴリ選択</td><td>「きろくする」ボタン</td></tr>
 <tr><td>R-01 カテゴリ選択</td><td>R-02 記録確認</td><td>カテゴリ選択</td></tr>
 <tr><td>R-02 記録確認</td><td>R-03 記録完了</td><td>「きろくする」ボタン</td></tr>
 <tr><td>R-03 記録完了</td><td>M-01 ホーム</td><td>自動遷移 / ボタン</td></tr>
@@ -313,7 +312,7 @@ flowchart TD
 <tr><th>カテゴリ</th><th>画面数</th><th>備考</th></tr>
 <tr><td>起動 (LAUNCH)</td><td>9</td><td>X-00〜X-05, X-06a〜X-06c</td></tr>
 <tr><td>認証 (AUTH)</td><td>4</td><td>A-01〜A-04</td></tr>
-<tr><td>メインタブ (MAIN)</td><td>4</td><td>M-01〜M-04（タブバー常駐）</td></tr>
+<tr><td>メインタブ (MAIN)</td><td>5</td><td>M-01〜M-05（タブバー5タブ常駐）</td></tr>
 <tr><td>記録 (RECORD)</td><td>4</td><td>R-01〜R-04</td></tr>
 <tr><td>ヘルスケア連携 (HEALTH)</td><td>1</td><td>H-01（ダイアログ）</td></tr>
 <tr><td>ダイアログ (DIALOG)</td><td>5</td><td>D-01〜D-05（ポップアップ）</td></tr>
@@ -322,7 +321,7 @@ flowchart TD
 <tr><td>ソーシャル (SOCIAL)</td><td>3</td><td>S-01〜S-03</td></tr>
 <tr><td>アカウント (ACCOUNT)</td><td>4</td><td>T-01〜T-04</td></tr>
 <tr><td>法務・規約 (LEGAL)</td><td>5</td><td>L-01〜L-05</td></tr>
-<tr><td><strong>合計</strong></td><td><strong>47画面</strong></td><td></td></tr>
+<tr><td><strong>合計</strong></td><td><strong>48画面</strong></td><td></td></tr>
 </table>
 
 </div>

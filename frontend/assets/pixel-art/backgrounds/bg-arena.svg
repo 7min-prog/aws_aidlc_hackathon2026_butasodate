@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 800 740" shape-rendering="crispEdges">
+  <!-- Sky: blue gradient -->
+  <rect x="-200" width="800" height="740" fill="#5A8ED1"/>
+  <rect x="-200" y="0" width="800" height="120" fill="#4A7EC1"/>
+  <rect x="-200" y="120" width="800" height="80" fill="#6A9EE1"/>
+
+  <!-- Clouds -->
+  <rect x="40" y="40" width="60" height="12" fill="#FFF8E6" opacity="0.7"/>
+  <rect x="50" y="32" width="40" height="8" fill="#FFF8E6" opacity="0.5"/>
+  <rect x="250" y="70" width="50" height="10" fill="#FFF8E6" opacity="0.6"/>
+  <rect x="260" y="62" width="30" height="8" fill="#FFF8E6" opacity="0.4"/>
+  <rect x="150" y="100" width="40" height="8" fill="#FFF8E6" opacity="0.5"/>
+
+  <!-- Sun -->
+  <rect x="320" y="30" width="24" height="24" fill="#F6C453"/>
+  <rect x="316" y="34" width="4" height="16" fill="#F6C453" opacity="0.5"/>
+  <rect x="348" y="34" width="4" height="16" fill="#F6C453" opacity="0.5"/>
+  <rect x="324" y="26" width="16" height="4" fill="#F6C453" opacity="0.5"/>
+  <rect x="324" y="58" width="16" height="4" fill="#F6C453" opacity="0.5"/>
+
+  <!-- Arena ground (sand) -->
+  <rect x="-200" y="530" width="800" height="210" fill="#E8D9B0"/>
+  <rect x="-200" y="526" width="800" height="8" fill="#8A5A2B"/>
+
+  <!-- Sand texture -->
+  <rect x="30" y="560" width="6" height="4" fill="#D4C89C"/>
+  <rect x="100" y="580" width="8" height="4" fill="#D4C89C"/>
+  <rect x="200" y="570" width="6" height="4" fill="#D4C89C"/>
+  <rect x="280" y="590" width="8" height="4" fill="#D4C89C"/>
+  <rect x="350" y="565" width="6" height="4" fill="#D4C89C"/>
+  <rect x="60" y="630" width="8" height="4" fill="#D4C89C"/>
+  <rect x="160" y="650" width="6" height="4" fill="#D4C89C"/>
+  <rect x="310" y="640" width="8" height="4" fill="#D4C89C"/>
+
+  <!-- Arena walls/pillars left -->
+  <rect x="0" y="280" width="28" height="250" fill="#8A5A2B"/>
+  <rect x="4" y="280" width="20" height="250" fill="#B8A99A"/>
+  <rect x="0" y="274" width="28" height="8" fill="#F6C453"/>
+  <rect x="2" y="266" width="24" height="8" fill="#E8485A"/>
+  <rect x="6" y="258" width="16" height="8" fill="#F6C453"/>
+
+  <!-- Arena walls/pillars right -->
+  <rect x="362" y="280" width="28" height="250" fill="#8A5A2B"/>
+  <rect x="366" y="280" width="20" height="250" fill="#B8A99A"/>
+  <rect x="362" y="274" width="28" height="8" fill="#F6C453"/>
+  <rect x="364" y="266" width="24" height="8" fill="#E8485A"/>
+  <rect x="368" y="258" width="16" height="8" fill="#F6C453"/>
+
+  <!-- Flags on pillars - left -->
+  <rect x="8" y="230" width="4" height="28" fill="#3D2B4D"/>
+  <rect x="12" y="230" width="16" height="12" fill="#E8485A"/>
+  <rect x="12" y="242" width="12" height="8" fill="#E8485A"/>
+
+  <!-- Flags on pillars - right -->
+  <rect x="378" y="230" width="4" height="28" fill="#3D2B4D"/>
+  <rect x="366" y="230" width="12" height="12" fill="#5A8ED1"/>
+  <rect x="370" y="242" width="12" height="8" fill="#5A8ED1"/>
+
+  <!-- Arena fence/railing -->
+  <rect x="28" y="496" width="334" height="6" fill="#8A5A2B"/>
+  <rect x="28" y="502" width="334" height="4" fill="#6B4420"/>
+  <!-- Fence posts -->
+  <rect x="70" y="476" width="6" height="26" fill="#8A5A2B"/>
+  <rect x="130" y="476" width="6" height="26" fill="#8A5A2B"/>
+  <rect x="190" y="476" width="6" height="26" fill="#8A5A2B"/>
+  <rect x="250" y="476" width="6" height="26" fill="#8A5A2B"/>
+  <rect x="310" y="476" width="6" height="26" fill="#8A5A2B"/>
+
+  <!-- Audience area (behind fence) -->
+  <rect x="28" y="380" width="334" height="96" fill="#F4ECD8"/>
+  <rect x="28" y="380" width="334" height="4" fill="#B8A99A"/>
+  <!-- Audience dots (pixel spectators) -->
+  <rect x="50" y="400" width="8" height="8" fill="#FF9BB3"/>
+  <rect x="70" y="398" width="8" height="8" fill="#6CB979"/>
+  <rect x="90" y="402" width="8" height="8" fill="#F6C453"/>
+  <rect x="120" y="400" width="8" height="8" fill="#5A8ED1"/>
+  <rect x="140" y="396" width="8" height="8" fill="#E8485A"/>
+  <rect x="170" y="400" width="8" height="8" fill="#FF9BB3"/>
+  <rect x="200" y="398" width="8" height="8" fill="#6CB979"/>
+  <rect x="230" y="402" width="8" height="8" fill="#F6C453"/>
+  <rect x="260" y="398" width="8" height="8" fill="#5A8ED1"/>
+  <rect x="290" y="400" width="8" height="8" fill="#E8485A"/>
+  <rect x="320" y="396" width="8" height="8" fill="#FF9BB3"/>
+  <rect x="340" y="400" width="8" height="8" fill="#6CB979"/>
+  <!-- Row 2 -->
+  <rect x="60" y="430" width="8" height="8" fill="#F6C453"/>
+  <rect x="90" y="432" width="8" height="8" fill="#5A8ED1"/>
+  <rect x="120" y="428" width="8" height="8" fill="#FF9BB3"/>
+  <rect x="150" y="432" width="8" height="8" fill="#E8485A"/>
+  <rect x="180" y="430" width="8" height="8" fill="#6CB979"/>
+  <rect x="210" y="428" width="8" height="8" fill="#F6C453"/>
+  <rect x="240" y="432" width="8" height="8" fill="#5A8ED1"/>
+  <rect x="270" y="430" width="8" height="8" fill="#FF9BB3"/>
+  <rect x="300" y="428" width="8" height="8" fill="#E8485A"/>
+  <rect x="330" y="432" width="8" height="8" fill="#6CB979"/>
+
+  <!-- Center arena emblem on ground -->
+  <rect x="175" y="620" width="40" height="40" fill="#B8A99A" opacity="0.5"/>
+  <rect x="179" y="624" width="32" height="32" fill="none" stroke="#8A5A2B" stroke-width="2"/>
+  <rect x="189" y="634" width="12" height="12" fill="#E8485A"/>
+</svg>
