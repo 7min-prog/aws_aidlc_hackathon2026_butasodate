@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>ぶたそだて — デザインルール</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4ecd8;
+    --bgDeep: #e8d9b0;
+    --paper: #fff8e6;
+    --ink: #1a1228;
+    --ink2: #3d2b4d;
+    --pink: #ff9bb3;
+    --pinkDk: #c46a85;
+    --red: #e8485a;
+    --yellow: #f6c453;
+    --green: #6cb979;
+    --blue: #5a8ed1;
+    --brown: #8a5a2b;
+    --gray: #b8a99a;
+    --black: #0a0612;
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "DotGothic16", monospace;
+    font-size: 14px; line-height: 1.7;
+  }
+  * { box-sizing: border-box; }
+  .en { font-family: "Press Start 2P", monospace; }
+
+  /* layout */
+  .doc { max-width: 1100px; margin: 0 auto; padding: 0 32px 120px; }
+  header.hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 56px 32px 48px;
+    margin-bottom: 48px;
+    background-image:
+      radial-gradient(var(--paper) 1.5px, transparent 1.5px),
+      radial-gradient(var(--yellow) 1.5px, transparent 1.5px);
+    background-size: 36px 36px, 96px 96px;
+    background-position: 0 0, 18px 48px;
+    border-bottom: 4px solid var(--ink);
+  }
+  header.hero .inner { max-width: 1100px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+  header.hero h1 { margin: 0; font-size: 40px; letter-spacing: 4px; line-height: 1.2; }
+  header.hero .kicker {
+    font-family: "Press Start 2P", monospace;
+    font-size: 11px; letter-spacing: 5px;
+    color: var(--yellow); margin-bottom: 12px;
+  }
+  header.hero .sub { font-size: 15px; opacity: 0.85; max-width: 640px; margin-top: 10px; }
+
+  section { margin-bottom: 64px; scroll-margin-top: 24px; }
+  h2 {
+    font-size: 24px; letter-spacing: 3px; margin: 0 0 6px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--ink);
+  }
+  h2 .num {
+    font-family: "Press Start 2P", monospace; font-size: 12px;
+    color: var(--pinkDk); margin-right: 12px;
+    background: var(--paper); padding: 4px 8px;
+    box-shadow: 0 0 0 2px var(--ink);
+    display: inline-block; transform: translateY(-3px);
+  }
+  h3 { font-size: 16px; letter-spacing: 2px; margin: 24px 0 10px; }
+  h3 .label { font-family: "Press Start 2P", monospace; font-size: 9px; color: var(--ink2); margin-left: 8px; letter-spacing: 2px; }
+  p, ul, ol { margin: 8px 0 12px; }
+  ul { padding-left: 22px; }
+  li { margin: 4px 0; }
+  .intro { font-size: 15px; color: var(--ink2); margin-bottom: 24px; max-width: 700px; }
+
+  /* Pixel chrome — chunky double-border RPG window */
+  .box {
+    background: var(--paper);
+    box-shadow:
+      0 0 0 3px var(--ink),
+      0 0 0 6px var(--paper),
+      0 0 0 9px var(--ink);
+    padding: 22px 24px;
+    margin: 12px 9px 24px;
+    position: relative;
+  }
+  .box.dark { background: var(--ink); color: var(--paper); }
+  .box.dark { box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px var(--paper), 0 0 0 9px var(--ink); }
+  .box .label {
+    position: absolute; top: -18px; left: 14px;
+    background: var(--pinkDk); color: var(--paper);
+    font-family: "Press Start 2P", monospace; font-size: 10px;
+    padding: 5px 10px;
+    box-shadow: 0 0 0 2px var(--ink);
+    letter-spacing: 2px;
+  }
+
+  /* Color palette */
+  .palette {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 14px;
+  }
+  .swatch {
+    box-shadow: 0 0 0 2px var(--ink);
+    aspect-ratio: 1; position: relative;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8px;
+  }
+  .swatch .name { font-family: "Press Start 2P", monospace; font-size: 8px; letter-spacing: 1px; line-height: 1.3; }
+  .swatch .hex { font-family: ui-monospace, monospace; font-size: 9px; opacity: 0.7; margin-top: 2px; }
+  .swatch.light .name, .swatch.light .hex { color: var(--ink); }
+  .swatch.dark .name, .swatch.dark .hex { color: var(--paper); }
+
+  /* Emotion mapping */
+  .emo-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .emo {
+    padding: 16px; text-align: center;
+    box-shadow: 0 0 0 2px var(--ink);
+  }
+  .emo .dot {
+    width: 36px; height: 36px; margin: 4px auto 10px;
+    box-shadow: 0 0 0 2px var(--ink);
+  }
+  .emo .face { font-size: 24px; margin-bottom: 2px; }
+  .emo .word { font-size: 13px; letter-spacing: 1px; }
+  .emo .role { font-family: "Press Start 2P", monospace; font-size: 8px; letter-spacing: 1px; color: var(--ink2); margin-top: 4px; }
+
+  /* Typography demo */
+  .type-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .type-spec { padding: 16px; background: var(--paper); box-shadow: 0 0 0 2px var(--ink); }
+  .type-spec .meta { font-family: "Press Start 2P", monospace; font-size: 9px; letter-spacing: 2px; color: var(--ink2); margin-bottom: 12px; }
+  .type-spec .sample-jp { font-family: "DotGothic16", monospace; font-size: 28px; line-height: 1.4; }
+  .type-spec .sample-en { font-family: "Press Start 2P", monospace; font-size: 20px; line-height: 1.4; letter-spacing: 2px; }
+  .type-spec .row { display: flex; justify-content: space-between; border-top: 1px dashed var(--gray); margin-top: 12px; padding-top: 8px; font-family: ui-monospace, monospace; font-size: 11px; color: var(--ink2); }
+
+  /* Scale ladder */
+  .scale { display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap; }
+  .scale .step { text-align: center; }
+  .scale .px { font-family: "Press Start 2P", monospace; font-size: 8px; color: var(--ink2); margin-top: 4px; letter-spacing: 1px; }
+
+  /* Spacing grid */
+  .grid-demo {
+    display: grid; grid-template-columns: repeat(8, 1fr); gap: 0;
+    background:
+      linear-gradient(to right, transparent 50%, rgba(26,18,40,0.1) 50%),
+      linear-gradient(to bottom, transparent 50%, rgba(26,18,40,0.1) 50%);
+    background-size: 8px 8px;
+    padding: 16px; box-shadow: 0 0 0 2px var(--ink);
+  }
+  .grid-demo .cell { aspect-ratio: 1; background: var(--pink); box-shadow: 0 0 0 2px var(--ink); margin: 4px; }
+
+  /* Component samples */
+  .pix-box {
+    background: var(--paper); padding: 12px 14px;
+    box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px var(--paper), 0 0 0 9px var(--ink);
+    display: inline-block; font-size: 13px;
+  }
+  .pix-btn {
+    background: var(--paper); color: var(--ink); padding: 8px 16px;
+    font-family: "DotGothic16", monospace; font-size: 14px; letter-spacing: 1px;
+    box-shadow: 0 0 0 2px var(--ink), inset 0 -3px 0 rgba(0,0,0,0.18);
+    display: inline-block; cursor: default; user-select: none;
+  }
+  .pix-btn.A { background: var(--yellow); }
+  .pix-btn.B { background: var(--pink); }
+  .pix-btn.danger { background: var(--red); color: var(--paper); }
+  .pix-bar {
+    width: 100%; height: 12px; background: var(--ink); box-shadow: 0 0 0 2px var(--ink); padding: 2px;
+  }
+  .pix-bar > div { height: 100%; background: var(--green); background-image: linear-gradient(180deg, var(--green) 0%, var(--green) 40%, rgba(0,0,0,0.25) 41%, var(--green) 60%); }
+  .pix-tag {
+    display: inline-block; font-family: "Press Start 2P", monospace; font-size: 9px;
+    padding: 4px 8px; box-shadow: 0 0 0 2px var(--ink); letter-spacing: 1px;
+  }
+
+  /* component layout */
+  .comp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .comp-row > div { padding: 18px; background: rgba(255,248,230,0.5); box-shadow: 0 0 0 2px var(--ink); }
+  .comp-row h4 { margin: 0 0 12px; font-size: 13px; letter-spacing: 2px; }
+  .comp-row .demo { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding: 14px 0; }
+
+  /* Do / Don't */
+  .dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .dodont .card { padding: 18px; box-shadow: 0 0 0 3px var(--ink); position: relative; }
+  .dodont .do    { background: #e8f5d9; }
+  .dodont .dont  { background: #fdd9d9; }
+  .dodont .badge {
+    position: absolute; top: -14px; left: 12px;
+    font-family: "Press Start 2P", monospace; font-size: 10px;
+    padding: 5px 10px; box-shadow: 0 0 0 2px var(--ink); letter-spacing: 2px;
+  }
+  .dodont .do .badge   { background: var(--green); color: var(--paper); }
+  .dodont .dont .badge { background: var(--red);   color: var(--paper); }
+  .dodont h4 { margin: 8px 0 6px; font-size: 14px; letter-spacing: 2px; }
+  .dodont p { font-size: 13px; margin: 0; }
+
+  /* Sprite size demo */
+  .sprite-sizes { display: flex; gap: 32px; align-items: flex-end; padding: 24px; background: var(--paper); box-shadow: 0 0 0 2px var(--ink); }
+  .sprite-sizes .pig {
+    background: var(--pink); box-shadow: 0 0 0 2px var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Press Start 2P", monospace; font-size: 9px;
+    color: var(--ink);
+  }
+  .sprite-sizes .pig .num { font-size: 13px; }
+  .sprite-sizes .lbl { text-align: center; margin-top: 8px; font-family: "Press Start 2P", monospace; font-size: 9px; letter-spacing: 1px; color: var(--ink2); }
+
+  /* TOC */
+  nav.toc {
+    background: var(--paper); padding: 18px 22px;
+    box-shadow: 0 0 0 2px var(--ink);
+    margin: 0 9px 48px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 24px;
+  }
+  nav.toc a { color: var(--ink); text-decoration: none; font-size: 13px; padding: 4px 0; display: block; border-bottom: 1px dashed transparent; }
+  nav.toc a:hover { border-bottom-color: var(--ink); }
+  nav.toc a .n { font-family: "Press Start 2P", monospace; font-size: 9px; color: var(--pinkDk); margin-right: 8px; }
+
+  /* tone box */
+  .tone {
+    background: var(--paper); padding: 22px 26px; margin: 12px 9px 24px;
+    box-shadow: 0 0 0 3px var(--ink);
+    border-left: 12px solid var(--yellow);
+  }
+  .tone .quote {
+    font-size: 22px; letter-spacing: 2px; line-height: 1.5;
+    color: var(--ink);
+  }
+  .tone .src { font-family: "Press Start 2P", monospace; font-size: 9px; color: var(--ink2); margin-top: 8px; letter-spacing: 2px; }
+
+  /* pixel art preview */
+  .pig-row { display: flex; gap: 24px; align-items: flex-end; padding: 20px; background: var(--paper); box-shadow: 0 0 0 2px var(--ink); }
+  .pig-row .stage { text-align: center; }
+  .pig-row .stage .body {
+    width: 64px; height: 64px;
+    image-rendering: pixelated;
+    margin: 0 auto;
+    display: grid; place-items: center;
+    background: var(--bgDeep);
+    box-shadow: inset 0 0 0 2px var(--ink);
+  }
+  .pig-row .stage .name { font-size: 12px; margin-top: 8px; letter-spacing: 1px; }
+  .pig-row .stage .lvl { font-family: "Press Start 2P", monospace; font-size: 8px; color: var(--ink2); margin-top: 2px; letter-spacing: 1px; }
+
+  footer {
+    text-align: center; padding: 48px 0 0;
+    font-family: "Press Start 2P", monospace; font-size: 10px;
+    color: var(--ink2); letter-spacing: 3px;
+  }
+
+  @media (max-width: 720px) {
+    .palette { grid-template-columns: repeat(4, 1fr); }
+    .emo-grid { grid-template-columns: repeat(2, 1fr); }
+    .type-demo, .dodont, .comp-row { grid-template-columns: 1fr; }
+    nav.toc { grid-template-columns: 1fr; }
+    header.hero h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <div class="kicker">🐷 BUTASODATE · DESIGN RULES · V1</div>
+    <h1>ぶたそだて<br/>デザインルール</h1>
+    <p class="sub">
+      ピクセルアートRPG × ヘルスケア。GBC風の温かい16色パレットと、ブロック的なJRPG窓を基本言語にした、可愛らしくちょっと自虐的な世界観のためのデザインシステム。
+    </p>
+  </div>
+</header>
+
+<div class="doc">
+
+<nav class="toc">
+  <a href="#philosophy"><span class="n">00</span>デザイン哲学</a>
+  <a href="#palette"><span class="n">01</span>カラーパレット</a>
+  <a href="#emotion"><span class="n">02</span>色と感情のマッピング</a>
+  <a href="#type"><span class="n">03</span>タイポグラフィ</a>
+  <a href="#scale"><span class="n">04</span>サイズスケール</a>
+  <a href="#grid"><span class="n">05</span>グリッド & スペーシング</a>
+  <a href="#components"><span class="n">06</span>コアコンポーネント</a>
+  <a href="#pixel"><span class="n">07</span>ピクセルアートのルール</a>
+  <a href="#voice"><span class="n">08</span>ボイス & トーン</a>
+  <a href="#dodont"><span class="n">09</span>やる / やらない</a>
+</nav>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="philosophy">
+  <h2><span class="num">00</span>デザイン哲学</h2>
+  <p class="intro">
+    「健康アプリ」のお説教くささを、ピクセルアートのかわいさで包む。<br/>
+    ユーザーは "自分" ではなく "ぶた" を育てる。だから罪悪感ではなく愛おしさが残る。
+  </p>
+
+  <div class="comp-row">
+    <div>
+      <h4>3つの原則</h4>
+      <ol>
+        <li><b>ピクセルは嘘をつかない。</b> すべて2pxグリッドにスナップ。中間アンチエイリアスなし。</li>
+        <li><b>あったかい色を、はっきり使う。</b> グレーは "灰色" ではなく "ぬくもりの褪せ" として扱う。</li>
+        <li><b>テキストは "話しかけ"、UIは "ゲーム"。</b> 説明調は禁止、コマンド調を採用。</li>
+      </ol>
+    </div>
+    <div>
+      <h4>避けること</h4>
+      <ul>
+        <li>iOS / Android のネイティブ風UI（ダイナミックアイランド、丸ボタン等）</li>
+        <li>パステルのみのフラットデザイン（甘さに振り切らない）</li>
+        <li>無機質なグラフ／チャート（数字は "ステータス" として翻訳）</li>
+        <li>絵文字の濫用（顔文字はOK、絵文字は世界観を破る）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="palette">
+  <h2><span class="num">01</span>カラーパレット</h2>
+  <p class="intro">GameBoy Color風16色 + α。すべての色は <code>PAL</code> 定数として一元管理する。新色の追加は原則禁止。</p>
+
+  <h3>地と紙 <span class="label">— FOUNDATION</span></h3>
+  <div class="palette">
+    <div class="swatch light" style="background:#f4ecd8"><div class="name">BG</div><div class="hex">#f4ecd8</div></div>
+    <div class="swatch light" style="background:#e8d9b0"><div class="name">BG·DEEP</div><div class="hex">#e8d9b0</div></div>
+    <div class="swatch light" style="background:#fff8e6"><div class="name">PAPER</div><div class="hex">#fff8e6</div></div>
+    <div class="swatch light" style="background:#d8c896"><div class="name">PAPER·SH</div><div class="hex">#d8c896</div></div>
+    <div class="swatch dark" style="background:#1a1228"><div class="name">INK</div><div class="hex">#1a1228</div></div>
+    <div class="swatch dark" style="background:#3d2b4d"><div class="name">INK·2</div><div class="hex">#3d2b4d</div></div>
+    <div class="swatch dark" style="background:#0a0612"><div class="name">BLACK</div><div class="hex">#0a0612</div></div>
+    <div class="swatch light" style="background:#fffdf2"><div class="name">WHITE</div><div class="hex">#fffdf2</div></div>
+  </div>
+
+  <h3>キャラクター系 <span class="label">— PINK FAMILY</span></h3>
+  <div class="palette">
+    <div class="swatch light" style="background:#ffe2eb"><div class="name">PINK·HI</div><div class="hex">#ffe2eb</div></div>
+    <div class="swatch light" style="background:#ffc8d8"><div class="name">PINK·LO</div><div class="hex">#ffc8d8</div></div>
+    <div class="swatch light" style="background:#ff9bb3"><div class="name">PINK</div><div class="hex">#ff9bb3</div></div>
+    <div class="swatch dark" style="background:#c46a85"><div class="name">PINK·DK</div><div class="hex">#c46a85</div></div>
+  </div>
+
+  <h3>シグナル系 <span class="label">— FEEDBACK</span></h3>
+  <div class="palette">
+    <div class="swatch dark" style="background:#e8485a"><div class="name">RED</div><div class="hex">#e8485a</div></div>
+    <div class="swatch dark" style="background:#9c1d3a"><div class="name">RED·DK</div><div class="hex">#9c1d3a</div></div>
+    <div class="swatch light" style="background:#f6c453"><div class="name">YELLOW</div><div class="hex">#f6c453</div></div>
+    <div class="swatch dark" style="background:#b0822a"><div class="name">YELLOW·DK</div><div class="hex">#b0822a</div></div>
+    <div class="swatch light" style="background:#6cb979"><div class="name">GREEN</div><div class="hex">#6cb979</div></div>
+    <div class="swatch dark" style="background:#2f6b3c"><div class="name">GREEN·DK</div><div class="hex">#2f6b3c</div></div>
+    <div class="swatch dark" style="background:#5a8ed1"><div class="name">BLUE</div><div class="hex">#5a8ed1</div></div>
+    <div class="swatch dark" style="background:#2d4e8a"><div class="name">BLUE·DK</div><div class="hex">#2d4e8a</div></div>
+  </div>
+
+  <h3>テクスチャ系 <span class="label">— NEUTRAL</span></h3>
+  <div class="palette">
+    <div class="swatch dark" style="background:#8a5a2b"><div class="name">BROWN</div><div class="hex">#8a5a2b</div></div>
+    <div class="swatch dark" style="background:#5a3814"><div class="name">BROWN·DK</div><div class="hex">#5a3814</div></div>
+    <div class="swatch light" style="background:#b8a99a"><div class="name">GRAY</div><div class="hex">#b8a99a</div></div>
+    <div class="swatch dark" style="background:#6b5d4f"><div class="name">GRAY·DK</div><div class="hex">#6b5d4f</div></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="emotion">
+  <h2><span class="num">02</span>色と感情のマッピング</h2>
+  <p class="intro">色は装飾ではなく "感情のラベル"。ステータスバーや通知の色は下記ルールから外れない。</p>
+
+  <div class="emo-grid">
+    <div class="emo">
+      <div class="dot" style="background:#e8485a"></div>
+      <div class="face">😢</div>
+      <div class="word">ダメ・危険</div>
+      <div class="role">→ RED</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#f6c453"></div>
+      <div class="face">⚠️</div>
+      <div class="word">注意・サボリ</div>
+      <div class="role">→ YELLOW</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#6cb979"></div>
+      <div class="face">😊</div>
+      <div class="word">いい感じ</div>
+      <div class="role">→ GREEN</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#5a8ed1"></div>
+      <div class="face">😐</div>
+      <div class="word">普通・休息</div>
+      <div class="role">→ BLUE</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#ff9bb3"></div>
+      <div class="face">🩷</div>
+      <div class="word">最高・愛おしい</div>
+      <div class="role">→ PINK</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#f6c453"></div>
+      <div class="face">⭐</div>
+      <div class="word">レア・報酬</div>
+      <div class="role">→ YELLOW</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#8a5a2b"></div>
+      <div class="face">🍞</div>
+      <div class="word">食物・物質</div>
+      <div class="role">→ BROWN</div>
+    </div>
+    <div class="emo">
+      <div class="dot" style="background:#b8a99a"></div>
+      <div class="face">💤</div>
+      <div class="word">無効・未獲得</div>
+      <div class="role">→ GRAY</div>
+    </div>
+  </div>
+
+  <div class="tone" style="margin-top:24px;">
+    <div class="quote">「赤＝悪、緑＝善」の固定観念をあえて使う。<br/>ピクセルアートでは曖昧さが伝わらないから。</div>
+    <div class="src">— FROM THE GUIDELINE</div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="type">
+  <h2><span class="num">03</span>タイポグラフィ</h2>
+  <p class="intro">2書体だけ。混ぜず、役割で使い分ける。</p>
+
+  <div class="type-demo">
+    <div class="type-spec">
+      <div class="meta">PRIMARY · JAPANESE</div>
+      <div class="sample-jp">ぶたが おなかを すかせて<br/>います...</div>
+      <div class="row"><span>DotGothic16</span><span>Google Fonts</span></div>
+      <div class="row"><span>用途</span><span>本文・会話・ダイアログ</span></div>
+      <div class="row"><span>サイズ</span><span>11 / 14 / 18 / 24 px</span></div>
+    </div>
+    <div class="type-spec">
+      <div class="meta">ACCENT · LATIN</div>
+      <div class="sample-en">LV.3 POCCHARI</div>
+      <div class="row"><span>Press Start 2P</span><span>Google Fonts</span></div>
+      <div class="row"><span>用途</span><span>ラベル・数値・看板</span></div>
+      <div class="row"><span>サイズ</span><span>8 / 10 / 12 / 16 px</span></div>
+    </div>
+  </div>
+
+  <h3>ルール <span class="label">— RULES</span></h3>
+  <ul>
+    <li>日本語の中の英数字は<b>本文＝DotGothic16</b>、<b>ラベル/数値＝Press Start 2P</b>。</li>
+    <li><b>letter-spacing</b> は日本語=2〜4px、英語=1〜3px。詰めない。</li>
+    <li><b>line-height</b> は1.4〜1.7。1.2以下はピクセル感が壊れる。</li>
+    <li>太字は使わない。強調は <b>色</b> または <b>枠で囲む</b> で表現。</li>
+    <li>アンチエイリアス禁止 → <code>image-rendering: pixelated</code> を画像にも適用。</li>
+  </ul>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="scale">
+  <h2><span class="num">04</span>サイズスケール</h2>
+  <p class="intro">2の倍数で動く。半端なpxは禁止（2px → 4 → 6 → 8 → 12 → 16 → 24 → 32...）。</p>
+
+  <h3>テキストサイズ <span class="label">— TYPE SCALE</span></h3>
+  <div class="scale" style="background:var(--paper); padding:20px; box-shadow:0 0 0 2px var(--ink);">
+    <div class="step"><span style="font-size:32px;">ぶた</span><div class="px">32 / TITLE</div></div>
+    <div class="step"><span style="font-size:24px;">ぶた</span><div class="px">24 / H1</div></div>
+    <div class="step"><span style="font-size:18px;">ぶた</span><div class="px">18 / H2</div></div>
+    <div class="step"><span style="font-size:14px;">ぶた</span><div class="px">14 / BODY</div></div>
+    <div class="step"><span style="font-size:11px;">ぶた</span><div class="px">11 / CAPTION</div></div>
+  </div>
+
+  <h3>スペース <span class="label">— SPACING SCALE</span></h3>
+  <div class="palette" style="grid-template-columns:repeat(6,1fr);">
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·1</div><div class="hex">2 PX</div></div>
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·2</div><div class="hex">4 PX</div></div>
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·3</div><div class="hex">8 PX</div></div>
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·4</div><div class="hex">12 PX</div></div>
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·5</div><div class="hex">16 PX</div></div>
+    <div class="swatch light" style="background:var(--paper); aspect-ratio:auto; padding:14px;"><div class="name" style="font-size:9px;">SPACE·6</div><div class="hex">24 PX</div></div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="grid">
+  <h2><span class="num">05</span>グリッド & スペーシング</h2>
+  <p class="intro">
+    画面サイズは <b>390 × 740</b>（iPhone想定 / ステータスバー・ホームバーは含めない）。<br/>
+    すべての要素は<b>2pxグリッド</b>にスナップ。
+  </p>
+
+  <div class="comp-row">
+    <div>
+      <h4>サイズ仕様</h4>
+      <ul>
+        <li>アートボード: <b>390 × 740 px</b></li>
+        <li>外側パディング: <b>14 px</b>（左右）</li>
+        <li>カード間のギャップ: <b>8 / 12 px</b></li>
+        <li>タップ領域の最小値: <b>40 × 40 px</b></li>
+      </ul>
+    </div>
+    <div>
+      <h4>ボーダー</h4>
+      <ul>
+        <li>細枠: <b>2 px</b>（インライン要素）</li>
+        <li>太枠: <b>3 px</b>（ダイアログ、ボックス）</li>
+        <li>二重枠: <b>3 + 3 + 3 px</b>（ヒーロー・ウィンドウ）</li>
+        <li>角の丸み: <b>0</b>（ピル形状を除き、全て直角）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="components">
+  <h2><span class="num">06</span>コアコンポーネント</h2>
+  <p class="intro">5つのプリミティブですべての画面を構成する。それ以上のものを作らない。</p>
+
+  <div class="comp-row">
+    <div>
+      <h4>① PixelBox — JRPG窓</h4>
+      <div class="demo" style="padding:24px 8px;">
+        <div class="pix-box">「ぶたが しあわせ そうだ！」</div>
+      </div>
+      <ul style="font-size:13px;">
+        <li>三重 box-shadow で chunky なふち</li>
+        <li>角は直角、内側パディング12〜16px</li>
+        <li>ラベル付きバージョンで章タイトルにも使用</li>
+      </ul>
+    </div>
+    <div>
+      <h4>② PixelButton — A/Bボタン</h4>
+      <div class="demo">
+        <span class="pix-btn A">▶ たべる</span>
+        <span class="pix-btn B">B キャンセル</span>
+        <span class="pix-btn danger">⚠ サボる</span>
+      </div>
+      <ul style="font-size:13px;">
+        <li>下端に <code>inset 0 -3px rgba(0,0,0,0.18)</code> で立体感</li>
+        <li>選択時は左に <b>▶</b> マーカー（赤）</li>
+        <li>危険ボタンは赤地・紙色文字</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="comp-row" style="margin-top:24px;">
+    <div>
+      <h4>③ PixelBar — HPバー / 進捗</h4>
+      <div class="demo" style="flex-direction:column; align-items:stretch;">
+        <div class="pix-bar"><div style="width:80%"></div></div>
+        <div style="height:8px;"></div>
+        <div class="pix-bar"><div style="width:45%; background:linear-gradient(180deg,#f6c453 0%,#f6c453 40%,rgba(0,0,0,0.25) 41%,#f6c453 60%)"></div></div>
+        <div style="height:8px;"></div>
+        <div class="pix-bar"><div style="width:15%; background:linear-gradient(180deg,#e8485a 0%,#e8485a 40%,rgba(0,0,0,0.25) 41%,#e8485a 60%)"></div></div>
+      </div>
+      <ul style="font-size:13px;">
+        <li>中央にハイライトのストライプを必ず入れる</li>
+        <li>残量に応じて緑 → 黄 → 赤に切り替え</li>
+      </ul>
+    </div>
+    <div>
+      <h4>④ PixelTag — ラベル</h4>
+      <div class="demo">
+        <span class="pix-tag" style="background:var(--yellow);">PREMIUM</span>
+        <span class="pix-tag" style="background:var(--pink);">LV.2</span>
+        <span class="pix-tag" style="background:var(--green); color:var(--paper);">CLEAR!</span>
+        <span class="pix-tag" style="background:var(--ink); color:var(--paper);">NEW</span>
+      </div>
+      <ul style="font-size:13px;">
+        <li>Press Start 2P、9px、letter-spacing 1px</li>
+        <li>右肩や項目の左に "ぴょっ" と貼り付ける感覚</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="comp-row" style="margin-top:24px;">
+    <div>
+      <h4>⑤ PixelFloor — 床タイル</h4>
+      <div class="demo">
+        <div style="
+          width:100%; height:80px;
+          background-color: #e8d9b0;
+          background-image:
+            linear-gradient(45deg, #f4ecd8 25%, transparent 25%),
+            linear-gradient(-45deg, #f4ecd8 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #f4ecd8 75%),
+            linear-gradient(-45deg, transparent 75%, #f4ecd8 75%);
+          background-size: 16px 16px;
+          background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+          box-shadow: 0 0 0 2px var(--ink);
+        "></div>
+      </div>
+      <ul style="font-size:13px;">
+        <li>16px のチェッカーボード = "ぶたの部屋"</li>
+        <li>背景にのみ使用、前景に重ねない</li>
+      </ul>
+    </div>
+    <div>
+      <h4>追加コンポーネントを作る前に</h4>
+      <ul style="font-size:13px;">
+        <li>上記5つの組み合わせで再現できないか確認</li>
+        <li>必要なら<b>PixelBoxに新しい中身を入れる</b>で対応</li>
+        <li>独立したコンポーネントを作るのは "新しい体験" を生むときだけ</li>
+        <li>追加した場合は<b>必ずこのドキュメントに追記</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="pixel">
+  <h2><span class="num">07</span>ピクセルアートのルール</h2>
+  <p class="intro">豚スプライトはこのアプリの心臓。すべて手書き、すべて2pxグリッド。</p>
+
+  <h3>進化段階のサイズ <span class="label">— SPRITE SCALE</span></h3>
+  <div class="sprite-sizes">
+    <div>
+      <div class="pig" style="width:48px; height:48px;"><div><div class="num">LV.0</div></div></div>
+      <div class="lbl">22 × 18 PX</div>
+    </div>
+    <div>
+      <div class="pig" style="width:56px; height:56px; background:var(--pink);"><div><div class="num">LV.1</div></div></div>
+      <div class="lbl">22 × 18 PX</div>
+    </div>
+    <div>
+      <div class="pig" style="width:72px; height:72px;"><div><div class="num">LV.2</div></div></div>
+      <div class="lbl">26 × 22 PX</div>
+    </div>
+    <div>
+      <div class="pig" style="width:96px; height:96px;"><div><div class="num">LV.3</div></div></div>
+      <div class="lbl">30 × 26 PX</div>
+    </div>
+  </div>
+
+  <h3>スプライトを描くルール <span class="label">— SPRITE RULES</span></h3>
+  <ul>
+    <li><b>1ピクセルの外枠は必ず黒（INK / #1a1228）</b>。アウトラインなしのスプライトは禁止。</li>
+    <li><b>5色構成</b>: 本体・影・ハイライト・鼻・目／口。それ以上の色は使わない。</li>
+    <li><b>キャラごとの個性は色だけで表現</b>: ピンク、黒、ミニ（クリーム）、サムライ（茶）、ロボ（青）。</li>
+    <li><b>表示時は整数倍スケール</b>: 1x, 2x, 3x, 4x のみ。1.5xなどは禁止。</li>
+    <li><code>image-rendering: pixelated</code> を必ず指定。</li>
+  </ul>
+
+  <h3>スプライトの "感情" <span class="label">— EXPRESSION</span></h3>
+  <ul>
+    <li><b>LV.0 スリム</b>: 細い体・大きな涙・困り眉。「ごはん足りない」</li>
+    <li><b>LV.1 ふつう</b>: 標準。少し物足りなさそうな目。</li>
+    <li><b>LV.2 ぽっちゃり</b>: 頬染め・微笑み・ほっぺのピンク強め。</li>
+    <li><b>LV.3 まるまる</b>: 王冠 / 寝そべり可能・目が線になるほど幸せ。</li>
+  </ul>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="voice">
+  <h2><span class="num">08</span>ボイス & トーン</h2>
+  <p class="intro">「コーチ」ではなく「相棒のぶた」。だから命令しない、お願いされる。</p>
+
+  <div class="comp-row">
+    <div>
+      <h4>使う言い回し <span style="color:var(--green);">○</span></h4>
+      <ul>
+        <li>「ぶたが ねむそうだ...」</li>
+        <li>「もう いっぴき おやつ あげる？」</li>
+        <li>「Lv.3に しんかした！」</li>
+        <li>「きょうは サボった ね？」</li>
+        <li>「がんばったね」</li>
+      </ul>
+    </div>
+    <div>
+      <h4>使わない言い回し <span style="color:var(--red);">×</span></h4>
+      <ul>
+        <li>「カロリーオーバーです」 → 数値を直接出さない</li>
+        <li>「目標未達成」 → 失敗を厳しく言わない</li>
+        <li>「運動してください」 → 命令形NG</li>
+        <li>「あなたの体重は...」 → 主語は "ぶた" であって "あなた" ではない</li>
+        <li>絵文字（😀🍎🏃）の多用</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tone">
+    <div class="quote">「自分の食事を記録する」のではなく、<br/>「ぶたに ごはんを あげる」。</div>
+    <div class="src">— CORE NARRATIVE FLIP</div>
+  </div>
+
+  <h3>ラベルの書き方 <span class="label">— MICROCOPY</span></h3>
+  <ul>
+    <li><b>動詞は ひらがな・短く</b>: 「たべる」「ねる」「サボる」「みる」</li>
+    <li><b>名詞は カタカナ or 漢字</b>: 「ステータス」「ぶたずかん」「バトル」</li>
+    <li><b>!や...を多用</b>: 感情の振れ幅を演出する。「やった！」「ふぅ...」</li>
+    <li><b>数値の単位はピクセルフォントで</b>: 「<span class="en" style="font-size:10px;">120 KCAL</span>」</li>
+  </ul>
+</section>
+
+<!-- ─────────────────────────────────────────── -->
+<section id="dodont">
+  <h2><span class="num">09</span>やる / やらない</h2>
+
+  <div class="dodont">
+    <div class="card do">
+      <span class="badge">○ DO</span>
+      <h4>感情を色で言う</h4>
+      <p>HP低下 → 赤バー。満腹 → ピンクほっぺ。サボリ → 黄色アラート。色が "言葉" の代わりになる。</p>
+    </div>
+    <div class="card dont">
+      <span class="badge">× DON'T</span>
+      <h4>グラデで誤魔化す</h4>
+      <p>「赤かオレンジか分からない色」は禁止。曖昧な色はピクセルアートに溶けない。</p>
+    </div>
+  </div>
+
+  <div class="dodont" style="margin-top:24px;">
+    <div class="card do">
+      <span class="badge">○ DO</span>
+      <h4>整数倍スケールで描く</h4>
+      <p>スプライトは 2x / 3x / 4x のみ。1pxはあくまで1px。</p>
+    </div>
+    <div class="card dont">
+      <span class="badge">× DON'T</span>
+      <h4>勝手にリサイズ</h4>
+      <p>1.5x / 2.7x など整数でない倍率は禁止。中間アンチエイリアスが入ってボケる。</p>
+    </div>
+  </div>
+
+  <div class="dodont" style="margin-top:24px;">
+    <div class="card do">
+      <span class="badge">○ DO</span>
+      <h4>JRPG窓でテキストを囲む</h4>
+      <p>大事なメッセージは PixelBox に入れる。地のテキストは雑談、囲まれたテキストはセリフ。</p>
+    </div>
+    <div class="card dont">
+      <span class="badge">× DON'T</span>
+      <h4>iOS風のフラットカード</h4>
+      <p>角丸 + ドロップシャドウのカード → 世界観を壊す。直角＋三重枠が基本。</p>
+    </div>
+  </div>
+
+  <div class="dodont" style="margin-top:24px;">
+    <div class="card do">
+      <span class="badge">○ DO</span>
+      <h4>ぶたを主語にする</h4>
+      <p>「ぶたが おなか すかせた」「ぶたが よろこんでる」。ユーザーは観察者・世話人。</p>
+    </div>
+    <div class="card dont">
+      <span class="badge">× DON'T</span>
+      <h4>ユーザーを主語にする</h4>
+      <p>「あなたの摂取カロリーは...」 → コーチアプリ的で罪悪感を与える。世界観破綻。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  🐷 BUTASODATE · DESIGN RULES · V1.0 · MAY 2026
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Unit5-Admin-Infrastructure" id="unit5-admin-infra">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- ブラウザ -->
+        <mxCell id="2" value="ブラウザ&#xa;(管理者)" style="shape=mxgraph.aws4.client;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="100" height="100" as="geometry" />
+        </mxCell>
+        <!-- CloudFront -->
+        <mxCell id="3" value="CloudFront" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudfront;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="200" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- S3 -->
+        <mxCell id="4" value="S3&#xa;(React SPA)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- API Gateway -->
+        <mxCell id="5" value="API Gateway&#xa;(REST)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="420" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- Lambda -->
+        <mxCell id="6" value="Lambda&#xa;admin-handler&#xa;(Hono)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="420" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- DynamoDB -->
+        <mxCell id="7" value="DynamoDB&#xa;(avatars, paths,&#xa;skills, audit-log,&#xa;game-config)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="360" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- Cognito -->
+        <mxCell id="8" value="Cognito&#xa;User Pool" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cognito;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="500" width="80" height="80" as="geometry" />
+        </mxCell>
+        <!-- 矢印: ブラウザ → CloudFront -->
+        <mxCell id="10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10label" value="静的ファイル" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="10">
+          <mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- 矢印: CloudFront → S3 -->
+        <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- 矢印: ブラウザ → API Gateway -->
+        <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="2" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12label" value="API リクエスト" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="12">
+          <mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <!-- 矢印: API Gateway → Lambda -->
+        <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="5" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- 矢印: Lambda → DynamoDB -->
+        <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="6" target="7" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- 矢印: Lambda → Cognito -->
+        <mxCell id="15" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="6" target="8" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -8,3 +8,10 @@
 .env
 buildspec.yml
 codebuild_build.sh
+node_modules/
+dist/
+
+# Flutter
+frontend/.dart_tool/
+frontend/build/
+frontend/.flutter-plugins-dependencies

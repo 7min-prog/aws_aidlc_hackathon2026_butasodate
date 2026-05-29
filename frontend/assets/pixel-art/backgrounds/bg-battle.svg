@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 800 740" shape-rendering="crispEdges">
+  <!-- バトルフィールド背景 -->
+  <!-- dark sky -->
+  <rect x="-200" width="800" height="400" fill="#1A1228"/>
+  <!-- arena floor -->
+  <rect x="-200" y="240" width="800" height="160" fill="#3D2B4D"/>
+  <rect x="40" y="260" width="310" height="120" fill="#0A0612"/>
+  <rect x="40" y="260" width="310" height="4" fill="#5A8ED1"/>
+  <!-- grid lines on floor -->
+  <g stroke="#3D2B4D" stroke-width="2" fill="none">
+    <line x1="40" y1="300" x2="350" y2="300"/>
+    <line x1="40" y1="340" x2="350" y2="340"/>
+    <line x1="120" y1="260" x2="120" y2="380"/>
+    <line x1="200" y1="260" x2="200" y2="380"/>
+    <line x1="280" y1="260" x2="280" y2="380"/>
+  </g>
+  <!-- energy particles -->
+  <rect x="60" y="100" width="4" height="4" fill="#F6C453"/>
+  <rect x="150" y="60" width="4" height="4" fill="#E8485A"/>
+  <rect x="240" y="80" width="4" height="4" fill="#F6C453"/>
+  <rect x="320" y="120" width="4" height="4" fill="#5A8ED1"/>
+  <rect x="100" y="160" width="4" height="4" fill="#FF9BB3"/>
+  <rect x="290" y="180" width="4" height="4" fill="#E8485A"/>
+  <!-- VS spark -->
+  <rect x="188" y="140" width="14" height="4" fill="#F6C453"/>
+  <rect x="192" y="136" width="6" height="12" fill="#F6C453"/>
+</svg>

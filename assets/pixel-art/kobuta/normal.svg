@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+
+<!-- Body outline (round silhouette ~150x130) -->
+<!-- Top outline -->
+<rect x="68" y="60" width="2" height="2" fill="#1A1228"/>
+<rect x="70" y="58" width="2" height="2" fill="#1A1228"/>
+<rect x="72" y="56" width="4" height="2" fill="#1A1228"/>
+<rect x="76" y="54" width="4" height="2" fill="#1A1228"/>
+<rect x="80" y="52" width="6" height="2" fill="#1A1228"/>
+<rect x="86" y="50" width="8" height="2" fill="#1A1228"/>
+<rect x="94" y="48" width="12" height="2" fill="#1A1228"/>
+<rect x="106" y="46" width="44" height="2" fill="#1A1228"/>
+<rect x="150" y="48" width="12" height="2" fill="#1A1228"/>
+<rect x="162" y="50" width="8" height="2" fill="#1A1228"/>
+<rect x="170" y="52" width="6" height="2" fill="#1A1228"/>
+<rect x="176" y="54" width="4" height="2" fill="#1A1228"/>
+<rect x="180" y="56" width="4" height="2" fill="#1A1228"/>
+<rect x="184" y="58" width="2" height="2" fill="#1A1228"/>
+<rect x="186" y="60" width="2" height="2" fill="#1A1228"/>
+<!-- Right outline -->
+<rect x="188" y="62" width="2" height="4" fill="#1A1228"/>
+<rect x="190" y="66" width="2" height="4" fill="#1A1228"/>
+<rect x="192" y="70" width="2" height="6" fill="#1A1228"/>
+<rect x="194" y="76" width="2" height="10" fill="#1A1228"/>
+<rect x="196" y="86" width="2" height="50" fill="#1A1228"/>
+<rect x="194" y="136" width="2" height="10" fill="#1A1228"/>
+<rect x="192" y="146" width="2" height="6" fill="#1A1228"/>
+<rect x="190" y="152" width="2" height="4" fill="#1A1228"/>
+<rect x="188" y="156" width="2" height="4" fill="#1A1228"/>
+<!-- Bottom outline -->
+<rect x="186" y="160" width="2" height="2" fill="#1A1228"/>
+<rect x="184" y="162" width="2" height="2" fill="#1A1228"/>
+<rect x="180" y="164" width="4" height="2" fill="#1A1228"/>
+<rect x="176" y="166" width="4" height="2" fill="#1A1228"/>
+<rect x="170" y="168" width="6" height="2" fill="#1A1228"/>
+<rect x="162" y="170" width="8" height="2" fill="#1A1228"/>
+<rect x="150" y="172" width="12" height="2" fill="#1A1228"/>
+<rect x="106" y="172" width="44" height="2" fill="#1A1228"/>
+<rect x="94" y="170" width="12" height="2" fill="#1A1228"/>
+<rect x="86" y="168" width="8" height="2" fill="#1A1228"/>
+<rect x="80" y="166" width="6" height="2" fill="#1A1228"/>
+<rect x="76" y="164" width="4" height="2" fill="#1A1228"/>
+<rect x="72" y="162" width="4" height="2" fill="#1A1228"/>
+<rect x="70" y="160" width="2" height="2" fill="#1A1228"/>
+<rect x="68" y="156" width="2" height="4" fill="#1A1228"/>
+<!-- Left outline -->
+<rect x="66" y="152" width="2" height="4" fill="#1A1228"/>
+<rect x="64" y="146" width="2" height="6" fill="#1A1228"/>
+<rect x="62" y="136" width="2" height="10" fill="#1A1228"/>
+<rect x="60" y="86" width="2" height="50" fill="#1A1228"/>
+<rect x="62" y="76" width="2" height="10" fill="#1A1228"/>
+<rect x="64" y="70" width="2" height="6" fill="#1A1228"/>
+<rect x="66" y="66" width="2" height="4" fill="#1A1228"/>
+<rect x="68" y="62" width="2" height="4" fill="#1A1228"/>
+
+<!-- Body fill (pink) -->
+<rect x="70" y="60" width="116" height="100" fill="#FF9BB3"/>
+<rect x="76" y="54" width="104" height="6" fill="#FF9BB3"/>
+<rect x="80" y="52" width="96" height="2" fill="#FF9BB3"/>
+<rect x="86" y="50" width="84" height="2" fill="#FF9BB3"/>
+<rect x="94" y="48" width="68" height="2" fill="#FF9BB3"/>
+<rect x="64" y="76" width="6" height="60" fill="#FF9BB3"/>
+<rect x="62" y="86" width="2" height="50" fill="#FF9BB3"/>
+<rect x="66" y="66" width="4" height="10" fill="#FF9BB3"/>
+<rect x="188" y="62" width="4" height="14" fill="#FF9BB3"/>
+<rect x="192" y="76" width="4" height="60" fill="#FF9BB3"/>
+<rect x="194" y="86" width="2" height="50" fill="#FF9BB3"/>
+<rect x="64" y="146" width="6" height="6" fill="#FF9BB3"/>
+<rect x="66" y="152" width="4" height="4" fill="#FF9BB3"/>
+<rect x="68" y="156" width="2" height="4" fill="#FF9BB3"/>
+<rect x="70" y="160" width="116" height="12" fill="#FF9BB3"/>
+<rect x="76" y="164" width="104" height="4" fill="#FF9BB3"/>
+<rect x="80" y="166" width="96" height="2" fill="#FF9BB3"/>
+<rect x="86" y="168" width="84" height="2" fill="#FF9BB3"/>
+<rect x="94" y="170" width="68" height="2" fill="#FF9BB3"/>
+<rect x="186" y="156" width="2" height="4" fill="#FF9BB3"/>
+<rect x="184" y="160" width="4" height="2" fill="#FF9BB3"/>
+<rect x="188" y="146" width="4" height="6" fill="#FF9BB3"/>
+
+<!-- Ears (left) -->
+<rect x="78" y="36" width="16" height="2" fill="#1A1228"/>
+<rect x="76" y="38" width="2" height="2" fill="#1A1228"/>
+<rect x="94" y="38" width="2" height="2" fill="#1A1228"/>
+<rect x="74" y="40" width="2" height="6" fill="#1A1228"/>
+<rect x="96" y="40" width="2" height="4" fill="#1A1228"/>
+<rect x="76" y="46" width="2" height="4" fill="#1A1228"/>
+<rect x="78" y="38" width="16" height="8" fill="#FF9BB3"/>
+<rect x="76" y="40" width="2" height="6" fill="#FF9BB3"/>
+<rect x="80" y="40" width="12" height="4" fill="#C46A85"/>
+
+<!-- Ears (right) -->
+<rect x="162" y="36" width="16" height="2" fill="#1A1228"/>
+<rect x="160" y="38" width="2" height="2" fill="#1A1228"/>
+<rect x="178" y="38" width="2" height="2" fill="#1A1228"/>
+<rect x="158" y="40" width="2" height="4" fill="#1A1228"/>
+<rect x="180" y="40" width="2" height="6" fill="#1A1228"/>
+<rect x="178" y="46" width="2" height="4" fill="#1A1228"/>
+<rect x="162" y="38" width="16" height="8" fill="#FF9BB3"/>
+<rect x="178" y="40" width="2" height="6" fill="#FF9BB3"/>
+<rect x="164" y="40" width="12" height="4" fill="#C46A85"/>
+
+<!-- Left eye (white 28x28) -->
+<rect x="82" y="78" width="28" height="28" fill="white"/>
+<!-- Left pupil (16x18) -->
+<rect x="90" y="84" width="16" height="18" fill="#1A1228"/>
+<!-- Left highlight (6x6) -->
+<rect x="92" y="86" width="6" height="6" fill="white"/>
+<!-- Left blue reflection (4x4) -->
+<rect x="100" y="94" width="4" height="4" fill="#5A8ED1"/>
+
+<!-- Right eye (white 28x28) -->
+<rect x="146" y="78" width="28" height="28" fill="white"/>
+<!-- Right pupil (16x18) -->
+<rect x="150" y="84" width="16" height="18" fill="#1A1228"/>
+<!-- Right highlight (6x6) -->
+<rect x="152" y="86" width="6" height="6" fill="white"/>
+<!-- Right blue reflection (4x4) -->
+<rect x="160" y="94" width="4" height="4" fill="#5A8ED1"/>
+
+<!-- Cheeks (20x20 each) -->
+<rect x="72" y="108" width="20" height="20" fill="#FFE2EB"/>
+<rect x="164" y="108" width="20" height="20" fill="#FFE2EB"/>
+
+<!-- Nose (oval shape with nostrils) -->
+<rect x="114" y="110" width="28" height="18" fill="#E8485A"/>
+<rect x="112" y="112" width="2" height="14" fill="#E8485A"/>
+<rect x="142" y="112" width="2" height="14" fill="#E8485A"/>
+<!-- Nose outline -->
+<rect x="114" y="108" width="28" height="2" fill="#1A1228"/>
+<rect x="112" y="110" width="2" height="2" fill="#1A1228"/>
+<rect x="142" y="110" width="2" height="2" fill="#1A1228"/>
+<rect x="110" y="112" width="2" height="14" fill="#1A1228"/>
+<rect x="144" y="112" width="2" height="14" fill="#1A1228"/>
+<rect x="112" y="126" width="2" height="2" fill="#1A1228"/>
+<rect x="142" y="126" width="2" height="2" fill="#1A1228"/>
+<rect x="114" y="128" width="28" height="2" fill="#1A1228"/>
+<!-- Nostrils -->
+<rect x="118" y="116" width="6" height="6" fill="#1A1228"/>
+<rect x="132" y="116" width="6" height="6" fill="#1A1228"/>
+
+<!-- Smile -->
+<rect x="108" y="138" width="4" height="2" fill="#1A1228"/>
+<rect x="112" y="140" width="4" height="2" fill="#1A1228"/>
+<rect x="116" y="142" width="24" height="2" fill="#1A1228"/>
+<rect x="140" y="140" width="4" height="2" fill="#1A1228"/>
+<rect x="144" y="138" width="4" height="2" fill="#1A1228"/>
+
+<!-- Feet -->
+<rect x="90" y="174" width="24" height="14" fill="#C46A85"/>
+<rect x="142" y="174" width="24" height="14" fill="#C46A85"/>
+<rect x="90" y="172" width="24" height="2" fill="#1A1228"/>
+<rect x="142" y="172" width="24" height="2" fill="#1A1228"/>
+<rect x="88" y="174" width="2" height="14" fill="#1A1228"/>
+<rect x="114" y="174" width="2" height="14" fill="#1A1228"/>
+<rect x="140" y="174" width="2" height="14" fill="#1A1228"/>
+<rect x="166" y="174" width="2" height="14" fill="#1A1228"/>
+<rect x="90" y="188" width="24" height="2" fill="#1A1228"/>
+<rect x="142" y="188" width="24" height="2" fill="#1A1228"/>
+
+<!-- Tail (curly) -->
+<rect x="192" y="120" width="8" height="2" fill="#1A1228"/>
+<rect x="200" y="118" width="2" height="2" fill="#1A1228"/>
+<rect x="202" y="116" width="4" height="2" fill="#1A1228"/>
+<rect x="206" y="118" width="2" height="4" fill="#1A1228"/>
+<rect x="204" y="122" width="2" height="2" fill="#1A1228"/>
+<rect x="202" y="124" width="2" height="2" fill="#1A1228"/>
+<rect x="204" y="126" width="2" height="2" fill="#1A1228"/>
+<rect x="206" y="124" width="2" height="2" fill="#1A1228"/>
+<rect x="194" y="120" width="6" height="2" fill="#FF9BB3"/>
+</svg>

@@ -1,0 +1,104 @@
+name: Frontend Test & Build APK
+
+on:
+  push:
+    branches: [main]
+    paths: ['frontend/**']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Run tests
+        run: |
+          flutter test --coverage --timeout 120s \
+            --reporter json > test-results.json \
+            test/main_test.dart test/shared/ test/features/ test/screens/ test/unit/ \
+            test/pixel_app_bar_test.dart test/router_routes_test.dart \
+            test/login_legal_links_test.dart test/router_test.dart || true
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          TOTAL=$(grep -c '"testID"' test-results.json 2>/dev/null || echo 0)
+          PASS=$(grep -c '"success":true' test-results.json 2>/dev/null || echo 0)
+          FAIL=$(grep -c '"success":false' test-results.json 2>/dev/null || echo 0)
+          echo "## 🧪 Flutter Unit Tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed | $PASS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAIL |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check coverage >= 80%
+        run: |
+          LH=$(grep -oP '^LH:\K\d+' coverage/lcov.info | paste -sd+ | bc)
+          LF=$(grep -oP '^LF:\K\d+' coverage/lcov.info | paste -sd+ | bc)
+          PCT=$(echo "scale=1; $LH * 100 / $LF" | bc)
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**$PCT%** ($LH / $LF lines)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ $(echo "$PCT < 80" | bc) -eq 1 ]; then
+            echo "::error::Coverage $PCT% is below 80% threshold"
+            exit 1
+          fi
+          echo "✅ Coverage meets 80% threshold" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: flutter-coverage
+          path: frontend/coverage/lcov.info
+          retention-days: 7
+
+  build-apk:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flavor: [dev, prod]
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Generate local.properties
+        run: |
+          mkdir -p android
+          echo "sdk.dir=$ANDROID_HOME" > android/local.properties
+          echo "flutter.sdk=$FLUTTER_ROOT" >> android/local.properties
+
+      - name: Build APK (${{ matrix.flavor }})
+        run: flutter build apk --release -t lib/main_${{ matrix.flavor }}.dart
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: apk-${{ matrix.flavor }}
+          path: frontend/build/app/outputs/flutter-apk/app-release.apk

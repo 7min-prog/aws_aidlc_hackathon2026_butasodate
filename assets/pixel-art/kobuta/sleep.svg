@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="crispEdges">
+
+
+<!-- Cushion -->
+<rect x="40" y="170" width="180" height="30" fill="#5A8ED1"/>
+<rect x="36" y="174" width="4" height="22" fill="#5A8ED1"/>
+<rect x="220" y="174" width="4" height="22" fill="#5A8ED1"/>
+<rect x="40" y="168" width="180" height="2" fill="#1A1228"/>
+<rect x="36" y="170" width="4" height="4" fill="#1A1228"/>
+<rect x="220" y="170" width="4" height="4" fill="#1A1228"/>
+<rect x="34" y="174" width="2" height="22" fill="#1A1228"/>
+<rect x="224" y="174" width="2" height="22" fill="#1A1228"/>
+<rect x="36" y="196" width="4" height="2" fill="#1A1228"/>
+<rect x="220" y="196" width="4" height="2" fill="#1A1228"/>
+<rect x="40" y="198" width="180" height="2" fill="#1A1228"/>
+<!-- Cushion highlight -->
+<rect x="50" y="172" width="60" height="4" fill="#7AAEE8"/>
+
+<!-- Body (lying on side, wider and shorter) -->
+<rect x="60" y="108" width="130" height="2" fill="#1A1228"/>
+<rect x="56" y="110" width="4" height="2" fill="#1A1228"/>
+<rect x="190" y="110" width="4" height="2" fill="#1A1228"/>
+<rect x="54" y="112" width="2" height="4" fill="#1A1228"/>
+<rect x="194" y="112" width="2" height="4" fill="#1A1228"/>
+<rect x="52" y="116" width="2" height="8" fill="#1A1228"/>
+<rect x="196" y="116" width="2" height="8" fill="#1A1228"/>
+<rect x="50" y="124" width="2" height="30" fill="#1A1228"/>
+<rect x="198" y="124" width="2" height="30" fill="#1A1228"/>
+<rect x="52" y="154" width="2" height="8" fill="#1A1228"/>
+<rect x="196" y="154" width="2" height="8" fill="#1A1228"/>
+<rect x="54" y="162" width="2" height="4" fill="#1A1228"/>
+<rect x="194" y="162" width="2" height="4" fill="#1A1228"/>
+<rect x="56" y="166" width="4" height="2" fill="#1A1228"/>
+<rect x="190" y="166" width="4" height="2" fill="#1A1228"/>
+<rect x="60" y="168" width="130" height="2" fill="#1A1228"/>
+
+<!-- Body fill -->
+<rect x="56" y="110" width="134" height="58" fill="#FF9BB3"/>
+<rect x="54" y="112" width="2" height="50" fill="#FF9BB3"/>
+<rect x="52" y="116" width="2" height="38" fill="#FF9BB3"/>
+<rect x="50" y="124" width="2" height="30" fill="#FF9BB3"/>
+<rect x="194" y="112" width="2" height="50" fill="#FF9BB3"/>
+<rect x="196" y="116" width="2" height="38" fill="#FF9BB3"/>
+<rect x="198" y="124" width="2" height="30" fill="#FF9BB3"/>
+
+<!-- Ears (flat, sleeping) -->
+<rect x="70" y="100" width="14" height="2" fill="#1A1228"/>
+<rect x="68" y="102" width="2" height="4" fill="#1A1228"/>
+<rect x="84" y="102" width="2" height="4" fill="#1A1228"/>
+<rect x="70" y="106" width="14" height="2" fill="#1A1228"/>
+<rect x="70" y="102" width="14" height="4" fill="#FF9BB3"/>
+<rect x="72" y="102" width="10" height="2" fill="#C46A85"/>
+
+<rect x="160" y="100" width="14" height="2" fill="#1A1228"/>
+<rect x="158" y="102" width="2" height="4" fill="#1A1228"/>
+<rect x="174" y="102" width="2" height="4" fill="#1A1228"/>
+<rect x="160" y="106" width="14" height="2" fill="#1A1228"/>
+<rect x="160" y="102" width="14" height="4" fill="#FF9BB3"/>
+<rect x="162" y="102" width="10" height="2" fill="#C46A85"/>
+
+<!-- Closed eyes (simple horizontal lines) -->
+<rect x="78" y="130" width="24" height="2" fill="#1A1228"/>
+<rect x="146" y="130" width="24" height="2" fill="#1A1228"/>
+
+<!-- Cheeks -->
+<rect x="66" y="136" width="20" height="20" fill="#FFE2EB"/>
+<rect x="162" y="136" width="20" height="20" fill="#FFE2EB"/>
+
+<!-- Nose -->
+<rect x="112" y="134" width="24" height="2" fill="#1A1228"/>
+<rect x="110" y="136" width="2" height="2" fill="#1A1228"/>
+<rect x="136" y="136" width="2" height="2" fill="#1A1228"/>
+<rect x="108" y="138" width="2" height="10" fill="#1A1228"/>
+<rect x="138" y="138" width="2" height="10" fill="#1A1228"/>
+<rect x="110" y="148" width="2" height="2" fill="#1A1228"/>
+<rect x="136" y="148" width="2" height="2" fill="#1A1228"/>
+<rect x="112" y="150" width="24" height="2" fill="#1A1228"/>
+<rect x="112" y="136" width="24" height="14" fill="#E8485A"/>
+<rect x="110" y="138" width="2" height="10" fill="#E8485A"/>
+<rect x="136" y="138" width="2" height="10" fill="#E8485A"/>
+<rect x="116" y="140" width="4" height="4" fill="#1A1228"/>
+<rect x="128" y="140" width="4" height="4" fill="#1A1228"/>
+
+<!-- Zzz -->
+<rect x="186" y="70" width="20" height="2" fill="#1A1228"/>
+<rect x="200" y="72" width="4" height="2" fill="#1A1228"/>
+<rect x="196" y="74" width="4" height="2" fill="#1A1228"/>
+<rect x="192" y="76" width="4" height="2" fill="#1A1228"/>
+<rect x="188" y="78" width="4" height="2" fill="#1A1228"/>
+<rect x="186" y="80" width="20" height="2" fill="#1A1228"/>
+
+<rect x="200" y="50" width="14" height="2" fill="#1A1228"/>
+<rect x="210" y="52" width="2" height="2" fill="#1A1228"/>
+<rect x="208" y="54" width="2" height="2" fill="#1A1228"/>
+<rect x="204" y="56" width="4" height="2" fill="#1A1228"/>
+<rect x="202" y="58" width="2" height="2" fill="#1A1228"/>
+<rect x="200" y="60" width="14" height="2" fill="#1A1228"/>
+
+<rect x="216" y="34" width="10" height="2" fill="#1A1228"/>
+<rect x="222" y="36" width="2" height="2" fill="#1A1228"/>
+<rect x="220" y="38" width="2" height="2" fill="#1A1228"/>
+<rect x="218" y="40" width="2" height="2" fill="#1A1228"/>
+<rect x="216" y="42" width="10" height="2" fill="#1A1228"/>
+
+<!-- Drool -->
+<rect x="134" y="152" width="4" height="2" fill="#5A8ED1"/>
+<rect x="134" y="154" width="4" height="4" fill="#5A8ED1"/>
+<rect x="136" y="158" width="2" height="4" fill="#5A8ED1"/>
+<rect x="136" y="162" width="4" height="4" fill="#5A8ED1"/>
+
+<!-- Feet (tucked) -->
+<rect x="70" y="168" width="18" height="8" fill="#C46A85"/>
+<rect x="70" y="166" width="18" height="2" fill="#1A1228"/>
+<rect x="68" y="168" width="2" height="8" fill="#1A1228"/>
+<rect x="88" y="168" width="2" height="8" fill="#1A1228"/>
+<rect x="70" y="176" width="18" height="2" fill="#1A1228"/>
+
+<rect x="160" y="168" width="18" height="8" fill="#C46A85"/>
+<rect x="160" y="166" width="18" height="2" fill="#1A1228"/>
+<rect x="158" y="168" width="2" height="8" fill="#1A1228"/>
+<rect x="178" y="168" width="2" height="8" fill="#1A1228"/>
+<rect x="160" y="176" width="18" height="2" fill="#1A1228"/>
+</svg>
