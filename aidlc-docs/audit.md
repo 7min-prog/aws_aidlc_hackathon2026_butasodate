@@ -369,3 +369,18 @@
 **Context**: 新規ファイル14個、更新ファイル4個。frontend/lib/配下に起動時処理、ホーム画面骨格、スタブ画面を実装。
 
 ---
+
+## Build and Test Stage
+**Timestamp**: 2026-05-30T03:28:00+09:00
+**User Input**: "AIDLCを進めたい" → "既にあるものもあると思います。今のプロジェクトの内容を確認したうえで進めて"
+**AI Response**: 既存のbuild-and-testドキュメント（Unit 1のみ対象の古い内容）を確認し、全6ユニット+フロントエンド+インフラを反映した内容に更新。
+**Build Status**: Success (全コンポーネントビルド可能)
+**Test Status**: Pass (329 tests, 328 passed, 1 known issue)
+**Files Updated**:
+- aidlc-docs/construction/build-and-test/build-instructions.md (全ユニット対応に更新)
+- aidlc-docs/construction/build-and-test/unit-test-instructions.md (6ハンドラー+Flutter+CDK)
+- aidlc-docs/construction/build-and-test/integration-test-instructions.md (全API+E2E)
+- aidlc-docs/construction/build-and-test/build-and-test-summary.md (最新テスト結果反映)
+- aidlc-docs/aidlc-state.md (Build and Test → Complete)
+
+---

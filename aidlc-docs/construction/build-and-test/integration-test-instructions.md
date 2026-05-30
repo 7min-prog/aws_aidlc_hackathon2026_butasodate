@@ -1,94 +1,99 @@
 # Integration Test Instructions
 
 ## Purpose
+
 デプロイ後に実際のAWSサービス間の連携を確認する。
 
 ## Prerequisites
-- `cdk deploy` が完了していること
-- デプロイ出力からAPI URL、UserPoolId、ClientIdを取得済み
+
+- `cdk deploy --all` が完了していること
+- `infrastructure/cdk-outputs.json` からAPI URLを取得済み
+
+## 環境変数設定
+
+```bash
+export AUTH_API="https://ubw8w4wnp7.execute-api.ap-northeast-1.amazonaws.com/dev"
+export RECORDING_API="https://tlw1w8knh7.execute-api.ap-northeast-1.amazonaws.com/dev"
+export AVATAR_API="https://dgjfsg2e9b.execute-api.ap-northeast-1.amazonaws.com/dev"
+```
 
 ## テストシナリオ
 
-### Scenario 1: サインアップ → 確認 → ログイン フロー
+### Scenario 1: 認証フロー（サインアップ → 確認 → ログイン）
 
 ```bash
-# 環境変数設定（cdk deploy出力から）
-export API_URL="https://xxxxx.execute-api.ap-northeast-1.amazonaws.com/dev"
-
-# 1. サインアップ
-curl -X POST $API_URL/auth/signup \
+# サインアップ
+curl -s -X POST $AUTH_API/auth/signup \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"Test1234!"}'
-# Expected: 201, confirmation code sent
+  -d '{"email":"inttest@example.com","password":"Test1234!"}' | jq .
+# Expected: 201
 
-# 2. 確認コード入力（メールで届いたコードを使用）
-curl -X POST $API_URL/auth/confirm \
+# ログイン
+curl -s -X POST $AUTH_API/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","code":"123456"}'
-# Expected: 200, email confirmed
-
-# 3. ログイン
-curl -X POST $API_URL/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"Test1234!"}'
-# Expected: 200, tokens returned
+  -d '{"email":"inttest@example.com","password":"Test1234!"}' | jq .
+# Expected: 200, accessToken + refreshToken
+export TOKEN=$(curl -s -X POST $AUTH_API/auth/login -H "Content-Type: application/json" -d '{"email":"inttest@example.com","password":"Test1234!"}' | jq -r .idToken)
 ```
 
-### Scenario 2: プロフィール作成 → 取得 → 更新
+### Scenario 2: 行動記録 → アバターポイント加算
 
 ```bash
-# TOKEN=ログインで取得したaccessToken
-
-# 1. プロフィール作成
-curl -X POST $API_URL/users/profile \
+# 記録作成
+curl -s -X POST $RECORDING_API/activities \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"nickname":"テスト太郎"}'
-# Expected: 201, profile created
+  -H "Authorization: $TOKEN" \
+  -d '{"records":[{"categoryId":"food_ramen","memo":"深夜ラーメン"}]}' | jq .
+# Expected: 201, avatar.totalPoints が増加
 
-# 2. プロフィール取得
-curl -X GET $API_URL/users/me \
-  -H "Authorization: Bearer $TOKEN"
-# Expected: 200, user data returned
-
-# 3. プロフィール更新
-curl -X PUT $API_URL/users/profile \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"nickname":"テスト次郎"}'
-# Expected: 200, profile updated
+# アバター確認
+curl -s -X GET $AVATAR_API/avatar \
+  -H "Authorization: $TOKEN" | jq .
+# Expected: 200, totalPoints > 0
 ```
 
-### Scenario 3: トークンリフレッシュ
+### Scenario 3: ランキング・ソーシャル
 
 ```bash
-# REFRESH_TOKEN=ログインで取得したrefreshToken
+# ランキング取得
+curl -s -X GET $AUTH_API/rankings | jq .
+# Expected: 200, rankings array
 
-curl -X POST $API_URL/auth/refresh \
-  -H "Content-Type: application/json" \
-  -d "{\"refreshToken\":\"$REFRESH_TOKEN\"}"
-# Expected: 200, new access token returned
+# 自分のランキング
+curl -s -X GET $AUTH_API/rankings/me \
+  -H "Authorization: $TOKEN" | jq .
+# Expected: 200
 ```
 
-### Scenario 4: エラーケース確認
+### Scenario 4: エラーケース
 
 ```bash
-# 不正なパスワードでログイン
-curl -X POST $API_URL/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"wrong"}'
-# Expected: 401, "Invalid email or password"
+# 認証なしアクセス
+curl -s -X GET $RECORDING_API/activities | jq .
+# Expected: 401
 
-# 認証なしでプロフィール取得
-curl -X GET $API_URL/users/me
-# Expected: 401, Unauthorized
+# 不正パスワード
+curl -s -X POST $AUTH_API/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"inttest@example.com","password":"wrong"}' | jq .
+# Expected: 401
 ```
+
+## E2E Tests (Playwright)
+
+```bash
+cd frontend/e2e
+npm ci
+npx playwright install chromium --with-deps
+npx playwright test
+```
+
+32テストが全画面遷移をカバー。
 
 ## Cleanup
 
 ```bash
-# テストユーザー削除（AWS CLIで）
 aws cognito-idp admin-delete-user \
   --user-pool-id <USER_POOL_ID> \
-  --username test@example.com
+  --username inttest@example.com
 ```

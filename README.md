@@ -1,71 +1,66 @@
 # 🐷 ぶたそだて 〜人をダメにする育成RPG〜
 
-「不健康な行動」をポジティブに記録できる、逆転発想の"ぶた"育成ヘルスケアゲームアプリです。
+不健康な行動をポジティブに記録する、逆転発想の"ぶた"育成ヘルスケアゲームアプリ。
 
 ## コンセプト
 
-従来のヘルスケアアプリは「正しい行動」を求めるため、多くのユーザーが数ヶ月以内に離脱してしまいます。
+従来のヘルスケアアプリは「正しい行動」を求めるため、多くのユーザーが数ヶ月以内に離脱します。本アプリは発想を転換し、**深夜ラーメン・運動サボり・夜更かし**などの「ダメな行動」を記録すると、自分の分身である"ぶた"キャラクターが喜び、まるまると成長します。
 
-本アプリは発想を転換し、**ダメな自分を愛せる**仕組みを提供します：
+- 🍜 食べて、寝て、サボって、育てる
+- 🐖 ダメな自分を映したアバターが進化
+- ⚔️ 育てたアバター同士でリアルタイムバトル
+- 📊 Apple Health / Google Fit 連携で自動記録
 
-- 🍜 深夜ラーメンを食べたら → ぶたが喜ぶ
-- 😴 運動をサボるほど → ぶたがまるまると成長
-- ⚖️ 体重・BMIが大きくなるほど → アバターが進化
-- ⚔️ 育てたぶたをユーザー同士で戦わせることも可能
+## アーキテクチャ
 
-**食べて、寝て、サボって、育てる。**
+```
+┌─────────────┐     ┌──────────────────────────────────────┐
+│  Flutter App │────▶│  API Gateway (REST / WebSocket)       │
+│  (iOS/Android/Web) │     ├── Auth Lambda (Cognito)         │
+└─────────────┘     │     ├── Recording Lambda (DynamoDB)    │
+                    │     ├── Avatar Lambda (DynamoDB)       │
+┌─────────────┐     │     ├── Battle WebSocket Lambda        │
+│  Admin Panel │────▶│     ├── Social Lambda                 │
+│  (React SPA) │     │     └── Admin Lambda (S3)             │
+└─────────────┘     └──────────────────────────────────────┘
+```
 
-## 主な機能
+**AWS サービス**: API Gateway, Lambda, DynamoDB, Cognito, S3, CloudFront
 
-| 機能 | 説明 |
-|------|------|
-| 記録 | 不健康な行動（深夜飯、運動サボりなど）を記録 |
-| 育成 | 記録に応じてぶたアバターが成長・進化 |
-| バトル | 育てたぶたで他ユーザーとリアルタイム対戦 |
-| ヘルスケア連携 | Apple Health / Google Fit からデータ連携 |
-| フレンド | フレンド検索・追加でソーシャル要素 |
+## ディレクトリ構造
 
-## 技術スタック
-
-### フロントエンド
-
-- **Flutter** (Dart) — iOS / Android / Web 対応
-- 状態管理: Riverpod
-- ルーティング: GoRouter
-- ピクセルアートUI（DotGothic16 / PressStart2P フォント）
-
-### バックエンド
-
-- **AWS Lambda** (TypeScript / Node.js)
-  - auth-handler — 認証
-  - avatar-handler — アバター管理
-  - recording-handler — 記録管理
-  - battle-ws-handler — バトル (WebSocket)
-  - social-handler — フレンド機能
-  - admin-handler — 管理機能
-
-### インフラ
-
-- **AWS CDK** (TypeScript)
-- Amazon Cognito（認証）
-- Amazon DynamoDB（データストア）
-- Amazon API Gateway（REST / WebSocket）
-- AWS Lambda
-
-## プロジェクト構成
-
-```text
-├── frontend/          # Flutter アプリ
-├── backend/           # Lambda ハンドラー群
-├── infrastructure/    # AWS CDK スタック
-├── mock-server/       # 開発用モックサーバー (Hono)
-├── admin/             # 管理画面 (Vite + TypeScript)
-└── design/            # デザイン資料
+```
+├── frontend/          # Flutter アプリ (iOS/Android/Web)
+├── backend/           # Lambda ハンドラー (TypeScript)
+│   ├── auth-handler/
+│   ├── recording-handler/
+│   ├── avatar-handler/
+│   ├── battle-ws-handler/
+│   ├── social-handler/
+│   └── admin-handler/
+├── infrastructure/    # AWS CDK (5 stacks)
+├── admin/             # 管理画面 (React + Vite)
+├── mock-server/       # 開発用モックサーバー
+├── design/            # Penpot デザインファイル
+├── docs/              # 技術ドキュメント (OpenAPI, ER図)
+├── aidlc-docs/        # AI-DLC ワークフロードキュメント
+└── tools/             # 開発ツール
 ```
 
 ## セットアップ
 
-### フロントエンド
+### Backend
+
+```bash
+cd backend/auth-handler && npm install
+cd ../recording-handler && npm install
+cd ../avatar-handler && npm install
+cd ../battle-ws-handler && npm install
+cd ../social-handler && npm install
+cd ../admin-handler && npm install
+```
+
+### Frontend
 
 ```bash
 cd frontend
@@ -73,34 +68,47 @@ flutter pub get
 flutter run
 ```
 
-### モックサーバー
-
-```bash
-cd mock-server
-npm install
-npm run dev
-```
-
-### インフラ（デプロイ）
+### Infrastructure
 
 ```bash
 cd infrastructure
 npm install
+npx cdk synth
 npx cdk deploy --all
 ```
 
-## 開発環境
+## テスト
 
-- Flutter SDK >= 3.9.0
-- Node.js >= 18
-- AWS CDK CLI
+```bash
+# Backend (329 tests, 90%+ coverage)
+cd backend/auth-handler && npm test
 
-## 注意事項
+# Frontend (90%+ coverage)
+cd frontend && flutter test
 
-本リポジトリはドキュメント提出用です。CI/CD パイプラインは動作しません。
+# Infrastructure (28 assertions)
+cd infrastructure && npx jest
 
-開発用リポジトリ: https://github.com/furanobo/aws_aidlc_hackathon
+# E2E (32 tests)
+cd frontend/e2e && npx playwright test
+```
 
-## ライセンス
+## 技術スタック
 
-MIT License
+| レイヤー | 技術 |
+|---------|------|
+| Frontend | Flutter 3.44, Riverpod, GoRouter, Dio |
+| Backend | TypeScript, Hono, AWS SDK v3 |
+| Infrastructure | AWS CDK (TypeScript) |
+| Database | DynamoDB (PAY_PER_REQUEST) |
+| Auth | Amazon Cognito |
+| CI/CD | GitHub Actions |
+| Design | Penpot (ピクセルアート) |
+
+## 開発手法
+
+本プロジェクトは [AI-DLC (AI-Driven Development Life Cycle)](https://github.com/awslabs/aidlc-workflows) に基づき、AIエージェントと協調して設計・実装を行いました。
+
+## License
+
+MIT

@@ -1,0 +1,3465 @@
+{
+ "Resources": {
+  "ConnectionsTable8000B8A1": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "connectionId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "userId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "connectionId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-connections-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/ConnectionsTable/Resource"
+   }
+  },
+  "MatchQueueTableAC1BE605": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-match-queue-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/MatchQueueTable/Resource"
+   }
+  },
+  "MatchesTable36E59E86": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "matchId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "matchId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-matches-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/MatchesTable/Resource"
+   }
+  },
+  "BattleHistoryTableDB929211": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "compositeId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "playedAt",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "userId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "playedAt",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "compositeId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-battle-history-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleHistoryTable/Resource"
+   }
+  },
+  "FriendsTableDB27419B": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "compositeId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "userId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "userId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "compositeId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-friends-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/FriendsTable/Resource"
+   }
+  },
+  "FriendRequestsTableBAF16E9A": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "requestId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "toUserId",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "toUserId-index",
+      "KeySchema": [
+       {
+        "AttributeName": "toUserId",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "requestId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-friend-requests-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/FriendRequestsTable/Resource"
+   }
+  },
+  "RankingsTable255C6AF6": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "userId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "partition",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "points",
+      "AttributeType": "N"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "rank-index",
+      "KeySchema": [
+       {
+        "AttributeName": "partition",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "points",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "userId",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "buta-rankings-dev"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/RankingsTable/Resource"
+   }
+  },
+  "BattleWsHandlerServiceRole1AAFE81D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWsHandler/ServiceRole/Resource"
+   }
+  },
+  "BattleWsHandlerServiceRoleDefaultPolicy6770DE41": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ConnectionsTable8000B8A1",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ConnectionsTable8000B8A1",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ConnectionsTable8000B8A1",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ConnectionsTable8000B8A1",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MatchQueueTableAC1BE605",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MatchQueueTableAC1BE605",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MatchesTable36E59E86",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MatchesTable36E59E86",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BattleHistoryTableDB929211",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "BattleHistoryTableDB929211",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BattleHistoryTableDB929211",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "BattleHistoryTableDB929211",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "RankingsTable255C6AF6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "RankingsTable255C6AF6",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "RankingsTable255C6AF6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "RankingsTable255C6AF6",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "execute-api:ManageConnections",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:execute-api:ap-northeast-1:718100330221:",
+          {
+           "Ref": "BattleWebSocketApiFDCF7882"
+          },
+          "/dev/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "BattleWsHandlerServiceRoleDefaultPolicy6770DE41",
+    "Roles": [
+     {
+      "Ref": "BattleWsHandlerServiceRole1AAFE81D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWsHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "BattleWsHandler988E46D0": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "7c2b213aa9538206fd8d60a812a31084000c43df41dbc04e3625c893fe659b78.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "CONNECTIONS_TABLE": {
+       "Ref": "ConnectionsTable8000B8A1"
+      },
+      "MATCH_QUEUE_TABLE": {
+       "Ref": "MatchQueueTableAC1BE605"
+      },
+      "MATCHES_TABLE": {
+       "Ref": "MatchesTable36E59E86"
+      },
+      "BATTLE_HISTORY_TABLE": {
+       "Ref": "BattleHistoryTableDB929211"
+      },
+      "RANKINGS_TABLE": {
+       "Ref": "RankingsTable255C6AF6"
+      },
+      "WEBSOCKET_ENDPOINT": {
+       "Fn::Join": [
+        "",
+        [
+         "https://",
+         {
+          "Ref": "BattleWebSocketApiFDCF7882"
+         },
+         ".execute-api.ap-northeast-1.",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/dev"
+        ]
+       ]
+      }
+     }
+    },
+    "FunctionName": "buta-battle-ws-handler-dev",
+    "Handler": "dist/index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "BattleWsHandlerServiceRole1AAFE81D",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "BattleWsHandlerServiceRoleDefaultPolicy6770DE41",
+    "BattleWsHandlerServiceRole1AAFE81D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWsHandler/Resource",
+    "aws:asset:path": "asset.7c2b213aa9538206fd8d60a812a31084000c43df41dbc04e3625c893fe659b78",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "BattleWebSocketApiFDCF7882": {
+   "Type": "AWS::ApiGatewayV2::Api",
+   "Properties": {
+    "Name": "buta-battle-ws-dev",
+    "ProtocolType": "WEBSOCKET",
+    "RouteSelectionExpression": "$request.body.action"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/Resource"
+   }
+  },
+  "BattleWebSocketApiconnectRouteConnectIntegrationPermissionFCCAEC56": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "BattleWsHandler988E46D0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "BattleWebSocketApiFDCF7882"
+       },
+       "/*$connect"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/ConnectIntegration-Permission"
+   }
+  },
+  "BattleWebSocketApiconnectRouteConnectIntegrationEA41F3F9": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+       {
+        "Fn::GetAtt": [
+         "BattleWsHandler988E46D0",
+         "Arn"
+        ]
+       },
+       "/invocations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/ConnectIntegration/Resource"
+   }
+  },
+  "BattleWebSocketApiconnectRouteF80CDAF2": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "$connect",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "BattleWebSocketApiconnectRouteConnectIntegrationEA41F3F9"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/Resource"
+   }
+  },
+  "BattleWebSocketApidisconnectRouteDisconnectIntegrationPermissionA3B3B034": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "BattleWsHandler988E46D0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "BattleWebSocketApiFDCF7882"
+       },
+       "/*$disconnect"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/DisconnectIntegration-Permission"
+   }
+  },
+  "BattleWebSocketApidisconnectRouteDisconnectIntegration454BAB9A": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+       {
+        "Fn::GetAtt": [
+         "BattleWsHandler988E46D0",
+         "Arn"
+        ]
+       },
+       "/invocations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/DisconnectIntegration/Resource"
+   }
+  },
+  "BattleWebSocketApidisconnectRoute91DD6AD6": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "$disconnect",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "BattleWebSocketApidisconnectRouteDisconnectIntegration454BAB9A"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/Resource"
+   }
+  },
+  "BattleWebSocketApidefaultRouteDefaultIntegrationPermissionDC0FD263": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "BattleWsHandler988E46D0",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "BattleWebSocketApiFDCF7882"
+       },
+       "/*$default"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$default-Route/DefaultIntegration-Permission"
+   }
+  },
+  "BattleWebSocketApidefaultRouteDefaultIntegrationF5521CE4": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+       {
+        "Fn::GetAtt": [
+         "BattleWsHandler988E46D0",
+         "Arn"
+        ]
+       },
+       "/invocations"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$default-Route/DefaultIntegration/Resource"
+   }
+  },
+  "BattleWebSocketApidefaultRoute887A4AFB": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "$default",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "BattleWebSocketApidefaultRouteDefaultIntegrationF5521CE4"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWebSocketApi/$default-Route/Resource"
+   }
+  },
+  "BattleWsStage40FE2F6C": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "ApiId": {
+     "Ref": "BattleWebSocketApiFDCF7882"
+    },
+    "AutoDeploy": true,
+    "StageName": "dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/BattleWsStage/Resource"
+   }
+  },
+  "SocialHandlerServiceRoleE3E8CD2B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialHandler/ServiceRole/Resource"
+   }
+  },
+  "SocialHandlerServiceRoleDefaultPolicyC85E81E5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FriendsTableDB27419B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FriendsTableDB27419B",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FriendsTableDB27419B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FriendsTableDB27419B",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FriendRequestsTableBAF16E9A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FriendRequestsTableBAF16E9A",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FriendRequestsTableBAF16E9A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FriendRequestsTableBAF16E9A",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "RankingsTable255C6AF6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "RankingsTable255C6AF6",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "RankingsTable255C6AF6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "RankingsTable255C6AF6",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BattleHistoryTableDB929211",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "BattleHistoryTableDB929211",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "BattleHistoryTableDB929211",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "BattleHistoryTableDB929211",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Query"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-user-profiles",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-user-profiles/index/*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SocialHandlerServiceRoleDefaultPolicyC85E81E5",
+    "Roles": [
+     {
+      "Ref": "SocialHandlerServiceRoleE3E8CD2B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "SocialHandler2AB7F31A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "596ca7119955cc44f0e3c117b678749262a5c588bae1c4230b66ed422f87efbc.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "FRIENDS_TABLE": {
+       "Ref": "FriendsTableDB27419B"
+      },
+      "FRIEND_REQUESTS_TABLE": {
+       "Ref": "FriendRequestsTableBAF16E9A"
+      },
+      "RANKINGS_TABLE": {
+       "Ref": "RankingsTable255C6AF6"
+      },
+      "BATTLE_HISTORY_TABLE": {
+       "Ref": "BattleHistoryTableDB929211"
+      },
+      "USER_PROFILES_TABLE": "butasodate-user-profiles"
+     }
+    },
+    "FunctionName": "buta-social-handler-dev",
+    "Handler": "dist/index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "SocialHandlerServiceRoleE3E8CD2B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "SocialHandlerServiceRoleDefaultPolicyC85E81E5",
+    "SocialHandlerServiceRoleE3E8CD2B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialHandler/Resource",
+    "aws:asset:path": "asset.596ca7119955cc44f0e3c117b678749262a5c588bae1c4230b66ed422f87efbc",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "SocialApiE8156438": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "buta-social-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Resource"
+   }
+  },
+  "SocialApiCloudWatchRole3C215817": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/CloudWatchRole/Resource"
+   }
+  },
+  "SocialApiAccount44025341": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "SocialApiCloudWatchRole3C215817",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "SocialApiE8156438"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Account"
+   }
+  },
+  "SocialApiDeploymentE70889EEba8b3b59c0c4d4f81c7e63a038484ab7": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "DependsOn": [
+    "SocialApibattleshistorymatchIdGETBD82489D",
+    "SocialApibattleshistorymatchIdOPTIONS51609EF5",
+    "SocialApibattleshistorymatchId5BCB2BD6",
+    "SocialApibattleshistoryGETCEC066BF",
+    "SocialApibattleshistoryOPTIONS076ABA0A",
+    "SocialApibattleshistory65062328",
+    "SocialApibattlesOPTIONSFFC48DCD",
+    "SocialApibattlesB1049953",
+    "SocialApiOPTIONS597EC8A5",
+    "SocialApirankingsGET326D1D07",
+    "SocialApirankingsmeGET35A6A497",
+    "SocialApirankingsmeOPTIONS47B2A525",
+    "SocialApirankingsme81F0CE51",
+    "SocialApirankingsOPTIONSDDEC0B41",
+    "SocialApirankings4599F0BD",
+    "SocialApisocialfriendsfriendIdDELETE24C04D53",
+    "SocialApisocialfriendsfriendIdOPTIONS4E90D7B4",
+    "SocialApisocialfriendsfriendId5F22C9D1",
+    "SocialApisocialfriendsGETB6DC6200",
+    "SocialApisocialfriendsOPTIONSD02FCFB3",
+    "SocialApisocialfriendsrequestOPTIONSDD6FB43B",
+    "SocialApisocialfriendsrequestPOST0E665DAF",
+    "SocialApisocialfriendsrequestE242A18A",
+    "SocialApisocialfriendsrequestsGET72B6D26C",
+    "SocialApisocialfriendsrequestsOPTIONSBC89C717",
+    "SocialApisocialfriendsrequestsC7943443",
+    "SocialApisocialfriendsDDBBE229",
+    "SocialApisocialfriendsrespondOPTIONSCD42D1AA",
+    "SocialApisocialfriendsrespondPOST17402B63",
+    "SocialApisocialfriendsrespondD19F4219",
+    "SocialApisocialfriendssearchOPTIONS809C7BBC",
+    "SocialApisocialfriendssearchPOST719D3436",
+    "SocialApisocialfriendssearch40685696",
+    "SocialApisocialOPTIONS853AA614",
+    "SocialApisocial9D0333AC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "SocialApiDeploymentStagedev09BB5D73": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "SocialApiDeploymentE70889EEba8b3b59c0c4d4f81c7e63a038484ab7"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    },
+    "StageName": "dev"
+   },
+   "DependsOn": [
+    "SocialApiAccount44025341"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "SocialApiOPTIONS597EC8A5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "SocialApiE8156438",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocial9D0333AC": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SocialApiE8156438",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "social",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/Resource"
+   }
+  },
+  "SocialApisocialOPTIONS853AA614": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocial9D0333AC"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsDDBBE229": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocial9D0333AC"
+    },
+    "PathPart": "friends",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/Resource"
+   }
+  },
+  "SocialApisocialfriendsOPTIONSD02FCFB3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriends9E5B81C5": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/social/friends"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends"
+   }
+  },
+  "SocialApisocialfriendsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriends97A1CC14": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/social/friends"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends"
+   }
+  },
+  "SocialApisocialfriendsGETB6DC6200": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/GET/Resource"
+   }
+  },
+  "SocialApisocialfriendssearch40685696": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "PathPart": "search",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/search/Resource"
+   }
+  },
+  "SocialApisocialfriendssearchOPTIONS809C7BBC": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendssearch40685696"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/search/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendssearchPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendssearch4CD8C6AE": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/POST/social/friends/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.search"
+   }
+  },
+  "SocialApisocialfriendssearchPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendssearchD369CAD3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/POST/social/friends/search"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.search"
+   }
+  },
+  "SocialApisocialfriendssearchPOST719D3436": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendssearch40685696"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestE242A18A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "PathPart": "request",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/request/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestOPTIONSDD6FB43B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrequestE242A18A"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/request/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrequest17A998E8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/POST/social/friends/request"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.request"
+   }
+  },
+  "SocialApisocialfriendsrequestPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrequest4E275482": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/POST/social/friends/request"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.request"
+   }
+  },
+  "SocialApisocialfriendsrequestPOST0E665DAF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrequestE242A18A"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/Resource"
+   }
+  },
+  "SocialApisocialfriendsrespondD19F4219": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "PathPart": "respond",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/respond/Resource"
+   }
+  },
+  "SocialApisocialfriendsrespondOPTIONSCD42D1AA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrespondD19F4219"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/respond/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsrespondPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrespond771993B2": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/POST/social/friends/respond"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.respond"
+   }
+  },
+  "SocialApisocialfriendsrespondPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrespond48E608E9": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/POST/social/friends/respond"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.respond"
+   }
+  },
+  "SocialApisocialfriendsrespondPOST17402B63": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrespondD19F4219"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestsC7943443": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "PathPart": "requests",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/requests/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestsOPTIONSBC89C717": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrequestsC7943443"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/requests/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsrequestsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriendsrequests57834115": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/social/friends/requests"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends.requests"
+   }
+  },
+  "SocialApisocialfriendsrequestsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriendsrequestsF1B8A58A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/social/friends/requests"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends.requests"
+   }
+  },
+  "SocialApisocialfriendsrequestsGET72B6D26C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsrequestsC7943443"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/Resource"
+   }
+  },
+  "SocialApisocialfriendsfriendId5F22C9D1": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApisocialfriendsDDBBE229"
+    },
+    "PathPart": "{friendId}",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/Resource"
+   }
+  },
+  "SocialApisocialfriendsfriendIdOPTIONS4E90D7B4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsfriendId5F22C9D1"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/OPTIONS/Resource"
+   }
+  },
+  "SocialApisocialfriendsfriendIdDELETEApiPermissionButaBattleSocialStackSocialApi8D6ACE8ADELETEsocialfriendsfriendId44446B5C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/DELETE/social/friends/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.DELETE..social.friends.{friendId}"
+   }
+  },
+  "SocialApisocialfriendsfriendIdDELETEApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8ADELETEsocialfriendsfriendId4DCBFEF3": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/DELETE/social/friends/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.DELETE..social.friends.{friendId}"
+   }
+  },
+  "SocialApisocialfriendsfriendIdDELETE24C04D53": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "DELETE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApisocialfriendsfriendId5F22C9D1"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/Resource"
+   }
+  },
+  "SocialApirankings4599F0BD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SocialApiE8156438",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "rankings",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/Resource"
+   }
+  },
+  "SocialApirankingsOPTIONSDDEC0B41": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApirankings4599F0BD"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/OPTIONS/Resource"
+   }
+  },
+  "SocialApirankingsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETrankings95A58FDF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/rankings"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings"
+   }
+  },
+  "SocialApirankingsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETrankings3F2B9698": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/rankings"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings"
+   }
+  },
+  "SocialApirankingsGET326D1D07": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApirankings4599F0BD"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/GET/Resource"
+   }
+  },
+  "SocialApirankingsme81F0CE51": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApirankings4599F0BD"
+    },
+    "PathPart": "me",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/me/Resource"
+   }
+  },
+  "SocialApirankingsmeOPTIONS47B2A525": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApirankingsme81F0CE51"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/me/OPTIONS/Resource"
+   }
+  },
+  "SocialApirankingsmeGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETrankingsmeAAACD0AF": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/rankings/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings.me"
+   }
+  },
+  "SocialApirankingsmeGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETrankingsme394ABA51": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/rankings/me"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings.me"
+   }
+  },
+  "SocialApirankingsmeGET35A6A497": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApirankingsme81F0CE51"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/Resource"
+   }
+  },
+  "SocialApibattlesB1049953": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "SocialApiE8156438",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "battles",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/Resource"
+   }
+  },
+  "SocialApibattlesOPTIONSFFC48DCD": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApibattlesB1049953"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/OPTIONS/Resource"
+   }
+  },
+  "SocialApibattleshistory65062328": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApibattlesB1049953"
+    },
+    "PathPart": "history",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/Resource"
+   }
+  },
+  "SocialApibattleshistoryOPTIONS076ABA0A": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApibattleshistory65062328"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/OPTIONS/Resource"
+   }
+  },
+  "SocialApibattleshistoryGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistoryE22D4635": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/battles/history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history"
+   }
+  },
+  "SocialApibattleshistoryGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistoryA052AA58": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/battles/history"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history"
+   }
+  },
+  "SocialApibattleshistoryGETCEC066BF": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApibattleshistory65062328"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/GET/Resource"
+   }
+  },
+  "SocialApibattleshistorymatchId5BCB2BD6": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "SocialApibattleshistory65062328"
+    },
+    "PathPart": "{matchId}",
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/Resource"
+   }
+  },
+  "SocialApibattleshistorymatchIdOPTIONS51609EF5": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "SocialApibattleshistorymatchId5BCB2BD6"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/OPTIONS/Resource"
+   }
+  },
+  "SocialApibattleshistorymatchIdGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistorymatchId69DE193B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/",
+       {
+        "Ref": "SocialApiDeploymentStagedev09BB5D73"
+       },
+       "/GET/battles/history/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history.{matchId}"
+   }
+  },
+  "SocialApibattleshistorymatchIdGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistorymatchIdB8CFBC67": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "SocialHandler2AB7F31A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "SocialApiE8156438"
+       },
+       "/test-invoke-stage/GET/battles/history/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history.{matchId}"
+   }
+  },
+  "SocialApibattleshistorymatchIdGETBD82489D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "SocialAuthorizer97C9F831"
+    },
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "SocialHandler2AB7F31A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "SocialApibattleshistorymatchId5BCB2BD6"
+    },
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/Resource"
+   }
+  },
+  "SocialAuthorizer97C9F831": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "ButaBattleSocialStackSocialAuthorizerF7D0221B",
+    "ProviderARNs": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":cognito-idp:ap-northeast-1:718100330221:userpool/",
+        {
+         "Fn::ImportValue": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+        }
+       ]
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "SocialApiE8156438"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/SocialAuthorizer/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/11QwU7DMAz9lt2zMDohzh0IiQNi6kAcJzc1XbY2rmpnU6n67yjZVspO7z0/x89xopOHR72YwYnnpjjMK5vrfiNgDipDJt8aVHDibV90Dmoqct1/QF6hevp2kQyqgjovQPcv3hmx5II15Wtsa8tsyQ3KQq37jM7vI66psqaLfZENipdbYEZhnQZQvNQrbw4oK2BU0NgSBE/QHRPdf2G+oeCljQ0zAoy1jLzgn3x1gmUL17Vu5E3zRqCMS0YyTGJ1nyFf8yY0NYa8E/WMTUVdjU5CdaL+jxzPG3/1hrKjIpgXNh7/HHLhVDor9MnYrokqTr3sqLU/2MYFRjUMKp4uBFlXBvPdS+NlUI4K1Hu+OyaJTu71YrZna+etd2Jr1NkZfwHz/G+DFQIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaBattleSocialStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "SocialApiEndpoint6AA0161B": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SocialApiE8156438"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SocialApiDeploymentStagedev09BB5D73"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "WebSocketUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "wss://",
+      {
+       "Ref": "BattleWebSocketApiFDCF7882"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/dev"
+     ]
+    ]
+   }
+  },
+  "SocialApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "SocialApiE8156438"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "SocialApiDeploymentStagedev09BB5D73"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

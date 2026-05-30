@@ -2,8 +2,8 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import { handle } from 'hono/aws-lambda';
 import { cors } from 'hono/cors';
 import * as avatarService from './services/avatar-service';
-import { getEvolutionPaths, getSkills } from './services/master-data-cache';
-import { pointsForLevel, STAGE2_LEVEL, STAGE3_LEVEL } from './services/evolution-engine';
+import { getPigSpecies, getEvolutionRoutes, getSkills, getGameConfig } from './services/master-data-cache';
+import { pointsForLevel } from './services/evolution-engine';
 import {
   AvatarSchema, SkillSchema, EvolutionHistorySchema,
   CreateAvatarRequestSchema, AddPointsRequestSchema, DeductPointsRequestSchema,
@@ -18,9 +18,13 @@ app.use('*', cors({
 }));
 
 // ユーザーID取得ヘルパー
-function getUserId(c: { req: { header: (name: string) => string | undefined } }): string | null {
-  // API Gateway経由ではLambdaイベントのauthorizerから取得
-  // Honoアダプター経由ではヘッダーから取得
+function getUserId(c: { req: { header: (name: string) => string | undefined; raw: any } }): string | null {
+  // Hono aws-lambda adapter: raw event is accessible via c.env.event
+  const event = (c as any).env?.event;
+  if (event?.requestContext?.authorizer?.claims?.sub) {
+    return event.requestContext.authorizer.claims.sub;
+  }
+  // Fallback for direct header (testing)
   return c.req.header('x-user-id') || null;
 }
 
@@ -85,19 +89,19 @@ app.openapi(getAvatarRoute, async (c) => {
   const avatar = await avatarService.getAvatar(userId);
   if (!avatar) return c.json({ error: 'Avatar not found' }, 404);
 
-  const [paths, skills] = await Promise.all([getEvolutionPaths(), getSkills()]);
+  const [species, skills, config] = await Promise.all([getPigSpecies(), getSkills(), getGameConfig()]);
   const ownedSkills = skills.filter(s => avatar.skillIds.includes(s.skillId));
-  const evolutionPath = paths.find(p => p.pathId === avatar.evolutionPathId) || null;
+  const currentSpecies = species.find(s => s.speciesId === avatar.currentSpeciesId) || null;
 
-  const nextLevelPoints = pointsForLevel(avatar.level + 1) - avatar.totalPoints;
+  const nextLevelPoints = pointsForLevel(avatar.level + 1, config) - avatar.totalPoints;
   let nextEvolutionLevel: number | null = null;
-  if (avatar.evolutionStage === 1) nextEvolutionLevel = STAGE2_LEVEL;
-  else if (avatar.evolutionStage === 2) nextEvolutionLevel = STAGE3_LEVEL;
+  if (avatar.evolutionStage === 1) nextEvolutionLevel = config.EVOLUTION_LEVEL_STAGE2;
+  else if (avatar.evolutionStage === 2) nextEvolutionLevel = config.EVOLUTION_LEVEL_STAGE3;
 
   return c.json({
     avatar,
     skills: ownedSkills,
-    evolutionPath: evolutionPath ? { name: evolutionPath.name, description: evolutionPath.description } : null,
+    evolutionPath: currentSpecies ? { name: currentSpecies.name, description: currentSpecies.description } : null,
     progress: {
       nextLevelPoints: Math.max(0, nextLevelPoints),
       nextEvolutionLevel,
@@ -157,6 +161,35 @@ app.openapi(getHistoryRoute, async (c) => {
   return c.json({ history }, 200);
 });
 
+// PUT /avatar/name - アバター名変更
+const updateNameRoute = createRoute({
+  method: 'put',
+  path: '/avatar/name',
+  tags: ['Avatar'],
+  summary: 'アバター名を変更',
+  request: { body: { content: { 'application/json': { schema: z.object({ name: z.string().min(1).max(20) }) } } } },
+  responses: {
+    200: { description: '変更成功', content: { 'application/json': { schema: z.object({ avatar: AvatarSchema }) } } },
+    401: { description: '認証エラー', content: { 'application/json': { schema: ErrorResponseSchema } } },
+    404: { description: '未発見', content: { 'application/json': { schema: ErrorResponseSchema } } },
+  },
+});
+
+app.openapi(updateNameRoute, async (c) => {
+  const userId = getUserId(c);
+  if (!userId) return c.json({ error: 'Unauthorized' }, 401);
+  const { name } = c.req.valid('json');
+  try {
+    const avatar = await avatarService.updateAvatarName(userId, name);
+    return c.json({ avatar }, 200);
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message === 'AVATAR_NOT_FOUND') {
+      return c.json({ error: 'Avatar not found' }, 404);
+    }
+    throw e;
+  }
+});
+
 // GET /avatar/score-detail - スコア詳細取得
 const getScoreDetailRoute = createRoute({
   method: 'get',
@@ -189,12 +222,13 @@ app.openapi(getScoreDetailRoute, async (c) => {
   const avatar = await avatarService.getAvatar(userId);
   if (!avatar) return c.json({ error: 'Avatar not found' }, 404);
 
+  const config = await getGameConfig();
   let nextEvolutionRequiredLevel: number | null = null;
-  if (avatar.evolutionStage === 1) nextEvolutionRequiredLevel = STAGE2_LEVEL;
-  else if (avatar.evolutionStage === 2) nextEvolutionRequiredLevel = STAGE3_LEVEL;
+  if (avatar.evolutionStage === 1) nextEvolutionRequiredLevel = config.EVOLUTION_LEVEL_STAGE2;
+  else if (avatar.evolutionStage === 2) nextEvolutionRequiredLevel = config.EVOLUTION_LEVEL_STAGE3;
 
   const remainingPoints = nextEvolutionRequiredLevel
-    ? Math.max(0, pointsForLevel(nextEvolutionRequiredLevel) - avatar.totalPoints)
+    ? Math.max(0, pointsForLevel(nextEvolutionRequiredLevel, config) - avatar.totalPoints)
     : null;
 
   return c.json({

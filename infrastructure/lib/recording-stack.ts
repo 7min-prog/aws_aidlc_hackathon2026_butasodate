@@ -33,14 +33,6 @@ export class RecordingStack extends cdk.Stack {
       sortKey: { name: 'gsi1sk', type: dynamodb.AttributeType.STRING },
     });
 
-    const healthSyncTable = new dynamodb.Table(this, 'HealthSyncTable', {
-      tableName: 'butasodate-health-sync-records',
-      partitionKey: { name: 'userId', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
     const categoryTable = new dynamodb.Table(this, 'ActivityCategoryTable', {
       tableName: 'butasodate-activity-categories',
       partitionKey: { name: 'categoryId', type: dynamodb.AttributeType.STRING },
@@ -51,35 +43,34 @@ export class RecordingStack extends cdk.Stack {
     // Lambda Functions
     const commonEnv = {
       ACTIVITY_RECORD_TABLE: activityRecordTable.tableName,
-      HEALTH_SYNC_TABLE: healthSyncTable.tableName,
       ACTIVITY_CATEGORY_TABLE: categoryTable.tableName,
+      AVATAR_TABLE_NAME: 'butasodate-avatars',
+      EVOLUTION_HISTORY_TABLE_NAME: 'butasodate-evolution-history',
+      PIG_SPECIES_TABLE_NAME: 'butasodate-pig-species',
+      EVOLUTION_ROUTE_TABLE_NAME: 'butasodate-evolution-routes',
+      SKILL_TABLE_NAME: 'butasodate-skills',
+      GAME_CONFIG_TABLE_NAME: 'butasodate-game-config',
     };
 
     const recordingFn = new lambda.Function(this, 'RecordingFunction', {
       functionName: 'buta-recording-handler',
       runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/recording.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
+      handler: 'dist/handlers/recording.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 256,
       timeout: cdk.Duration.seconds(10),
-      environment: commonEnv,
-    });
-
-    const healthSyncFn = new lambda.Function(this, 'HealthSyncFunction', {
-      functionName: 'buta-health-sync-handler',
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/health-sync.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
-      memorySize: 256,
-      timeout: cdk.Duration.seconds(15),
       environment: commonEnv,
     });
 
     const categoriesFn = new lambda.Function(this, 'CategoriesFunction', {
       functionName: 'buta-categories-handler',
       runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'handlers/categories.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler/dist')),
+      handler: 'dist/handlers/categories.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../backend/recording-handler'), {
+        exclude: ['src/**', 'tests/**', 'tsconfig.json', '*.md'],
+      }),
       memorySize: 128,
       timeout: cdk.Duration.seconds(5),
       environment: commonEnv,
@@ -87,11 +78,21 @@ export class RecordingStack extends cdk.Stack {
 
     // Grant DynamoDB permissions
     activityRecordTable.grantReadWriteData(recordingFn);
-    activityRecordTable.grantReadWriteData(healthSyncFn);
-    healthSyncTable.grantReadWriteData(healthSyncFn);
     categoryTable.grantReadData(recordingFn);
     categoryTable.grantReadData(categoriesFn);
-    categoryTable.grantReadData(healthSyncFn);
+
+    // Grant access to avatar-related tables (addPoints/deductPoints runs in-process)
+    recordingFn.addToRolePolicy(new cdk.aws_iam.PolicyStatement({
+      actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:Query', 'dynamodb:Scan'],
+      resources: [
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-avatars`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-evolution-history`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-pig-species`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-evolution-routes`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-skills`,
+        `arn:aws:dynamodb:${this.region}:${this.account}:table/butasodate-game-config`,
+      ],
+    }));
 
     // API Gateway
     const api = new apigateway.RestApi(this, 'ButaRecordingApi', {
@@ -106,6 +107,22 @@ export class RecordingStack extends cdk.Stack {
 
     const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'RecordingAuthorizer', {
       cognitoUserPools: [userPool as cognito.IUserPool],
+    });
+
+    // Gateway Responses: 4XX/5XXにCORSヘッダーを付与
+    api.addGatewayResponse('Default4xx', {
+      type: apigateway.ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
+    });
+    api.addGatewayResponse('Default5xx', {
+      type: apigateway.ResponseType.DEFAULT_5XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      },
     });
 
     // API Gateway routes
@@ -132,9 +149,6 @@ export class RecordingStack extends cdk.Stack {
 
     const categoriesVersion = categories.addResource('version');
     categoriesVersion.addMethod('GET', new apigateway.LambdaIntegration(categoriesFn), authMethodOptions);
-
-    const healthSync = api.root.addResource('health-sync');
-    healthSync.addMethod('POST', new apigateway.LambdaIntegration(healthSyncFn), authMethodOptions);
 
     // Output
     new cdk.CfnOutput(this, 'RecordingApiUrl', { value: api.url });

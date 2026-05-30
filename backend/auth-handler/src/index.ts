@@ -4,6 +4,7 @@ import { handleLogin } from './handlers/login';
 import { handleLogout } from './handlers/logout';
 import { handleRefresh } from './handlers/refresh';
 import { handleGetProfile, handleCreateProfile, handleUpdateProfile } from './handlers/profile';
+import { handleDeleteAccount } from './handlers/account';
 import { errorResponse } from './utils/response';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -30,6 +31,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         return handleCreateProfile(event);
       case 'PUT /users/profile':
         return handleUpdateProfile(event);
+      case 'DELETE /account':
+        return handleDeleteAccount(event);
       default:
         return errorResponse(404, 'Not Found');
     }

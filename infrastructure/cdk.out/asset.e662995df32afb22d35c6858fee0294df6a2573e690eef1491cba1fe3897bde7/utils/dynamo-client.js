@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RANKINGS_TABLE = exports.BATTLE_HISTORY_TABLE = exports.MATCHES_TABLE = exports.MATCH_QUEUE_TABLE = exports.CONNECTIONS_TABLE = exports.dynamoClient = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const lib_dynamodb_1 = require("@aws-sdk/lib-dynamodb");
+const client = new client_dynamodb_1.DynamoDBClient({ region: 'ap-northeast-1' });
+exports.dynamoClient = lib_dynamodb_1.DynamoDBDocumentClient.from(client);
+exports.CONNECTIONS_TABLE = process.env.CONNECTIONS_TABLE || 'buta-connections-dev';
+exports.MATCH_QUEUE_TABLE = process.env.MATCH_QUEUE_TABLE || 'buta-match-queue-dev';
+exports.MATCHES_TABLE = process.env.MATCHES_TABLE || 'buta-matches-dev';
+exports.BATTLE_HISTORY_TABLE = process.env.BATTLE_HISTORY_TABLE || 'buta-battle-history-dev';
+exports.RANKINGS_TABLE = process.env.RANKINGS_TABLE || 'buta-rankings-dev';

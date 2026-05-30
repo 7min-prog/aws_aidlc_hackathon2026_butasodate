@@ -1,6 +1,7 @@
 import { DynamoDBDocumentClient, TransactWriteCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
-import { HealthSyncDataPoint, HealthSyncRecord, HealthSyncResultItem, HealthCategory, HealthEvaluation, RecordSource, AvatarStatus } from '../types';
+import { HealthSyncDataPoint, HealthSyncRecord, HealthSyncResultItem, HealthCategory, HealthEvaluation, RecordSource, AvatarStatus, PointConfig } from '../types';
 import { calculateStepsPoints, calculateWeightPoints, calculateSleepPoints, clockToNormalized, PointResult } from './point-calculator';
+import { getPointConfig } from './point-config-cache';
 import { addPoints } from '../connectors/avatar-connector';
 import { randomUUID } from 'crypto';
 
@@ -14,6 +15,7 @@ export class HealthSyncService {
     const syncResults: HealthSyncResultItem[] = [];
     const skippedDates: string[] = [];
     let totalPoints = 0;
+    const config = await getPointConfig();
 
     for (const dp of dataPoints) {
       const exists = await this.recordExists(userId, dp.syncDate, dp.category);
@@ -23,7 +25,7 @@ export class HealthSyncService {
         continue;
       }
 
-      const result = await this.evaluate(userId, dp);
+      const result = await this.evaluate(userId, dp, config);
 
       const syncId = randomUUID();
       const now = new Date().toISOString();
@@ -72,14 +74,14 @@ export class HealthSyncService {
     return { syncResults, skippedDates, totalPoints, avatarStatus };
   }
 
-  private async evaluate(userId: string, dp: HealthSyncDataPoint): Promise<PointResult> {
+  private async evaluate(userId: string, dp: HealthSyncDataPoint, config: PointConfig): Promise<PointResult> {
     switch (dp.category) {
       case HealthCategory.STEPS:
-        return calculateStepsPoints(dp.rawValue);
+        return calculateStepsPoints(dp.rawValue, config);
 
       case HealthCategory.WEIGHT: {
         const prevWeight = await this.getPreviousWeight(userId);
-        return calculateWeightPoints(dp.rawValue, prevWeight);
+        return calculateWeightPoints(dp.rawValue, prevWeight, config);
       }
 
       case HealthCategory.SLEEP: {
@@ -87,7 +89,7 @@ export class HealthSyncService {
         // secondaryValue = duration in hours
         const bedtimeNormalized = clockToNormalized(Math.floor(dp.rawValue), (dp.rawValue % 1) * 60);
         const duration = dp.secondaryValue || 7;
-        return calculateSleepPoints(bedtimeNormalized, duration);
+        return calculateSleepPoints(bedtimeNormalized, duration, config);
       }
 
       default:

@@ -1,6 +1,9 @@
 // ダメージ計算式: (攻撃力 - 防御力) ± 10%ランダム幅（最低1ダメージ保証）
 // 属性相性: FOOD > LIFESTYLE > FOOD（三すくみではなく、不健康カテゴリ連動）
 
+import { GetCommand } from '@aws-sdk/lib-dynamodb';
+import { dynamoClient, SKILLS_TABLE } from '../utils/dynamo-client';
+
 interface BattlePlayer {
   userId: string;
   maxHp: number;
@@ -42,17 +45,36 @@ interface ActionResult {
   buffApplied?: Buff;
 }
 
-export function executeTurnLogic(match: any): TurnResult {
+async function resolveSkill(action: BattleAction): Promise<BattleAction> {
+  if (action.type !== 'skill' || !action.skillId || action.skillType) return action;
+  const result = await dynamoClient.send(new GetCommand({
+    TableName: SKILLS_TABLE,
+    Key: { skillId: action.skillId },
+  }));
+  const skill = result.Item;
+  if (!skill) return { ...action, skillType: 'DAMAGE', skillPower: 10, skillCategory: 'FOOD' };
+  return {
+    ...action,
+    skillType: skill.skillType || 'DAMAGE',
+    skillPower: skill.power || 10,
+    skillCategory: skill.category || 'FOOD',
+  };
+}
+
+export async function executeTurnLogic(match: any): Promise<TurnResult> {
+  const p1Action = await resolveSkill(match.player1Action || { type: 'defend' });
+  const p2Action = await resolveSkill(match.player2Action || { type: 'defend' });
+
   const p1: BattlePlayer = {
     userId: match.player1Id,
     ...match.battleState?.player1,
-    action: match.player1Action || { type: 'defend' },
+    action: p1Action,
   };
 
   const p2: BattlePlayer = {
     userId: match.player2Id,
     ...match.battleState?.player2,
-    action: match.player2Action || { type: 'defend' },
+    action: p2Action,
   };
 
   // Determine action order by speed

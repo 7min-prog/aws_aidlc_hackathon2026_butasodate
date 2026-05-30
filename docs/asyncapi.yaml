@@ -1,0 +1,270 @@
+asyncapi: 3.0.0
+info:
+  title: ぶたそだて Battle WebSocket API
+  version: 1.0.0
+  description: |
+    バトル機能のリアルタイム通信仕様。
+    API Gateway WebSocket APIを使用し、クライアントからのアクション送信とサーバーからのイベント通知を行う。
+
+servers:
+  production:
+    host: "{apiId}.execute-api.ap-northeast-1.amazonaws.com"
+    pathname: /prod
+    protocol: wss
+    description: API Gateway WebSocket endpoint
+
+channels:
+  battle:
+    address: /
+    description: バトル用WebSocket接続。$connect時にAuthorizationヘッダーでJWT認証を行う。
+    messages:
+      # === Client → Server (actions) ===
+      requestMatch:
+        name: requestMatch
+        title: マッチング申請
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+              const: requestMatch
+            data:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [random, friend]
+                  description: "random: ランダムマッチ, friend: フレンド対戦"
+                targetId:
+                  type: string
+                  description: "フレンド対戦時の相手ユーザーID"
+                level:
+                  type: number
+                  description: "マッチング用のアバターレベル（±5の範囲でマッチ）"
+              required: [type]
+
+      cancelMatch:
+        name: cancelMatch
+        title: マッチングキャンセル
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+              const: cancelMatch
+
+      respondInvite:
+        name: respondInvite
+        title: フレンド対戦招待への応答
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+              const: respondInvite
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                accept:
+                  type: boolean
+              required: [matchId, accept]
+
+      setReady:
+        name: setReady
+        title: バトル準備完了（スキル選択）
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+              const: setReady
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                skills:
+                  type: array
+                  items:
+                    type: string
+                  description: "使用するスキルIDの配列"
+              required: [matchId, skills]
+
+      selectAction:
+        name: selectAction
+        title: ターンアクション選択（技発動）
+        payload:
+          type: object
+          properties:
+            action:
+              type: string
+              const: selectAction
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                action:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: "アクション種別"
+                    skillId:
+                      type: string
+                      description: "使用するスキルID"
+                  required: [type]
+              required: [matchId, action]
+
+      # === Server → Client (events) ===
+      matchFound:
+        name: matchFound
+        title: マッチング成立
+        description: ランダムマッチが成立した際に両プレイヤーに送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: matchFound
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                player1Id:
+                  type: string
+                player2Id:
+                  type: string
+              required: [matchId, player1Id, player2Id]
+
+      friendInvite:
+        name: friendInvite
+        title: フレンド対戦招待受信
+        description: フレンド対戦の招待を受けた側に送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: friendInvite
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                fromUserId:
+                  type: string
+              required: [matchId, fromUserId]
+
+      inviteRejected:
+        name: inviteRejected
+        title: 招待拒否通知
+        description: フレンド対戦招待が拒否された際に招待者に送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: inviteRejected
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+
+      battleStart:
+        name: battleStart
+        title: バトル開始
+        description: 両プレイヤーがsetReadyを完了した際に送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: battleStart
+            data:
+              type: object
+              properties:
+                matchId:
+                  type: string
+                turn:
+                  type: number
+                  description: "開始ターン（1）"
+              required: [matchId, turn]
+
+      turnResult:
+        name: turnResult
+        title: ターン結果
+        description: 両プレイヤーがアクション選択後、ターン計算結果を送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: turnResult
+            data:
+              type: object
+              properties:
+                battleState:
+                  type: object
+                  description: "HP・バフ・デバフ等の現在状態"
+                battleEnd:
+                  type: boolean
+                  const: false
+              required: [battleState, battleEnd]
+
+      battleEnd:
+        name: battleEnd
+        title: バトル終了
+        description: 勝敗が決定した際に送信
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              const: battleEnd
+            data:
+              type: object
+              properties:
+                battleState:
+                  type: object
+                battleEnd:
+                  type: boolean
+                  const: true
+                winnerId:
+                  type: string
+                  nullable: true
+                  description: "勝者のユーザーID（引き分けの場合null）"
+                finishReason:
+                  type: string
+                  enum: [HP_ZERO, TURN_LIMIT, DISCONNECT]
+              required: [battleState, battleEnd, winnerId, finishReason]
+
+operations:
+  sendAction:
+    action: send
+    channel:
+      $ref: "#/channels/battle"
+    summary: クライアントからサーバーへアクションを送信
+    messages:
+      - $ref: "#/channels/battle/messages/requestMatch"
+      - $ref: "#/channels/battle/messages/cancelMatch"
+      - $ref: "#/channels/battle/messages/respondInvite"
+      - $ref: "#/channels/battle/messages/setReady"
+      - $ref: "#/channels/battle/messages/selectAction"
+
+  receiveEvent:
+    action: receive
+    channel:
+      $ref: "#/channels/battle"
+    summary: サーバーからクライアントへイベントを受信
+    messages:
+      - $ref: "#/channels/battle/messages/matchFound"
+      - $ref: "#/channels/battle/messages/friendInvite"
+      - $ref: "#/channels/battle/messages/inviteRejected"
+      - $ref: "#/channels/battle/messages/battleStart"
+      - $ref: "#/channels/battle/messages/turnResult"
+      - $ref: "#/channels/battle/messages/battleEnd"

@@ -3,6 +3,9 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { AuthStack } from '../lib/auth-stack';
 import { RecordingStack } from '../lib/recording-stack';
+import { AvatarStack } from '../lib/avatar-stack';
+import { BattleSocialStack } from '../lib/battle-social-stack';
+import { AdminStack } from '../lib/admin-stack';
 
 const app = new cdk.App();
 
@@ -11,9 +14,25 @@ const env = {
   region: 'ap-northeast-1',
 };
 
-new AuthStack(app, 'ButaAuthStack', { env });
+const authStack = new AuthStack(app, 'ButaAuthStack', { env });
 
 new RecordingStack(app, 'ButaRecordingStack', {
   env,
-  userPoolId: process.env.COGNITO_USER_POOL_ID || 'ap-northeast-1_PLACEHOLDER',
+  userPoolId: authStack.userPoolId,
+});
+
+const avatarStack = new AvatarStack(app, 'ButaAvatarStack', {
+  env,
+  userPoolId: authStack.userPoolId,
+});
+
+new BattleSocialStack(app, 'ButaBattleSocialStack', {
+  env,
+  userPoolId: authStack.userPoolId,
+});
+
+new AdminStack(app, 'ButaAdminStack', {
+  env,
+  userPoolId: authStack.userPoolId,
+  assetsBucketName: avatarStack.assetsBucketName,
 });

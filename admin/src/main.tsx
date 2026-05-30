@@ -7,6 +7,7 @@ import { LoginPage } from './pages/LoginPage';
 import { UsersPage } from './pages/UsersPage';
 import { UserDetailPage } from './pages/UserDetailPage';
 import { EvolutionPathsPage } from './pages/EvolutionPathsPage';
+import { EvolutionRoutesPage } from './pages/EvolutionRoutesPage';
 import { SkillsPage } from './pages/SkillsPage';
 import { GameConfigPage } from './pages/GameConfigPage';
 import { AuditLogPage } from './pages/AuditLogPage';
@@ -24,7 +25,8 @@ function Layout() {
   const logout = useAuthStore((s) => s.logout);
   const nav = [
     { label: 'ユーザー管理', path: '/users' },
-    { label: '進化パス', path: '/evolution-paths' },
+    { label: 'ぶたデータ', path: '/evolution-paths' },
+    { label: '進化条件', path: '/evolution-routes' },
     { label: 'スキル', path: '/skills' },
     { label: 'ゲーム設定', path: '/game-config' },
     { label: '操作ログ', path: '/audit-log' },
@@ -66,6 +68,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/:username" element={<UserDetailPage />} />
             <Route path="/evolution-paths" element={<EvolutionPathsPage />} />
+            <Route path="/evolution-routes" element={<EvolutionRoutesPage />} />
             <Route path="/skills" element={<SkillsPage />} />
             <Route path="/game-config" element={<GameConfigPage />} />
             <Route path="/audit-log" element={<AuditLogPage />} />

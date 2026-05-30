@@ -16,38 +16,48 @@ export interface Avatar {
   totalPoints: number;
   level: number;
   evolutionStage: number;
-  evolutionPathId: string | null;
+  currentSpeciesId: string | null;
   categoryPoints: Record<CategoryType, number>;
   subCategoryPoints: Record<string, number>;
   stats: AvatarStats;
   skillIds: string[];
-  spriteSheetKey: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface EvolutionPath {
-  pathId: string;
+export interface PigSpecies {
+  speciesId: string;
   name: string;
+  description: string;
   stage: number;
-  parentPathId: string | null;
-  requiredLevel: number;
   dominantCategory: CategoryType;
-  categoryThreshold: number;
-  subCategoryIds: string[] | null;
-  subCategoryThreshold: number | null;
   statsGrowth: AvatarStats;
   spriteSheetKey: string;
-  description: string;
+  iconKey: string;
+  isActive: boolean;
+}
+
+export interface EvolutionRoute {
+  routeId: string;
+  fromSpeciesId: string;
+  toSpeciesId: string;
+  requiredLevel: number;
+  categoryThreshold: number;
+  conditionCategory: CategoryType;
+  subCategoryIds: string[] | null;
+  subCategoryThreshold: number | null;
+  priority: number;
 }
 
 export interface Skill {
   skillId: string;
   name: string;
   type: SkillType;
-  power: number;
+  targetStat: string;
+  multiplier: number;
+  duration: number | null;
   cooldown: number;
-  evolutionPathId: string;
+  speciesId: string;
   requiredLevel: number;
   spriteAnimationKey: string;
 }
@@ -58,11 +68,20 @@ export interface EvolutionHistory {
   avatarId: string;
   fromStage: number;
   toStage: number;
-  fromPathId: string | null;
-  toPathId: string | null;
+  fromSpeciesId: string | null;
+  toSpeciesId: string | null;
   type: EvolutionType;
   triggerPoints: number;
   occurredAt: string;
+}
+
+export interface GameConfig {
+  INITIAL_STATS: AvatarStats;
+  MAX_LEVEL: number;
+  EVOLUTION_LEVEL_STAGE2: number;
+  EVOLUTION_LEVEL_STAGE3: number;
+  CATEGORY_THRESHOLD: number;
+  LEVEL_FORMULA_COEFFICIENT: number;
 }
 
 export interface AddPointsResult {

@@ -1,0 +1,721 @@
+{
+  "/ButaAvatarStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "AvatarTable1E8369A8"
+      }
+    }
+  ],
+  "/ButaAvatarStack/EvolutionHistoryTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "EvolutionHistoryTable5C032E7E"
+      }
+    }
+  ],
+  "/ButaAvatarStack/PigSpeciesTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "PigSpeciesTable81FFCC9C"
+      }
+    }
+  ],
+  "/ButaAvatarStack/EvolutionRouteTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "EvolutionRouteTable47C255D0"
+      }
+    }
+  ],
+  "/ButaAvatarStack/SkillTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "SkillTable55C24DF8"
+      }
+    }
+  ],
+  "/ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/ButaAvatarStack/AvatarApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:167:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AssetsBucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AssetsBucketName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:168:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarTable1E8369A8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:23:25)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/EvolutionHistoryTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EvolutionHistoryTable5C032E7E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:30:35)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/PigSpeciesTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "PigSpeciesTable81FFCC9C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:39:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/EvolutionRouteTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EvolutionRouteTable47C255D0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:52:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/SkillTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SkillTable55C24DF8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:64:24)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/SpriteAssetsBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpriteAssetsBucket88BB51DB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:77:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarHandler713EDBD0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:103:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApi0507DD0C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiAccountAB4F598D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiEndpoint65FA3F00"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarAuthorizer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarAuthorizerCCD1F7F5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new CognitoUserPoolsAuthorizer2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:148:24)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/Exports/Output{\"Ref\":\"SpriteAssetsBucket88BB51DB\"}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/SpriteAssetsBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpriteAssetsBucketPolicy3210BA35"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:77:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/ButaAvatarStack/SpriteAssetsBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpriteAssetsBucketAutoDeleteObjectsCustomResource7F2A0925"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarHandlerServiceRoleF7A560B8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:103:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiCloudWatchRole1D5C3CC5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiDeployment8FA2D47F80af39c3922eb9e0663fc0b617685baa"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/DeploymentStage.dev/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiDeploymentStagedevEE14812F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarHandlerServiceRoleDefaultPolicy2CD6CF80"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiOPTIONS3DB0195C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:138:17)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatar28E70F27"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:160:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarOPTIONS5972EDDF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:160:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/POST/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.POST..avatar": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarPOSTApiPermissionButaAvatarStackAvatarApi3DD4FD2CPOSTavatar8D460950"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:161:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/POST/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.POST..avatar": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarPOSTApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CPOSTavatarEB0F1971"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:161:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarPOST48584FE3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:161:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatar3F2CF6FA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:162:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatar22701481"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:162:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarGET03D8BA57"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:162:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarevolutionhistory9541F897"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:163:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/score-detail/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarscoredetail64B3DF6C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:164:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarevolutionhistoryOPTIONSF8CBF219"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:163:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.evolution-history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarevolutionhistoryGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatarevolutionhistoryC7EF09F6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:163:45)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.evolution-history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarevolutionhistoryGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatarevolutionhistory3C2BB8CE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:163:45)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/evolution-history/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarevolutionhistoryGET8E5621FE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:163:45)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/score-detail/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarscoredetailOPTIONS59DCF800"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:164:12)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)"
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/ApiPermission.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.score-detail": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarscoredetailGETApiPermissionButaAvatarStackAvatarApi3DD4FD2CGETavatarscoredetail18328FEF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:164:40)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/ApiPermission.Test.ButaAvatarStackAvatarApi3DD4FD2C.GET..avatar.score-detail": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarscoredetailGETApiPermissionTestButaAvatarStackAvatarApi3DD4FD2CGETavatarscoredetailF451A636"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:164:40)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaAvatarStack/AvatarApi/Default/avatar/score-detail/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AvatarApiavatarscoredetailGET8B46BAAB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new AvatarStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\avatar-stack.ts:164:40)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:24:21)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ]
+}

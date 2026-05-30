@@ -1,0 +1,42 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+  pull_request:
+    branches: [main]
+    paths: ['backend/**']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        handler: [auth-handler, recording-handler, avatar-handler, battle-ws-handler, social-handler, admin-handler]
+    defaults:
+      run:
+        working-directory: backend/${{ matrix.handler }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/${{ matrix.handler }}/package-lock.json
+
+      - run: npm ci
+
+      - name: Run tests
+        run: npx jest --coverage --coverageReporters=text-summary 2>&1 | tee test-output.txt
+
+      - name: Generate summary
+        if: always()
+        run: |
+          echo "## 🧪 ${{ matrix.handler }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -A4 "Tests:" test-output.txt >> $GITHUB_STEP_SUMMARY || true
+          grep -A4 "Coverage summary" test-output.txt >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY

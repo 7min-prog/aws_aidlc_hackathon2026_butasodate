@@ -1,0 +1,1394 @@
+{
+  "/ButaBattleSocialStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/ConnectionsTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "ConnectionsTable8000B8A1"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/MatchQueueTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "MatchQueueTableAC1BE605"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/MatchesTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "MatchesTable36E59E86"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/BattleHistoryTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "BattleHistoryTableDB929211"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/FriendsTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "FriendsTableDB27419B"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/FriendRequestsTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "FriendRequestsTableBAF16E9A"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/RankingsTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "RankingsTable255C6AF6"
+      }
+    }
+  ],
+  "/ButaBattleSocialStack/WebSocketUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:226:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:227:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/ConnectionsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ConnectionsTable8000B8A1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:24:30)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/MatchQueueTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MatchQueueTableAC1BE605"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:35:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/MatchesTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MatchesTable36E59E86"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:42:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleHistoryTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleHistoryTableDB929211"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:49:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/FriendsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FriendsTableDB27419B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:61:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/FriendRequestsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "FriendRequestsTableBAF16E9A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:72:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/RankingsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RankingsTable255C6AF6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:83:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWsHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWsHandler988E46D0"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:97:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApiFDCF7882"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWsStage/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWsStage40FE2F6C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketStage2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:135:21)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialHandler2AB7F31A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:149:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiE8156438"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiAccount44025341"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiEndpoint6AA0161B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialAuthorizer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialAuthorizer97C9F831"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new CognitoUserPoolsAuthorizer2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:193:24)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWsHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWsHandlerServiceRole1AAFE81D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:97:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/ConnectIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApiconnectRouteConnectIntegrationPermissionFCCAEC56"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApiconnectRouteF80CDAF2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/DisconnectIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidisconnectRouteDisconnectIntegrationPermissionA3B3B034"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidisconnectRoute91DD6AD6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$default-Route/DefaultIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidefaultRouteDefaultIntegrationPermissionDC0FD263"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$default-Route/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidefaultRoute887A4AFB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialHandlerServiceRoleE3E8CD2B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:149:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiCloudWatchRole3C215817"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiDeploymentE70889EEba8b3b59c0c4d4f81c7e63a038484ab7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/DeploymentStage.dev/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiDeploymentStagedev09BB5D73"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWsHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWsHandlerServiceRoleDefaultPolicy6770DE41"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$connect-Route/ConnectIntegration/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApiconnectRouteConnectIntegrationEA41F3F9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$disconnect-Route/DisconnectIntegration/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidisconnectRouteDisconnectIntegration454BAB9A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/BattleWebSocketApi/$default-Route/DefaultIntegration/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BattleWebSocketApidefaultRouteDefaultIntegrationF5521CE4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new WebSocketApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:122:26)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialHandlerServiceRoleDefaultPolicyC85E81E5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApiOPTIONS597EC8A5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:183:17)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocial9D0333AC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:205:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankings4599F0BD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:215:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattlesB1049953"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:220:30)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialOPTIONS853AA614"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:205:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsDDBBE229"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:206:28)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsOPTIONSDDEC0B41"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:215:31)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETrankings95A58FDF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:216:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETrankings3F2B9698"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:216:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsGET326D1D07"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:216:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/me/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsme81F0CE51"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:217:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattlesOPTIONSFFC48DCD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:220:30)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistory65062328"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:221:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsOPTIONSD02FCFB3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:206:28)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriends9E5B81C5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:207:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriends97A1CC14"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:207:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsGETB6DC6200"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:207:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/search/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendssearch40685696"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:208:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/request/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestE242A18A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:209:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/respond/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrespondD19F4219"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:210:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/requests/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestsC7943443"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:211:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsfriendId5F22C9D1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:212:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/me/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsmeOPTIONS47B2A525"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:217:14)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings.me": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsmeGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETrankingsmeAAACD0AF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:217:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..rankings.me": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsmeGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETrankingsme394ABA51"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:217:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/rankings/me/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApirankingsmeGET35A6A497"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:217:32)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistoryOPTIONS076ABA0A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:221:29)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistoryGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistoryE22D4635"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:222:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistoryGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistoryA052AA58"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:222:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistoryGETCEC066BF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:222:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistorymatchId5BCB2BD6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:223:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/search/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendssearchOPTIONS809C7BBC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:208:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.search": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendssearchPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendssearch4CD8C6AE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:208:35)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.search": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendssearchPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendssearchD369CAD3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:208:35)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/search/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendssearchPOST719D3436"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:208:35)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/request/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestOPTIONSDD6FB43B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:209:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.request": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrequest17A998E8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:209:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.request": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrequest4E275482"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:209:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/request/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestPOST0E665DAF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:209:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/respond/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrespondOPTIONSCD42D1AA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:210:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.respond": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrespondPOSTApiPermissionButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrespond771993B2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:210:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.POST..social.friends.respond": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrespondPOSTApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8APOSTsocialfriendsrespond48E608E9"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:210:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/respond/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrespondPOST17402B63"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:210:36)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/requests/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestsOPTIONSBC89C717"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:211:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends.requests": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestsGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriendsrequests57834115"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:211:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..social.friends.requests": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestsGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETsocialfriendsrequestsF1B8A58A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:211:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/requests/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsrequestsGET72B6D26C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:211:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsfriendIdOPTIONS4E90D7B4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:212:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.DELETE..social.friends.{friendId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsfriendIdDELETEApiPermissionButaBattleSocialStackSocialApi8D6ACE8ADELETEsocialfriendsfriendId44446B5C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:212:39)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.DELETE..social.friends.{friendId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsfriendIdDELETEApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8ADELETEsocialfriendsfriendId4DCBFEF3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:212:39)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/social/friends/{friendId}/DELETE/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApisocialfriendsfriendIdDELETE24C04D53"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:212:39)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistorymatchIdOPTIONS51609EF5"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:223:13)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)"
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/ApiPermission.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history.{matchId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistorymatchIdGETApiPermissionButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistorymatchId69DE193B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:223:38)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/ApiPermission.Test.ButaBattleSocialStackSocialApi8D6ACE8A.GET..battles.history.{matchId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistorymatchIdGETApiPermissionTestButaBattleSocialStackSocialApi8D6ACE8AGETbattleshistorymatchIdB8CFBC67"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:223:38)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaBattleSocialStack/SocialApi/Default/battles/history/{matchId}/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SocialApibattleshistorymatchIdGETBD82489D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new BattleSocialStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\battle-social-stack.ts:223:38)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:29:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ]
+}

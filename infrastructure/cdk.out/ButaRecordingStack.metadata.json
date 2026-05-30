@@ -1,0 +1,1489 @@
+{
+  "/ButaRecordingStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ActivityRecordTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "ActivityRecordTableD85DDE08"
+      }
+    }
+  ],
+  "/ButaRecordingStack/ActivityCategoryTable": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "ActivityCategoryTableCE2401EC"
+      }
+    }
+  ],
+  "/ButaRecordingStack/RecordingApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RecordingApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:138:5)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_late_ramen": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/AWS679f53fac002430cb0da5b7982bd2287": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_binge": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_snack": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_junkfood": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_stay_up": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_oversleep": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_skip_exercise": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_binge_watch": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-_meta": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "installLatestAwsSdk was not specified, and defaults to true. You probably do not want this. Set the global context flag '@aws-cdk/customresources:installLatestAwsSdkDefault' to false to switch this behavior off project-wide, or set the property explicitly to true if you know you need to call APIs that are not in Lambda's built-in SDK version. [ack: @aws-cdk/custom-resources:installLatestAwsSdkNotSpecified]",
+      "trace": [
+        "Annotations.addMessage (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:2399)",
+        "Annotations.addWarningV2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1087)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\custom-resources\\lib\\aws-custom-resource\\aws-custom-resource.js:1:8811)",
+        "new AwsCustomResource2 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\aws-cdk-lib\\core\\lib\\prop-injectable.js:1:855)",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Module.m._compile (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+        "node:internal/modules/cjs/loader:1839:10",
+        "Object.require.extensions.<computed> [as .ts] (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "phase4 (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+        "bootstrap (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+        "main (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+        "Object.<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object.<anonymous> (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ActivityRecordTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ActivityRecordTableD85DDE08"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:22:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ActivityCategoryTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ActivityCategoryTableCE2401EC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:36:27)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/RecordingFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RecordingFunction98949BF3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:55:25)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/CategoriesFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CategoriesFunction73C9F3E8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:67:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApi0C73E145"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Account": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiAccount92A4C028"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiEndpoint3372D51E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/RecordingAuthorizer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RecordingAuthorizerFD1915F7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new CognitoUserPoolsAuthorizer2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:108:24)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/AWS679f53fac002430cb0da5b7982bd2287/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AWS679f53fac002430cb0da5b7982bd22872D164C4C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/RecordingFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RecordingFunctionServiceRoleD0CD0C8E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:55:25)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/CategoriesFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CategoriesFunctionServiceRole84FF484F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:67:26)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/CloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiCloudWatchRoleBBA3E2D3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiDeployment0C8B23603fb033f1a5aa375562d394aa9a2ac1d6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/DeploymentStage.dev/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiDeploymentStagedev3790CD90"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_late_ramen/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodlateramenE2D8D6E4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_late_ramen/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodlateramenCustomResourcePolicyFC1625FA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_binge/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodbingeCE46E938"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_binge/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodbingeCustomResourcePolicyC5B48335"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_snack/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedfoodsnack5081611C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_snack/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodsnackCustomResourcePolicy7A413A90"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_junkfood/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedfoodjunkfood6E1BAA0D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-food_junkfood/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedfoodjunkfoodCustomResourcePolicy63A2FDEE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_stay_up/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedlifestayup07FE609D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_stay_up/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedlifestayupCustomResourcePolicyD50083CB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_oversleep/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedlifeoversleep50A3DE79"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_oversleep/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedlifeoversleepCustomResourcePolicy2104EBC1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_skip_exercise/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedlifeskipexercise5F28D848"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_skip_exercise/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedlifeskipexerciseCustomResourcePolicy6F79E057"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_binge_watch/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Seedlifebingewatch1E7AE02E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-life_binge_watch/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedlifebingewatchCustomResourcePolicy81D9B1D2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-_meta/Resource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedmetaAB5DAAEB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/Seed-_meta/CustomResourcePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SeedmetaCustomResourcePolicy99608120"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new AwsCustomResource2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:154:7)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/RecordingFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RecordingFunctionServiceRoleDefaultPolicyFE341003"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/CategoriesFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CategoriesFunctionServiceRoleDefaultPolicy80E384F7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiOPTIONS282669FC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new RestApi2 in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:98:17)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivities5D7B2E5A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:118:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesB9335107"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:131:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesOPTIONSC00856CC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:118:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/POST/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesPOSTApiPermissionButaRecordingStackButaRecordingApi73D8ADDDPOSTactivities61F47383"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:119:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/POST/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesPOSTApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDPOSTactivities12FFF569"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:119:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesPOST24CF2041"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:119:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETactivitiesA3BBE74A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:120:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETactivities2A0AA2BC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:120:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesGET5F627407"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:120:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/batch/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesbatch5D0BB373"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:122:40)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/summary/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiessummary50FCC374"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:125:42)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesrecordId725DD76A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:128:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesOPTIONS8C54378B"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...RootResource.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:131:33)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesB2E78E9E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:132:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesAC67B359"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:132:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesGETCCEDAB5F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:132:16)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/version/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesversion99EC6627"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:134:42)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/batch/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesbatchOPTIONS87EED06E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:122:40)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities.batch": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesbatchPOSTApiPermissionButaRecordingStackButaRecordingApi73D8ADDDPOSTactivitiesbatchC5C3E168"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:123:21)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.POST..activities.batch": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesbatchPOSTApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDPOSTactivitiesbatchF607D65E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:123:21)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/batch/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesbatchPOSTD2A88C87"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:123:21)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/summary/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiessummaryOPTIONS3B15CC41"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:125:42)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities.summary": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiessummaryGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETactivitiessummary4FC76192"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:126:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..activities.summary": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiessummaryGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETactivitiessummary0ECA6E8A"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:126:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/summary/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiessummaryGETBCA9FABB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:126:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesrecordIdOPTIONS3BCE44A3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:128:37)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.DELETE..activities.{recordId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesrecordIdDELETEApiPermissionButaRecordingStackButaRecordingApi73D8ADDDDELETEactivitiesrecordId02AE5845"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:129:18)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.DELETE..activities.{recordId}": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesrecordIdDELETEApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDDELETEactivitiesrecordIdF75A80BE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:129:18)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/activities/{recordId}/DELETE/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApiactivitiesrecordIdDELETE1454331E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:129:18)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/version/OPTIONS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesversionOPTIONS592DE1B7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addResource in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:134:42)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)"
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/ApiPermission.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories.version": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesversionGETApiPermissionButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesversion6782BCB8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:135:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/ApiPermission.Test.ButaRecordingStackButaRecordingApi73D8ADDD.GET..categories.version": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesversionGETApiPermissionTestButaRecordingStackButaRecordingApi73D8ADDDGETcategoriesversionEA374EAF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:135:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/ButaRecordingStack/ButaRecordingApi/Default/categories/version/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ButaRecordingApicategoriesversionGET7E7C3006"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addMethod in aws-cdk-lib...",
+        "new RecordingStack (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\lib\\recording-stack.ts:135:23)",
+        "<anonymous> (C:\\Users\\metac\\kiro\\aws_summit_2026_ai_dlc_handson\\infrastructure\\bin\\app.ts:19:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ]
+}

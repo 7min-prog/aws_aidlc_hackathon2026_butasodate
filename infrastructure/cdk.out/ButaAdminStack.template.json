@@ -1,0 +1,1026 @@
+{
+ "Resources": {
+  "AuditLogTable8B03E3C8": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "logId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "timestamp",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "logId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "timestamp",
+      "KeyType": "RANGE"
+     }
+    ],
+    "TableName": "butasodate-admin-audit-log"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AuditLogTable/Resource"
+   }
+  },
+  "GameConfigTableEF43DBF3": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "configKey",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "configKey",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "butasodate-game-config"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/GameConfigTable/Resource"
+   }
+  },
+  "AdminHandlerServiceRole211AB64E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminHandler/ServiceRole/Resource"
+   }
+  },
+  "AdminHandlerServiceRoleDefaultPolicy0CFC93F2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AuditLogTable8B03E3C8",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AuditLogTable8B03E3C8",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "GameConfigTableEF43DBF3",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "GameConfigTableEF43DBF3",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Scan",
+        "dynamodb:Query"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-avatars",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-avatars/index/*",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-pig-species",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-pig-species/index/*",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-evolution-routes",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-evolution-routes/index/*",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-skills",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-skills/index/*",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-activity-records",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-activity-records/index/*",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-user-profiles",
+        "arn:aws:dynamodb:ap-northeast-1:718100330221:table/butasodate-user-profiles/index/*"
+       ]
+      },
+      {
+       "Action": [
+        "cognito-idp:ListUsers",
+        "cognito-idp:AdminGetUser",
+        "cognito-idp:AdminDisableUser",
+        "cognito-idp:AdminEnableUser",
+        "cognito-idp:AdminDeleteUser"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:cognito-idp:ap-northeast-1:718100330221:userpool/",
+          {
+           "Fn::ImportValue": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+          }
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:s3:::",
+          {
+           "Fn::ImportValue": "ButaAvatarStack:ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43"
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AdminHandlerServiceRoleDefaultPolicy0CFC93F2",
+    "Roles": [
+     {
+      "Ref": "AdminHandlerServiceRole211AB64E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AdminHandler935B2997": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "2868eddfd5facafaae3ee995197cf18b222addcc23876b4ebb453d1f1877b5d1.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "ADMIN_USER": "admin",
+      "ADMIN_PASSWORD": "butasodate2026",
+      "JWT_SECRET": "admin-jwt-secret",
+      "USER_POOL_ID": {
+       "Fn::ImportValue": "ButaAuthStack:ExportsOutputRefButaUserPool7A16C750A698D51C"
+      },
+      "AVATAR_TABLE_NAME": "butasodate-avatars",
+      "PIG_SPECIES_TABLE_NAME": "butasodate-pig-species",
+      "EVOLUTION_ROUTE_TABLE_NAME": "butasodate-evolution-routes",
+      "SKILL_TABLE_NAME": "butasodate-skills",
+      "AUDIT_LOG_TABLE_NAME": {
+       "Ref": "AuditLogTable8B03E3C8"
+      },
+      "GAME_CONFIG_TABLE_NAME": {
+       "Ref": "GameConfigTableEF43DBF3"
+      },
+      "USER_PROFILES_TABLE_NAME": "butasodate-user-profiles",
+      "ACTIVITY_RECORD_TABLE_NAME": "butasodate-activity-records",
+      "ASSETS_BUCKET_NAME": {
+       "Fn::ImportValue": "ButaAvatarStack:ExportsOutputRefSpriteAssetsBucket88BB51DB883F5F43"
+      }
+     }
+    },
+    "FunctionName": "buta-admin-handler-dev",
+    "Handler": "dist/app.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "AdminHandlerServiceRole211AB64E",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "AdminHandlerServiceRoleDefaultPolicy0CFC93F2",
+    "AdminHandlerServiceRole211AB64E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminHandler/Resource",
+    "aws:asset:path": "asset.2868eddfd5facafaae3ee995197cf18b222addcc23876b4ebb453d1f1877b5d1",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AdminApi059A0912": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "buta-admin-api-dev"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Resource"
+   }
+  },
+  "AdminApiCloudWatchRoleA5DF5664": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/CloudWatchRole/Resource"
+   }
+  },
+  "AdminApiAccount52E312F9": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "AdminApiCloudWatchRoleA5DF5664",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "AdminApi059A0912"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Account"
+   }
+  },
+  "AdminApiDeployment829E440Dfdd0d05852412ddfe16ca6580db1cb62": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "DependsOn": [
+    "AdminApiproxyANY48F3D1CA",
+    "AdminApiproxyOPTIONSCCDEB2C2",
+    "AdminApiproxy8E1CE425",
+    "AdminApiANYB0F1126D",
+    "AdminApiOPTIONSB8E35064"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Deployment/Resource",
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "AdminApiDeploymentStagedev36C9B195": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "AdminApiDeployment829E440Dfdd0d05852412ddfe16ca6580db1cb62"
+    },
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    },
+    "StageName": "dev"
+   },
+   "DependsOn": [
+    "AdminApiAccount52E312F9"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/DeploymentStage.dev/Resource"
+   }
+  },
+  "AdminApiOPTIONSB8E35064": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "AdminApi059A0912",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/OPTIONS/Resource"
+   }
+  },
+  "AdminApiproxy8E1CE425": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "AdminApi059A0912",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/{proxy+}/Resource"
+   }
+  },
+  "AdminApiproxyOPTIONSCCDEB2C2": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "AdminApiproxy8E1CE425"
+    },
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/{proxy+}/OPTIONS/Resource"
+   }
+  },
+  "AdminApiproxyANYApiPermissionButaAdminStackAdminApi86D47D8DANYproxy342A25FC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AdminHandler935B2997",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AdminApi059A0912"
+       },
+       "/",
+       {
+        "Ref": "AdminApiDeploymentStagedev36C9B195"
+       },
+       "/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/{proxy+}/ANY/ApiPermission.ButaAdminStackAdminApi86D47D8D.ANY..{proxy+}"
+   }
+  },
+  "AdminApiproxyANYApiPermissionTestButaAdminStackAdminApi86D47D8DANYproxyBC018BC8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AdminHandler935B2997",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:ap-northeast-1:718100330221:",
+       {
+        "Ref": "AdminApi059A0912"
+       },
+       "/test-invoke-stage/*/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/{proxy+}/ANY/ApiPermission.Test.ButaAdminStackAdminApi86D47D8D.ANY..{proxy+}"
+   }
+  },
+  "AdminApiproxyANY48F3D1CA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "ANY",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AdminHandler935B2997",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "AdminApiproxy8E1CE425"
+    },
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/{proxy+}/ANY/Resource"
+   }
+  },
+  "AdminApiANYB0F1126D": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "ANY",
+    "Integration": {
+     "Type": "MOCK"
+    },
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "AdminApi059A0912",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "AdminApi059A0912"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminApi/Default/ANY/Resource"
+   }
+  },
+  "AdminSpaBucket33EF41CE": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "butasodate-admin-spa-718100330221-dev",
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminSpaBucket/Resource"
+   }
+  },
+  "AdminSpaBucketPolicy1B8EBA68": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "AdminSpaBucket33EF41CE"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutBucketPolicy",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AdminSpaBucket33EF41CE",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "AdminSpaBucket33EF41CE",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":cloudfront::",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":distribution/",
+            {
+             "Ref": "AdminDistribution4E89F8C0"
+            }
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "AdminSpaBucket33EF41CE",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminSpaBucket/Policy/Resource"
+   }
+  },
+  "AdminSpaBucketAutoDeleteObjectsCustomResourceEDAFE37A": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "AdminSpaBucket33EF41CE"
+    }
+   },
+   "DependsOn": [
+    "AdminSpaBucketPolicy1B8EBA68"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminSpaBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-718100330221-ap-northeast-1",
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "AdminSpaBucket33EF41CE"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "AdminDistributionOrigin1S3OriginAccessControl949F3123": {
+   "Type": "AWS::CloudFront::OriginAccessControl",
+   "Properties": {
+    "OriginAccessControlConfig": {
+     "Name": "ButaAdminStackAdminDistributOrigin1S3OriginAccessControl7E80284F",
+     "OriginAccessControlOriginType": "s3",
+     "SigningBehavior": "always",
+     "SigningProtocol": "sigv4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminDistribution/Origin1/S3OriginAccessControl/Resource"
+   }
+  },
+  "AdminDistribution4E89F8C0": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "CustomErrorResponses": [
+      {
+       "ErrorCode": 403,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      }
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "ButaAdminStackAdminDistributionOrigin1706E8C25",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "DefaultRootObject": "index.html",
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "AdminSpaBucket33EF41CE",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "ButaAdminStackAdminDistributionOrigin1706E8C25",
+       "OriginAccessControlId": {
+        "Fn::GetAtt": [
+         "AdminDistributionOrigin1S3OriginAccessControl949F3123",
+         "Id"
+        ]
+       },
+       "S3OriginConfig": {
+        "OriginAccessIdentity": ""
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/AdminDistribution/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/5WRTW/bMAyGf0tyVrTMQTFgt3ygt6JB0tswFLLMZExsMRCppoag/z5IzhZjWA898ZHIl3pFVrp6+KbnE3PlmW3OsxZrHfdi7FmZK7/Gpnemo6bW8cXULaj1wRVIqjVd3RgdH4OzguRyasxb8B0yI7mk0HQ67mjQl7ilFm1f6golxYtXwwzCepmD4oWOq2DPICvDoAbMgoF+xGmH7+im36dj79k0L3RJsR5Kl0FoAy0IPNcnsMLT9PPW725jfP5E70GwFyPQgSutkzIXPBqBq+l13AHL8oLl43dcWkvBidrApaU+K/Pt6LQXcyzTGmAHTMFbKKN4AvlFTU7eaOvpvf9TcnupcFK2pdAcPDnRcYMsHutQNrRfPHs8YnYCzGty4qnN2g+ux+KU/hpSZVnZJLpjkQe5BFHrwELd/zz9k9p6esMGfP5ZUo4a0Cf+8lZVuvqq55MTI858cIId6N0QfwPApsRntAIAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "ButaAdminStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "AdminApiEndpointACFD5967": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AdminApi059A0912"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AdminApiDeploymentStagedev36C9B195"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "AdminApiUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "AdminApi059A0912"
+      },
+      ".execute-api.ap-northeast-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "AdminApiDeploymentStagedev36C9B195"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "AdminSpaUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::GetAtt": [
+        "AdminDistribution4E89F8C0",
+        "DomainName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "AdminSpaBucketName": {
+   "Value": {
+    "Ref": "AdminSpaBucket33EF41CE"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

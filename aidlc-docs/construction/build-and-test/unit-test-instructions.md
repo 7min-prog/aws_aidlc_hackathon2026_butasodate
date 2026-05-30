@@ -1,66 +1,67 @@
 # Unit Test Execution
 
-## テストフレームワーク追加（初回のみ）
+## テストフレームワーク
+
+- **Backend**: Jest 29 + ts-jest
+- **Frontend**: Flutter test (dart test)
+- **Infrastructure**: Jest + aws-cdk-lib/assertions
+
+## Backend Unit Tests
+
+### 全ハンドラー一括実行
 
 ```bash
-cd backend/auth-handler
-npm install --save-dev jest ts-jest @types/jest
+cd backend/auth-handler && npm test
+cd ../recording-handler && npm test
+cd ../avatar-handler && npm test
+cd ../battle-ws-handler && npm test
+cd ../social-handler && npm test
+cd ../admin-handler && npm test
 ```
 
-`package.json` に追加:
-```json
-{
-  "scripts": {
-    "test": "jest",
-    "test:coverage": "jest --coverage"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testMatch": ["**/tests/**/*.test.ts"]
-  }
-}
-```
+### テスト結果サマリー
 
-## テスト対象
+| ハンドラー | Suites | Tests | Lines Coverage |
+|-----------|--------|-------|---------------|
+| auth-handler | 7 | 44 | 84.6% |
+| recording-handler | 10 | 83 | 90.3% |
+| avatar-handler | 7 | 102 | 91.9% |
+| battle-ws-handler | 3 | 33 | 90.6% |
+| social-handler | 2 | 37 | 95.9% |
+| admin-handler | 1 | 30 | 98.6% |
+| **合計** | **30** | **329** | — |
 
-| ハンドラー | テスト観点 |
-|-----------|-----------|
-| signup.ts | バリデーション、Cognito例外ハンドリング |
-| login.ts | 認証成功/失敗、トークン返却 |
-| logout.ts | アクセストークン検証 |
-| refresh.ts | リフレッシュトークン検証 |
-| profile.ts | ニックネームバリデーション、一意性チェック |
-
-## Run Unit Tests
+### カバレッジ確認
 
 ```bash
-cd backend/auth-handler
-npm test
+cd backend/auth-handler && npx jest --coverage
 ```
 
-## テスト作成方針
+## Frontend Unit Tests
 
-AWS SDKをモックして、ハンドラーのロジックのみをテスト:
-
-```typescript
-// tests/handlers/signup.test.ts の例
-import { handleSignup } from '../../src/handlers/signup';
-
-jest.mock('../../src/utils/cognito-client', () => ({
-  cognitoClient: { send: jest.fn() },
-  CLIENT_ID: 'test-client-id',
-}));
-
-describe('handleSignup', () => {
-  it('should return 400 if email is missing', async () => {
-    const event = { body: JSON.stringify({ password: 'Test1234!' }) } as any;
-    const result = await handleSignup(event);
-    expect(result.statusCode).toBe(400);
-  });
-});
+```bash
+cd frontend
+flutter test --coverage \
+  test/main_test.dart test/shared/ test/features/ test/screens/ test/unit/ \
+  test/pixel_app_bar_test.dart test/router_routes_test.dart \
+  test/login_legal_links_test.dart test/router_test.dart
 ```
 
-## Expected Results
-- 全テストがパス
-- カバレッジ目標: 80%以上（ハッカソン向け）
+- **カバレッジ目標**: 90%+
+- **カバレッジ確認**: `frontend/coverage/lcov.info`
+
+## Infrastructure Tests
+
+```bash
+cd infrastructure
+npm install
+npx jest
+```
+
+- CDKスタック構成の28アサーション（Lambda数、DynamoDBテーブル数、API Gateway設定等）
+
+## テスト方針
+
+- AWS SDKは `jest.mock()` でモック（外部依存なし）
+- Hono系ハンドラー（avatar, admin）は `app.request()` でルーティング込みテスト
+- Flutter は `ProviderContainer` + `DioAdapter` でAPI層モック

@@ -14,14 +14,20 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
     if (method === 'POST' && path === '/activities') {
       const body = JSON.parse(event.body || '{}');
-      const result = await service.createRecord(userId, body);
-      return success(result, 201);
+      // OpenAPI: records[] array - single or batch
+      const records = body.records || [body];
+      if (records.length === 1) {
+        const result = await service.createRecord(userId, records[0]);
+        return success({ avatar: result.avatarStatus, leveledUp: false, evolved: false, newSkills: [], skippedIds: [] }, 201);
+      }
+      const result = await service.batchCreateRecords(userId, records);
+      return success({ avatar: result.avatarStatus, leveledUp: false, evolved: false, newSkills: [], skippedIds: result.skippedIds }, 201);
     }
 
     if (method === 'POST' && path === '/activities/batch') {
       const body = JSON.parse(event.body || '{}');
       const result = await service.batchCreateRecords(userId, body.records || []);
-      return success(result);
+      return success({ avatar: result.avatarStatus, leveledUp: false, evolved: false, newSkills: [], skippedIds: result.skippedIds });
     }
 
     if (method === 'GET' && path === '/activities') {

@@ -6,12 +6,25 @@ jest.mock('../src/utils/dynamo-client', () => ({
   AVATAR_TABLE: 'test-avatar',
   EVOLUTION_HISTORY_TABLE: 'test-history',
   EVOLUTION_PATH_TABLE: 'test-paths',
+  PIG_SPECIES_TABLE: 'test-species',
+  EVOLUTION_ROUTE_TABLE: 'test-routes',
   SKILL_TABLE: 'test-skills',
+  GAME_CONFIG_TABLE: 'test-config',
 }));
 
 jest.mock('../src/services/master-data-cache', () => ({
   getEvolutionPaths: jest.fn().mockResolvedValue([]),
+  getEvolutionRoutes: jest.fn().mockResolvedValue([]),
+  getPigSpecies: jest.fn().mockResolvedValue([]),
   getSkills: jest.fn().mockResolvedValue([]),
+  getGameConfig: jest.fn().mockResolvedValue({
+    INITIAL_STATS: { hp: 50, attack: 10, defense: 10, speed: 10 },
+    MAX_LEVEL: 30,
+    EVOLUTION_LEVEL_STAGE2: 5,
+    EVOLUTION_LEVEL_STAGE3: 15,
+    CATEGORY_THRESHOLD: 0.6,
+    LEVEL_FORMULA_COEFFICIENT: 50,
+  }),
 }));
 
 import { docClient } from '../src/utils/dynamo-client';
@@ -20,11 +33,11 @@ const mockSend = docClient.send as jest.Mock;
 
 const mockAvatar = {
   avatarId: 'av-1', userId: 'user-1', name: 'テスト',
-  totalPoints: 500, level: 3, evolutionStage: 1, evolutionPathId: null,
+  totalPoints: 500, level: 3, evolutionStage: 1, currentSpeciesId: null,
   categoryPoints: { FOOD: 300, LIFESTYLE: 200, MIXED: 0 },
   subCategoryPoints: {},
   stats: { hp: 60, attack: 16, defense: 16, speed: 16 },
-  skillIds: [], spriteSheetKey: 'sprites/stage1/default',
+  skillIds: [],
   createdAt: '2026-01-01T00:00:00Z', updatedAt: '2026-01-01T00:00:00Z',
 };
 
